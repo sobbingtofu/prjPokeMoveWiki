@@ -1,0 +1,3 @@
+포켓몬 이름 국문 데이터 - https://pokeapi.co/api/v2/pokemon-species/1/
+
+포켓몬 기술 - https://pokeapi.co/api/v2/move/1/

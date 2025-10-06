@@ -1,4 +1,4 @@
-import {initialMovesType, koreanMoveType} from "@/app/types/initialMovesType";
+import {initialMovesType, koreanMoveType} from "@/logic/pokeapiLogics/type";
 import axios from "axios";
 
 export const getInitialMoveData = async () => {
@@ -35,19 +35,12 @@ export const generateKoreanMoveData = async (initialMovesArr: initialMovesType[]
             (nameItem: {language: {name: string; url: string}; name: string}) => nameItem.language.name === "ko"
           )?.name || "",
         type: data.type.name,
+        learningPokemonEn: data.learned_by_pokemon,
+        damageClass: data.damage_class.name,
       });
     });
     return koreanMoveNameArr;
   } catch (error) {
     console.error("기술 국문  정보 호출 실패:", error);
   }
-};
-
-export const getKoreanMoveData = async () => {
-  const initialMoves = await getInitialMoveData();
-  if (!initialMoves) return;
-
-  const koreanMoves = await generateKoreanMoveData(initialMoves);
-  if (!koreanMoves) return;
-  return koreanMoves;
 };

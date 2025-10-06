@@ -4,11 +4,15 @@ export interface initialMovesType {
   url: string;
 }
 
+export type damageClassType = "physical" | "special" | "status";
+
 export interface koreanMoveType {
   id: number;
   name: string;
   koreanName: string;
   type: pokemonTypeType;
+  learningPokemonEn: {name: string; url: string}[];
+  damageClass: damageClassType;
 }
 
 export type pokemonTypeType =

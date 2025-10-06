@@ -1,24 +1,28 @@
 "use client";
 
-import {getInitialMoveData, generateKoreanMoveData, getKoreanMoveData} from "@/logic/pokeapiLogics";
-import {useEffect, useState} from "react";
+import {usePokemonMoveData} from "@/hooks/useMoveDataLoader";
+import {useZustandStore} from "@/store/zustandStore";
 
 export default function Home() {
-  const [isLoaded, setIsLoaded] = useState(false);
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        setIsLoaded(false); // 로딩 시작
-        await getKoreanMoveData();
-        setIsLoaded(true); // 로딩 완료
-      } catch (error) {
-        console.error("데이터 로딩 실패:", error);
-        setIsLoaded(false); // 에러 시 false 유지
-      }
-    };
+  const {loadingStates, koreanMoveStates} = useZustandStore();
+  usePokemonMoveData();
 
-    fetchData();
-  }, []);
-
-  return <div>홈페이지 테스트</div>;
+  return (
+    <div>
+      <p>
+        {" "}
+        {loadingStates.isInitialMovesLoading
+          ? "초기 기술 로딩 중..."
+          : loadingStates.isKoreanMovesLoading
+          ? "기술 국문 로딩 중..."
+          : "모든 기술 로딩 완료"}
+      </p>
+      <p>총 기술 수: {koreanMoveStates.length}</p>
+      <ul>
+        {koreanMoveStates.map((move) => (
+          <li key={move.id}>{move.koreanName}</li>
+        ))}
+      </ul>
+    </div>
+  );
 }
