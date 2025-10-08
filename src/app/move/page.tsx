@@ -1,5 +1,7 @@
 "use client";
 
+import {Loader} from "@/components/Loader/Loader";
+import {SearchBar} from "@/components/SearchBar/SearchBar";
 import {usePokemonMoveData} from "@/hooks/useMoveDataLoader";
 
 import {useZustandStore} from "@/store/zustandStore";
@@ -10,22 +12,9 @@ export default function Home() {
 
   return (
     <div>
-      <p>
-        {" "}
-        {loadingStates.isInitialMovesLoading
-          ? "초기 기술 로딩 중..."
-          : loadingStates.isKoreanMovesLoading
-          ? "기술 국문 로딩 중..."
-          : "모든 기술 로딩 완료"}
-      </p>
+      <Loader />
+      <SearchBar />
       <p>총 기술 수: {koreanMoveStates.length}</p>
-      <ul>
-        {koreanMoveStates.map((move) => (
-          <li key={move.id}>
-            {move.id}. {move.koreanName}
-          </li>
-        ))}
-      </ul>
     </div>
   );
 }

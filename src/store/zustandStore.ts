@@ -2,6 +2,9 @@ import {create} from "zustand";
 import {zustandStoreType} from "./type";
 
 export const useZustandStore = create<zustandStoreType>((set) => ({
+  isFirstAccessToApp: true,
+  setIsFirstAccessToApp: (update) => set(() => ({isFirstAccessToApp: update})),
+
   loadingStates: {
     isInitialMovesLoading: false,
     isKoreanMovesLoading: false,

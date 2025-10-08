@@ -6,6 +6,9 @@ export interface loadingStatesType {
 }
 
 export interface zustandStoreType {
+  isFirstAccessToApp: boolean;
+  setIsFirstAccessToApp: (update: boolean) => void;
+
   loadingStates: loadingStatesType;
   setLoadingStates: (update: Partial<loadingStatesType> | ((prev: loadingStatesType) => loadingStatesType)) => void;
 
