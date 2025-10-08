@@ -10,7 +10,8 @@ export interface koreanMoveType {
   id: number;
   name: string;
   koreanName: string;
-  type: pokemonTypeType;
+  type: pokemonTypeEnNames;
+  korType: string;
   learningPokemonEn: {name: string; url: string}[];
   damageClass: damageClassType;
   url: string;
@@ -19,7 +20,7 @@ export interface koreanMoveType {
   hasKoreanDescription: boolean;
 }
 
-export type pokemonTypeType =
+export type pokemonTypeEnNames =
   | "normal"
   | "fighting"
   | "flying"
@@ -40,3 +41,25 @@ export type pokemonTypeType =
   | "fairy"
   | "unknown"
   | "stellar";
+
+export type pokemonTypeKorNames =
+  | "노말"
+  | "격투"
+  | "비행"
+  | "독"
+  | "땅"
+  | "바위"
+  | "벌레"
+  | "고스트"
+  | "강철"
+  | "불"
+  | "물"
+  | "풀"
+  | "전기"
+  | "에스퍼"
+  | "얼음"
+  | "드래곤"
+  | "악"
+  | "페어리"
+  | "???"
+  | "스텔라";

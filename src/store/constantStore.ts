@@ -1,3 +1,5 @@
+import {pokemonTypeEnNames, pokemonTypeKorNames} from "@/logic/pokeapiLogics/type";
+
 export const MOVE_SUPPLEMENTARY_INFO = [
   {
     id: 827,
@@ -378,5 +380,88 @@ export const MOVE_SUPPLEMENTARY_INFO = [
     id: 904,
     name: "ivy-cudgel",
     addedKorName: "덩굴방망이",
+  },
+];
+
+export const TYPE_NAME_EN_TO_KO: {typeName: pokemonTypeEnNames; korTypeName: pokemonTypeKorNames}[] = [
+  {
+    typeName: "normal",
+    korTypeName: "노말",
+  },
+  {
+    typeName: "fighting",
+    korTypeName: "격투",
+  },
+  {
+    typeName: "flying",
+    korTypeName: "비행",
+  },
+  {
+    typeName: "poison",
+    korTypeName: "독",
+  },
+  {
+    typeName: "ground",
+    korTypeName: "땅",
+  },
+  {
+    typeName: "rock",
+    korTypeName: "바위",
+  },
+  {
+    typeName: "bug",
+    korTypeName: "벌레",
+  },
+  {
+    typeName: "ghost",
+    korTypeName: "고스트",
+  },
+  {
+    typeName: "steel",
+    korTypeName: "강철",
+  },
+  {
+    typeName: "fire",
+    korTypeName: "불",
+  },
+  {
+    typeName: "water",
+    korTypeName: "물",
+  },
+  {
+    typeName: "grass",
+    korTypeName: "풀",
+  },
+  {
+    typeName: "electric",
+    korTypeName: "전기",
+  },
+  {
+    typeName: "psychic",
+    korTypeName: "에스퍼",
+  },
+  {
+    typeName: "ice",
+    korTypeName: "얼음",
+  },
+  {
+    typeName: "dragon",
+    korTypeName: "드래곤",
+  },
+  {
+    typeName: "dark",
+    korTypeName: "악",
+  },
+  {
+    typeName: "fairy",
+    korTypeName: "페어리",
+  },
+  {
+    typeName: "stellar",
+    korTypeName: "스텔라",
+  },
+  {
+    typeName: "unknown",
+    korTypeName: "???",
   },
 ];

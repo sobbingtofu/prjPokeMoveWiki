@@ -3,6 +3,7 @@
 import {useState, useEffect, useRef} from "react";
 import {useZustandStore} from "@/store/zustandStore";
 import {koreanMoveType} from "@/logic/pokeapiLogics/type";
+import {CloseIcon} from "../CloseIcon/CloseIcon";
 
 export const SearchBar = () => {
   const [searchValue, setSearchValue] = useState("");
@@ -11,7 +12,7 @@ export const SearchBar = () => {
   const [isDebouncing, setIsDebouncing] = useState(false);
 
   const {koreanMoveStates} = useZustandStore();
-  const searchRef = useRef<HTMLDivElement>(null);
+  const searchContainerRef = useRef<HTMLDivElement>(null);
   const debounceRef = useRef<NodeJS.Timeout | null>(null);
 
   // 디바운싱 처리 및 검색 결과 필터링
@@ -48,7 +49,7 @@ export const SearchBar = () => {
   // 외부 클릭시 드롭다운 닫기
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
-      if (searchRef.current && !searchRef.current.contains(event.target as Node)) {
+      if (searchContainerRef.current && !searchContainerRef.current.contains(event.target as Node)) {
         setIsDropdownOpen(false);
       }
     };
@@ -63,31 +64,27 @@ export const SearchBar = () => {
     setSearchValue(e.target.value);
   };
 
-  const handleMoveSelect = (move: koreanMoveType) => {
-    setSearchValue(move.koreanName);
-    setIsDropdownOpen(false);
-    // 여기에 선택된 기술에 대한 추가 처리 로직을 넣을 수 있습니다.
-  };
+  const handleMoveSelect = (move: koreanMoveType) => {};
 
   return (
-    <div className="w-screen h-screen flex flex-col items-center mt-24">
-      <div ref={searchRef} className="relative w-full max-w-md mx-4">
-        {/* 검색 바 */}
-        <div className="">
+    <div className="w-full h-screen flex flex-col items-center mt-24">
+      <div ref={searchContainerRef} className="relative w-1/2 min-w-[320px]:mx-4">
+        <div className=" px-6 py-4 flex justify-between items-center shadow-sm  focus-within:border-blue-500 focus-within:ring-1 focus-within:ring-blue-500 w-full text-lg border-2 border-gray-300 rounded-lg focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all duration-200">
           <input
             type="text"
             value={searchValue}
             onChange={handleInputChange}
             placeholder="기술 이름을 검색하세요..."
-            className="shadow-sm focus-within:border-blue-500 focus-within:ring-1 focus-within:ring-blue-500 w-full px-4 py-3 text-lg border-2 border-gray-300 rounded-lg focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all duration-200"
+            className=" w-full focus:outline-none bg-transparent"
           />
 
           {/* 로딩 인디케이터 */}
           {isDebouncing && (
-            <div className="absolute right-3 top-1/2 transform -translate-y-1/2">
+            <div className="">
               <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-blue-500"></div>
             </div>
           )}
+          <CloseIcon onClick={() => setSearchValue("")} />
         </div>
 
         {/* 드롭다운 결과 */}
@@ -102,21 +99,10 @@ export const SearchBar = () => {
                 <div className="flex justify-between items-center">
                   <div>
                     <p className="font-medium text-gray-900">{move.koreanName}</p>
-                    <p className="text-sm text-gray-500">{move.name}</p>
                   </div>
                   <div className="flex items-center space-x-2">
-                    <span className={`px-2 py-1 text-xs rounded-full text-white bg-${move.type}-500`}>{move.type}</span>
-                    <span
-                      className={`px-2 py-1 text-xs rounded-full text-white ${
-                        move.damageClass === "physical"
-                          ? "bg-red-500"
-                          : move.damageClass === "special"
-                          ? "bg-blue-500"
-                          : "bg-gray-500"
-                      }`}
-                    >
-                      {move.damageClass}
-                    </span>
+                    <p className={`px-2 py-1 text-xs rounded-full text-black`}>{move.korType}</p>
+                    <p>{move.damageClass === "physical" ? "물리" : move.damageClass === "special" ? "특수" : "변화"}</p>
                   </div>
                 </div>
               </div>

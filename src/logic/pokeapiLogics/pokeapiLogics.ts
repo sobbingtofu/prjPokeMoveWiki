@@ -1,5 +1,5 @@
 import {initialMovesType, koreanMoveType} from "@/logic/pokeapiLogics/type";
-import {MOVE_SUPPLEMENTARY_INFO} from "@/store/constantStore";
+import {MOVE_SUPPLEMENTARY_INFO, TYPE_NAME_EN_TO_KO} from "@/store/constantStore";
 import axios from "axios";
 
 export const getInitialMoveData = async () => {
@@ -41,6 +41,7 @@ export const generateKoreanMoveData = async (initialMovesArr: initialMovesType[]
           MOVE_SUPPLEMENTARY_INFO.find((move) => move.name === initialMoveItem.name)?.addedKorName ||
           initialMoveItem.name,
         type: data.type.name,
+        korType: TYPE_NAME_EN_TO_KO.find((type) => type.typeName === data.type.name)?.korTypeName || data.type.name,
         learningPokemonEn: data.learned_by_pokemon,
         damageClass: data.damage_class.name,
         url: initialMoveItem.url,
