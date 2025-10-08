@@ -13,6 +13,10 @@ export interface koreanMoveType {
   type: pokemonTypeType;
   learningPokemonEn: {name: string; url: string}[];
   damageClass: damageClassType;
+  url: string;
+  hasKoreanName?: boolean;
+  korDescription: string;
+  hasKoreanDescription: boolean;
 }
 
 export type pokemonTypeType =

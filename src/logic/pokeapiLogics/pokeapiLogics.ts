@@ -1,4 +1,5 @@
 import {initialMovesType, koreanMoveType} from "@/logic/pokeapiLogics/type";
+import {MOVE_SUPPLEMENTARY_INFO} from "@/store/constantStore";
 import axios from "axios";
 
 export const getInitialMoveData = async () => {
@@ -29,16 +30,34 @@ export const generateKoreanMoveData = async (initialMovesArr: initialMovesType[]
     const promises = initialMovesArr.map(async (initialMoveItem) => {
       const {data} = await axios.get(initialMoveItem.url);
       // 2. promises 배열의 각 요소는 아래 형태의 객체를 최종적으로 반환하는 promise임
+
       return {
         id: initialMoveItem.id,
         name: initialMoveItem.name,
         koreanName:
           data.names.find(
             (nameItem: {language: {name: string; url: string}; name: string}) => nameItem.language.name === "ko"
-          )?.name || initialMoveItem.name,
+          )?.name ||
+          MOVE_SUPPLEMENTARY_INFO.find((move) => move.name === initialMoveItem.name)?.addedKorName ||
+          initialMoveItem.name,
         type: data.type.name,
         learningPokemonEn: data.learned_by_pokemon,
         damageClass: data.damage_class.name,
+        url: initialMoveItem.url,
+        korDescription:
+          data.flavor_text_entries.findLast(
+            (entry: {language: {name: string; url: string}; flavor_text: string}) => entry.language.name === "ko"
+          )?.flavor_text ||
+          data.flavor_text_entries.findLast(
+            (entry: {language: {name: string; url: string}; flavor_text: string}) => entry.language.name === "en"
+          )?.flavor_text ||
+          "",
+        // hasKoreanName: !!data.names.find(
+        //   (nameItem: {language: {name: string; url: string}; name: string}) => nameItem.language.name === "ko"
+        // ),
+        hasKoreanDescription: !!data.flavor_text_entries.findLast(
+          (entry: {language: {name: string; url: string}; flavor_text: string}) => entry.language.name === "ko"
+        ),
       };
     });
 
@@ -46,8 +65,11 @@ export const generateKoreanMoveData = async (initialMovesArr: initialMovesType[]
     // 그 결과값들로 이루어진 배열이 반환됨
     const koreanMoveNameArr = await Promise.all(promises);
 
+    // 불필요한 기술 제거 (섀도우 기술)
+    const filteredMoves = koreanMoveNameArr.filter((move) => move.type !== "shadow");
+
     // 4. 모든 데이터가 채워진 완전한 배열을 반환함
-    return koreanMoveNameArr;
+    return filteredMoves;
   } catch (error) {
     console.error("기술 국문 정보 호출 실패:", error);
     return [];

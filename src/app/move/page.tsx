@@ -21,7 +21,9 @@ export default function Home() {
       <p>총 기술 수: {koreanMoveStates.length}</p>
       <ul>
         {koreanMoveStates.map((move) => (
-          <li key={move.id}>{move.koreanName}</li>
+          <li key={move.id}>
+            {move.id}. {move.koreanName}
+          </li>
         ))}
       </ul>
     </div>
