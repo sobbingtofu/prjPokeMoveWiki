@@ -1,22 +1,17 @@
-"use client";
+import {PropsWithChildren} from "react";
 
-import {useZustandStore} from "@/store/zustandStore";
+interface LoaderProps {
+  size: "small" | "medium";
+  color: "blue" | "emerald" | "red" | "yellow";
+}
 
-export const Loader = () => {
-  const {loadingStates} = useZustandStore();
+export const Loader = ({size, color}: PropsWithChildren<LoaderProps>) => {
+  const sizeNumber = size === "small" ? 5 : size === "medium" ? 10 : 0;
   return (
-    <>
-      {Object.values(loadingStates).some((isLoading) => isLoading) && (
-        <div className="flex items-center bg-slate-400 justify-center w-full h-screen bg-red">
-          <p className="rounded-lg bg-amber-400 p-4 text-lg font-semibold text-gray-800 shadow-lg">
-            {loadingStates.isInitialMovesLoading
-              ? "초기 기술 로딩 중..."
-              : loadingStates.isKoreanMovesLoading
-              ? "기술 국문 로딩 중..."
-              : "모든 기술 로딩 완료"}
-          </p>
-        </div>
-      )}
-    </>
+    <div
+      className={`animate-spin rounded-full h-${sizeNumber} w-${sizeNumber} border-b-${
+        size == "small" ? 2 : 4
+      } border-${color}-500`}
+    ></div>
   );
 };

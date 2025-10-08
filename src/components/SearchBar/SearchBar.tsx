@@ -4,6 +4,7 @@ import {useState, useEffect, useRef} from "react";
 import {useZustandStore} from "@/store/zustandStore";
 import {koreanMoveType} from "@/logic/pokeapiLogics/type";
 import {CloseIcon} from "../CloseIcon/CloseIcon";
+import {Loader} from "../Loader/Loader";
 
 export const SearchBar = () => {
   const [searchValue, setSearchValue] = useState("");
@@ -113,7 +114,8 @@ export const SearchBar = () => {
           {/* 로더 */}
           {isDebouncing && (
             <div className="">
-              <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-blue-500"></div>
+              <Loader size="small" color="blue" />
+              {/* <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-blue-500"></div> */}
             </div>
           )}
           {!isDebouncing && searchValue.trim() !== "" && <CloseIcon onClick={() => setSearchValue("")} />}

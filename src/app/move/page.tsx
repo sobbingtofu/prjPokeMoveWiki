@@ -1,6 +1,6 @@
 "use client";
 
-import {Loader} from "@/components/Loader/Loader";
+import {InitialLoadingScreen} from "@/components/InitialLoadingScreen/InitialLoadingScreen";
 import {SearchBar} from "@/components/SearchBar/SearchBar";
 import {usePokemonMoveData} from "@/hooks/useMoveDataLoader";
 
@@ -12,7 +12,7 @@ export default function Home() {
 
   return (
     <div>
-      <Loader />
+      <InitialLoadingScreen />
       <SearchBar />
       <p>총 기술 수: {koreanMoveStates.length}</p>
     </div>
