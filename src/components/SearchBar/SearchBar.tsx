@@ -34,10 +34,10 @@ export const SearchBar = () => {
       const filtered = koreanMoveStates.filter((move) =>
         move.koreanName.toLowerCase().includes(searchValue.toLowerCase())
       );
-      setFilteredMoves(filtered.slice(0, 10)); // 최대 10개까지만 표시
+      setFilteredMoves(filtered.slice(0, 20));
       setIsDropdownOpen(filtered.length > 0);
       setIsDebouncing(false);
-    }, 500);
+    }, 200);
 
     return () => {
       if (debounceRef.current) {
@@ -64,27 +64,59 @@ export const SearchBar = () => {
     setSearchValue(e.target.value);
   };
 
+  const handleInputFocus = () => {
+    if (searchValue.trim() !== "" && filteredMoves.length > 0) {
+      setIsDropdownOpen(true);
+    }
+  };
+
   const handleMoveSelect = (move: koreanMoveType) => {};
 
+  const getTypeColor = (type: string) => {
+    const typeColors: {[key: string]: string} = {
+      fighting: "text-fighting",
+      poison: "text-poison",
+      ground: "text-ground",
+      flying: "text-flying",
+      psychic: "text-psychic",
+      bug: "text-bug",
+      rock: "text-rock",
+      ghost: "text-ghost",
+      dragon: "text-dragon",
+      dark: "text-dark",
+      steel: "text-steel",
+      fairy: "text-fairy",
+      normal: "text-normal",
+      fire: "text-fire",
+      water: "text-water",
+      electric: "text-electric",
+      grass: "text-grass",
+      ice: "text-ice",
+    };
+
+    return typeColors[type.toLowerCase()] || "text-gray-500";
+  };
+
   return (
-    <div className="w-full h-screen flex flex-col items-center mt-24">
-      <div ref={searchContainerRef} className="relative w-1/2 min-w-[320px]:mx-4">
+    <div className="w-full h-screen flex flex-col items-center mt-24 font-bold ">
+      <div ref={searchContainerRef} className="relative w-1/2 min-w-[380px]">
         <div className=" px-6 py-4 flex justify-between items-center shadow-sm  focus-within:border-blue-500 focus-within:ring-1 focus-within:ring-blue-500 w-full text-lg border-2 border-gray-300 rounded-lg focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all duration-200">
           <input
             type="text"
             value={searchValue}
             onChange={handleInputChange}
+            onFocus={handleInputFocus}
             placeholder="기술 이름을 검색하세요..."
             className=" w-full focus:outline-none bg-transparent"
           />
 
-          {/* 로딩 인디케이터 */}
+          {/* 로더 */}
           {isDebouncing && (
             <div className="">
               <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-blue-500"></div>
             </div>
           )}
-          <CloseIcon onClick={() => setSearchValue("")} />
+          {!isDebouncing && searchValue.trim() !== "" && <CloseIcon onClick={() => setSearchValue("")} />}
         </div>
 
         {/* 드롭다운 결과 */}
@@ -96,13 +128,18 @@ export const SearchBar = () => {
                 onClick={() => handleMoveSelect(move)}
                 className="px-4 py-3 cursor-pointer hover:bg-gray-100 border-b border-gray-100 last:border-b-0 transition-colors duration-150"
               >
-                <div className="flex justify-between items-center">
-                  <div>
-                    <p className="font-medium text-gray-900">{move.koreanName}</p>
+                <div className="flex gap-4 justify-between items-center">
+                  <div className="flex-8 flex justify-start items-center ">
+                    <p className=" text-gray-900 text-sm">{move.koreanName}</p>
                   </div>
-                  <div className="flex items-center space-x-2">
-                    <p className={`px-2 py-1 text-xs rounded-full text-black`}>{move.korType}</p>
-                    <p>{move.damageClass === "physical" ? "물리" : move.damageClass === "special" ? "특수" : "변화"}</p>
+
+                  <div className="w-1/12 flex justify-center items-center min-w-[40px]">
+                    <p className="text-gray-500 text-sm font-bold ">
+                      {move.damageClass === "physical" ? "물리" : move.damageClass === "special" ? "특수" : "변화"}
+                    </p>
+                  </div>
+                  <div className="w-1/12 flex justify-center items-center min-w-[40px]">
+                    <p className={`rounded-full font-bold ${getTypeColor(move.type)}`}>{move.korType}</p>
                   </div>
                 </div>
               </div>

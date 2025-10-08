@@ -1,1 +1,139 @@
 @import "tailwindcss";
+
+/* src/app/globals.css */
+@import "tailwindcss";
+
+@layer base {
+  :root {
+    --color-fighting: #c03028;
+    --color-poison: #a040a0;
+    --color-ground: #e0c068;
+    --color-flying: #a890f0;
+    --color-psychic: #f85888;
+    --color-bug: #a8b820;
+    --color-rock: #b8a038;
+    --color-ghost: #705898;
+    --color-dragon: #7038f8;
+    --color-dark: #705848;
+    --color-steel: #b8b8d0;
+    --color-fairy: #ee99ac;
+    --color-normal: #a8a878;
+    --color-fire: #f08030;
+    --color-water: #6890f0;
+    --color-electric: #f8d030;
+    --color-grass: #78c850;
+    --color-ice: #98d8d8;
+  }
+}
+
+@layer utilities {
+  .text-fighting {
+    color: var(--color-fighting);
+  }
+  .text-poison {
+    color: var(--color-poison);
+  }
+  .text-ground {
+    color: var(--color-ground);
+  }
+  .text-flying {
+    color: var(--color-flying);
+  }
+  .text-psychic {
+    color: var(--color-psychic);
+  }
+  .text-bug {
+    color: var(--color-bug);
+  }
+  .text-rock {
+    color: var(--color-rock);
+  }
+  .text-ghost {
+    color: var(--color-ghost);
+  }
+  .text-dragon {
+    color: var(--color-dragon);
+  }
+  .text-dark {
+    color: var(--color-dark);
+  }
+  .text-steel {
+    color: var(--color-steel);
+  }
+  .text-fairy {
+    color: var(--color-fairy);
+  }
+  .text-normal {
+    color: var(--color-normal);
+  }
+  .text-fire {
+    color: var(--color-fire);
+  }
+  .text-water {
+    color: var(--color-water);
+  }
+  .text-electric {
+    color: var(--color-electric);
+  }
+  .text-grass {
+    color: var(--color-grass);
+  }
+  .text-ice {
+    color: var(--color-ice);
+  }
+
+  .bg-fighting {
+    background-color: var(--color-fighting);
+  }
+  .bg-poison {
+    background-color: var(--color-poison);
+  }
+  .bg-ground {
+    background-color: var(--color-ground);
+  }
+  .bg-flying {
+    background-color: var(--color-flying);
+  }
+  .bg-psychic {
+    background-color: var(--color-psychic);
+  }
+  .bg-bug {
+    background-color: var(--color-bug);
+  }
+  .bg-rock {
+    background-color: var(--color-rock);
+  }
+  .bg-ghost {
+    background-color: var(--color-ghost);
+  }
+  .bg-dragon {
+    background-color: var(--color-dragon);
+  }
+  .bg-dark {
+    background-color: var(--color-dark);
+  }
+  .bg-steel {
+    background-color: var(--color-steel);
+  }
+  .bg-fairy {
+    background-color: var(--color-fairy);
+  }
+  .bg-normal {
+    background-color: var(--color-normal);
+  }
+  .bg-fire {
+    background-color: var(--color-fire);
+  }
+  .bg-water {
+    background-color: var(--color-water);
+  }
+  .bg-electric {
+    background-color: var(--color-electric);
+  }
+  .bg-grass {
+    background-color: var(--color-grass);
+  }
+  .bg-ice {
+    background-color: var(--color-ice);
+  }
+}
