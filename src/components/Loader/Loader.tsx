@@ -6,12 +6,12 @@ interface LoaderProps {
 }
 
 export const Loader = ({size, color}: PropsWithChildren<LoaderProps>) => {
-  const sizeNumber = size === "small" ? 5 : size === "medium" ? 10 : 0;
   return (
-    <div
-      className={`animate-spin rounded-full h-${sizeNumber} w-${sizeNumber} border-b-${
-        size == "small" ? 2 : 4
-      } border-${color}-500`}
-    ></div>
+    <>
+      {size === "small" && <div className={`animate-spin rounded-full h-4 w-4 border-b-2 border-${color}-500`}></div>}
+      {size === "medium" && (
+        <div className={`animate-spin rounded-full h-10 w-10 border-b-5 border-${color}-500`}></div>
+      )}
+    </>
   );
 };
