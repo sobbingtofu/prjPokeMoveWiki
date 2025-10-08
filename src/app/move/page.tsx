@@ -1,18 +1,19 @@
 "use client";
 
 import {InitialLoadingScreen} from "@/components/InitialLoadingScreen/InitialLoadingScreen";
-import {SearchBar} from "@/components/SearchBar/SearchBar";
+import {SearchSection} from "@/components/SearchSection/SearchSection";
 import {usePokemonMoveData} from "@/hooks/useMoveDataLoader";
-
-import {useZustandStore} from "@/store/zustandStore";
 
 export default function Home() {
   usePokemonMoveData();
 
   return (
-    <div>
+    <>
       <InitialLoadingScreen />
-      <SearchBar />
-    </div>
+      <div className="flex flex-row">
+        <SearchSection className="flex-1" />
+        <section className="flex-1"></section>
+      </div>
+    </>
   );
 }
