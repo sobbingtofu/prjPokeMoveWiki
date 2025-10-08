@@ -14,7 +14,6 @@ export default function Home() {
     <div>
       <InitialLoadingScreen />
       <SearchBar />
-      <p>총 기술 수: {koreanMoveStates.length}</p>
     </div>
   );
 }

@@ -5,6 +5,7 @@ import {useZustandStore} from "@/store/zustandStore";
 import {koreanMoveType} from "@/logic/pokeapiLogics/type";
 import {CloseIcon} from "../CloseIcon/CloseIcon";
 import {Loader} from "../Loader/Loader";
+import {getCustomTailwindByType} from "@/logic/CustomTailwindLogic/CustomTailwindLogic";
 
 export const SearchBar = () => {
   const [searchValue, setSearchValue] = useState("");
@@ -36,7 +37,7 @@ export const SearchBar = () => {
         move.koreanName.toLowerCase().includes(searchValue.toLowerCase())
       );
       setFilteredMoves(filtered.slice(0, 20));
-      setIsDropdownOpen(filtered.length > 0);
+      setIsDropdownOpen(filtered.length >= 0);
       setIsDebouncing(false);
     }, 200);
 
@@ -73,34 +74,9 @@ export const SearchBar = () => {
 
   const handleMoveSelect = (move: koreanMoveType) => {};
 
-  const getTypeColor = (type: string) => {
-    const typeColors: {[key: string]: string} = {
-      fighting: "text-fighting",
-      poison: "text-poison",
-      ground: "text-ground",
-      flying: "text-flying",
-      psychic: "text-psychic",
-      bug: "text-bug",
-      rock: "text-rock",
-      ghost: "text-ghost",
-      dragon: "text-dragon",
-      dark: "text-dark",
-      steel: "text-steel",
-      fairy: "text-fairy",
-      normal: "text-normal",
-      fire: "text-fire",
-      water: "text-water",
-      electric: "text-electric",
-      grass: "text-grass",
-      ice: "text-ice",
-    };
-
-    return typeColors[type.toLowerCase()] || "text-gray-500";
-  };
-
   return (
-    <div className="w-full h-screen flex flex-col items-center mt-24 font-bold ">
-      <div ref={searchContainerRef} className="relative w-1/2 min-w-[380px]">
+    <div className="w-full h-screen flex flex-col items-center font-bold ">
+      <div ref={searchContainerRef} className="relative w-1/2 min-w-[380px] mt-24">
         <div className=" px-6 py-4 flex justify-between items-center shadow-sm  focus-within:border-blue-500 focus-within:ring-1 focus-within:ring-blue-500 w-full text-lg border-2 border-gray-300 rounded-lg focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all duration-200">
           <input
             type="text"
@@ -110,19 +86,12 @@ export const SearchBar = () => {
             placeholder="기술 이름을 검색하세요..."
             className=" w-full focus:outline-none bg-transparent"
           />
-
-          {/* 로더 */}
-          {isDebouncing && (
-            <div className="">
-              <Loader size="small" color="blue" />
-              {/* <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-blue-500"></div> */}
-            </div>
-          )}
+          {isDebouncing && <Loader size="small" color="blue" />}
           {!isDebouncing && searchValue.trim() !== "" && <CloseIcon onClick={() => setSearchValue("")} />}
         </div>
 
         {/* 드롭다운 결과 */}
-        {isDropdownOpen && filteredMoves.length > 0 && (
+        {isDropdownOpen && filteredMoves.length >= 0 && (
           <div className="absolute top-full left-0 right-0 mt-1 bg-white border border-gray-300 rounded-lg shadow-lg max-h-80 overflow-y-auto z-50">
             {filteredMoves.map((move) => (
               <div
@@ -130,7 +99,7 @@ export const SearchBar = () => {
                 onClick={() => handleMoveSelect(move)}
                 className="px-4 py-3 cursor-pointer hover:bg-gray-100 border-b border-gray-100 last:border-b-0 transition-colors duration-150"
               >
-                <div className="flex gap-4 justify-between items-center">
+                <div className="flex gap-2.5 justify-between items-center">
                   <div className="flex-8 flex justify-start items-center ">
                     <p className=" text-gray-900 text-sm">{move.koreanName}</p>
                   </div>
@@ -140,8 +109,12 @@ export const SearchBar = () => {
                       {move.damageClass === "physical" ? "물리" : move.damageClass === "special" ? "특수" : "변화"}
                     </p>
                   </div>
-                  <div className="w-1/12 flex justify-center items-center min-w-[40px]">
-                    <p className={`rounded-full font-bold ${getTypeColor(move.type)}`}>{move.korType}</p>
+                  <div className="w-1/12 flex justify-center items-center min-w-[65px]">
+                    <p
+                      className={`rounded-full font-bold w-[65px] text-sm text-center text-white bg-${move.type.toLowerCase()} px-2.5 py-1.5`}
+                    >
+                      {move.korType}
+                    </p>
                   </div>
                 </div>
               </div>
