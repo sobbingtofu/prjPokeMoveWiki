@@ -72,7 +72,9 @@ export const SearchBar = () => {
     }
   };
 
-  const handleMoveSelect = (move: koreanMoveType) => {};
+  const handleDropdownItemClick = (move: koreanMoveType) => {
+    console.log("클릭된 기술:", move);
+  };
 
   return (
     <div className="w-full h-screen flex flex-col items-center font-bold ">
@@ -96,7 +98,7 @@ export const SearchBar = () => {
             {filteredMoves.map((move) => (
               <div
                 key={move.id}
-                onClick={() => handleMoveSelect(move)}
+                onClick={() => handleDropdownItemClick(move)}
                 className="px-4 py-3 cursor-pointer hover:bg-gray-100 border-b border-gray-100 last:border-b-0 transition-colors duration-150"
               >
                 <div className="flex gap-2.5 justify-between items-center">

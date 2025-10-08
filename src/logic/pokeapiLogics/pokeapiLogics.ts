@@ -45,14 +45,18 @@ export const generateKoreanMoveData = async (initialMovesArr: initialMovesType[]
         learningPokemonEn: data.learned_by_pokemon,
         damageClass: data.damage_class.name,
         url: initialMoveItem.url,
-        korDescription:
+        korDescription: (
           data.flavor_text_entries.findLast(
             (entry: {language: {name: string; url: string}; flavor_text: string}) => entry.language.name === "ko"
           )?.flavor_text ||
           data.flavor_text_entries.findLast(
             (entry: {language: {name: string; url: string}; flavor_text: string}) => entry.language.name === "en"
           )?.flavor_text ||
-          "",
+          ""
+        )
+          .replace(/\n/g, " ")
+          .replace(/\s+/g, " ")
+          .trim(),
         // hasKoreanName: !!data.names.find(
         //   (nameItem: {language: {name: string; url: string}; name: string}) => nameItem.language.name === "ko"
         // ),
