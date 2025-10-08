@@ -5,7 +5,6 @@ import {useZustandStore} from "@/store/zustandStore";
 import {koreanMoveType} from "@/logic/pokeapiLogics/type";
 import {CloseIcon} from "../CloseIcon/CloseIcon";
 import {Loader} from "../Loader/Loader";
-import {getCustomTailwindByType} from "@/logic/CustomTailwindLogic/CustomTailwindLogic";
 
 export const SearchBar = () => {
   const [searchValue, setSearchValue] = useState("");
@@ -13,7 +12,7 @@ export const SearchBar = () => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [isDebouncing, setIsDebouncing] = useState(false);
 
-  const {koreanMoveStates} = useZustandStore();
+  const {koreanMovesArrayStates} = useZustandStore();
   const searchContainerRef = useRef<HTMLDivElement>(null);
   const debounceRef = useRef<NodeJS.Timeout | null>(null);
 
@@ -33,7 +32,7 @@ export const SearchBar = () => {
     setIsDebouncing(true);
 
     debounceRef.current = setTimeout(() => {
-      const filtered = koreanMoveStates.filter((move) =>
+      const filtered = koreanMovesArrayStates.filter((move) =>
         move.koreanName.toLowerCase().includes(searchValue.toLowerCase())
       );
       setFilteredMoves(filtered.slice(0, 20));
@@ -46,7 +45,7 @@ export const SearchBar = () => {
         clearTimeout(debounceRef.current);
       }
     };
-  }, [searchValue, koreanMoveStates]);
+  }, [searchValue, koreanMovesArrayStates]);
 
   // 외부 클릭시 드롭다운 닫기
   useEffect(() => {

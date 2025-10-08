@@ -3,7 +3,7 @@ import {useZustandStore} from "@/store/zustandStore";
 import {useEffect} from "react";
 
 export const usePokemonMoveData = () => {
-  const {setLoadingStates, setKoreanMoveStates, setIsFirstAccessToApp, isFirstAccessToApp} = useZustandStore();
+  const {setLoadingStates, setKoreanMovesArrayStates, setIsFirstAccessToApp, isFirstAccessToApp} = useZustandStore();
   useEffect(() => {
     if (isFirstAccessToApp) {
       const getKoreanMoveData = async () => {
@@ -29,19 +29,19 @@ export const usePokemonMoveData = () => {
         .then((koreanMoves) => {
           if (koreanMoves) {
             console.log("데이터 로딩 성공:", koreanMoves);
-            setKoreanMoveStates(koreanMoves);
+            setKoreanMovesArrayStates(koreanMoves);
           } else {
-            setKoreanMoveStates([]);
+            setKoreanMovesArrayStates([]);
             console.error("데이터 로딩 실패 - 빈 배열이 호출됨");
           }
         })
         .catch((error) => {
-          setKoreanMoveStates([]);
+          setKoreanMovesArrayStates([]);
           console.error("데이터 로딩 실패:", error);
         })
         .finally(() => {
           setIsFirstAccessToApp(false);
         });
     }
-  }, [isFirstAccessToApp, setIsFirstAccessToApp, setKoreanMoveStates, setLoadingStates]);
+  }, [isFirstAccessToApp, setIsFirstAccessToApp, setKoreanMovesArrayStates, setLoadingStates]);
 };

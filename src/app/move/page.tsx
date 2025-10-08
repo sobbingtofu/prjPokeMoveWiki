@@ -7,7 +7,6 @@ import {usePokemonMoveData} from "@/hooks/useMoveDataLoader";
 import {useZustandStore} from "@/store/zustandStore";
 
 export default function Home() {
-  const {loadingStates, koreanMoveStates, setKoreanMoveStates, setLoadingStates} = useZustandStore();
   usePokemonMoveData();
 
   return (

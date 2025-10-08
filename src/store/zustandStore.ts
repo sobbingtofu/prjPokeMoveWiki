@@ -16,9 +16,15 @@ export const useZustandStore = create<zustandStoreType>((set) => ({
       return {loadingStates: next};
     }),
 
-  koreanMoveStates: [],
-  setKoreanMoveStates: (update) =>
+  koreanMovesArrayStates: [],
+  setKoreanMovesArrayStates: (update) =>
     set((state) => ({
-      koreanMoveStates: Array.isArray(update) ? update : state.koreanMoveStates,
+      koreanMovesArrayStates: Array.isArray(update) ? update : state.koreanMovesArrayStates,
+    })),
+
+  selectedMovesArrayStates: [],
+  setSelectedMovesArrayStates: (update) =>
+    set((state) => ({
+      selectedMovesArrayStates: Array.isArray(update) ? update : state.selectedMovesArrayStates,
     })),
 }));

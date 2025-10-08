@@ -12,6 +12,9 @@ export interface zustandStoreType {
   loadingStates: loadingStatesType;
   setLoadingStates: (update: Partial<loadingStatesType> | ((prev: loadingStatesType) => loadingStatesType)) => void;
 
-  koreanMoveStates: koreanMoveType[];
-  setKoreanMoveStates: (update: koreanMoveType[]) => void;
+  koreanMovesArrayStates: koreanMoveType[];
+  setKoreanMovesArrayStates: (update: koreanMoveType[]) => void;
+
+  selectedMovesArrayStates: koreanMoveType[];
+  setSelectedMovesArrayStates: (update: koreanMoveType[]) => void;
 }
