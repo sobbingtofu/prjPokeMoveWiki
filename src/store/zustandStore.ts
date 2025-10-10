@@ -24,7 +24,8 @@ export const useZustandStore = create<zustandStoreType>((set) => ({
 
   selectedMovesArrayStates: [],
   setSelectedMovesArrayStates: (update) =>
-    set((state) => ({
-      selectedMovesArrayStates: Array.isArray(update) ? update : state.selectedMovesArrayStates,
-    })),
+    set((state) => {
+      const next = typeof update === "function" ? update(state.selectedMovesArrayStates) : update;
+      return {selectedMovesArrayStates: next};
+    }),
 }));

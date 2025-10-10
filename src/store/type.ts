@@ -16,5 +16,5 @@ export interface zustandStoreType {
   setKoreanMovesArrayStates: (update: koreanMoveType[]) => void;
 
   selectedMovesArrayStates: koreanMoveType[];
-  setSelectedMovesArrayStates: (update: koreanMoveType[]) => void;
+  setSelectedMovesArrayStates: (update: koreanMoveType[] | ((prev: koreanMoveType[]) => koreanMoveType[])) => void;
 }

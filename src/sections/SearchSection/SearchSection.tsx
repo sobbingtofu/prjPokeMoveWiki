@@ -3,8 +3,8 @@
 import {useState, useEffect, useRef} from "react";
 import {useZustandStore} from "@/store/zustandStore";
 import {koreanMoveType} from "@/logic/pokeapiLogics/type";
-import {CloseIcon} from "../CloseIcon/CloseIcon";
-import {Loader} from "../Loader/Loader";
+import {CloseIcon} from "../../components/CloseIcon/CloseIcon";
+import {Loader} from "../../components/Loader/Loader";
 
 interface SearchSectionProps {
   className?: string;
@@ -16,7 +16,7 @@ export const SearchSection = ({className = ""}: SearchSectionProps) => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [isDebouncing, setIsDebouncing] = useState(false);
 
-  const {koreanMovesArrayStates} = useZustandStore();
+  const {koreanMovesArrayStates, selectedMovesArrayStates, setSelectedMovesArrayStates} = useZustandStore();
   const searchContainerRef = useRef<HTMLDivElement>(null);
   const debounceRef = useRef<NodeJS.Timeout | null>(null);
 
@@ -76,14 +76,19 @@ export const SearchSection = ({className = ""}: SearchSectionProps) => {
   };
 
   const handleDropdownItemClick = (move: koreanMoveType) => {
-    console.log("클릭된 기술:", move);
+    if (selectedMovesArrayStates.find((m) => m.id === move.id)) {
+      console.log("이미 선택된 기술입니다.");
+      return;
+    } else {
+      setSelectedMovesArrayStates((prev) => [...prev, move]);
+    }
   };
 
   return (
     <section
       className={`${className} bg-gray-50 w-full h-screen flex flex-col gap-2 items-center justify-start font-bold`}
     >
-      <p className="mt-48 w-1/2 text-xs italic text-gray-600">배우는 포켓몬을 찾아볼 기술을 검색하고 클릭해 지정!</p>
+      <p className="mt-48 w-1/2 text-xs italic text-gray-600">기술들을 선택해 배우는 포켓몬을 찾아보세요!!</p>
       {/* Search Container = 검색창 + 드롭다운 + 검색결과없음 메시지 */}
       <div ref={searchContainerRef} className="relative w-1/2 min-w-[380px] ">
         {/* 검색창 */}
