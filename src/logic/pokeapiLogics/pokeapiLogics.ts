@@ -63,6 +63,12 @@ export const generateKoreanMoveData = async (initialMovesArr: initialMovesType[]
         hasKoreanDescription: !!data.flavor_text_entries.findLast(
           (entry: {language: {name: string; url: string}; flavor_text: string}) => entry.language.name === "ko"
         ),
+        power: data.power,
+        accuracy: data.accuracy,
+        pp: data.pp,
+        priority: data.priority,
+        effectChance: data.effect_chance,
+        target: data.target.name,
       };
     });
 

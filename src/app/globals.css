@@ -20,6 +20,44 @@
     --color-electric: #ffdb00;
     --color-grass: #42bf24;
     --color-ice: #42bfff;
+
+    --color-fighting: #ffa202;
+    --color-poison: #994dcf;
+    --color-ground: #ab7939;
+    --color-flying: #95c9ff;
+    --color-psychic: #ff637f;
+    --color-bug: #9fa424;
+    --color-rock: #bcb889;
+    --color-ghost: #6e4570;
+    --color-dragon: #5462d6;
+    --color-dark: #4f4747;
+    --color-steel: #6aaed3;
+    --color-fairy: #ffb1ff;
+    --color-normal: #999999;
+    --color-fire: #ff612c;
+    --color-water: #2992ff;
+    --color-electric: #ffdb00;
+    --color-grass: #42bf24;
+    --color-ice: #42bfff;
+
+    --color-fighting-shallow: #ffe0a6;
+    --color-poison-shallow: #ddb3ed;
+    --color-ground-shallow: #e0c89e;
+    --color-flying-shallow: #d6e9ff;
+    --color-psychic-shallow: #ffc4d1;
+    --color-bug-shallow: #d2dc7f;
+    --color-rock-shallow: #e2dcc7;
+    --color-ghost-shallow: #c0a8c4;
+    --color-dragon-shallow: #b6beed;
+    --color-dark-shallow: #b8b0b0;
+    --color-steel-shallow: #c5dced;
+    --color-fairy-shallow: #ffe6ff;
+    --color-normal-shallow: #e3e3e3;
+    --color-fire-shallow: #ffbc94;
+    --color-water-shallow: #94d1ff;
+    --color-electric-shallow: #fff094;
+    --color-grass-shallow: #a1dc84;
+    --color-ice-shallow: #a1dcff;
   }
 }
 
@@ -132,5 +170,117 @@
   }
   .bg-ice {
     background-color: var(--color-ice);
+  }
+
+  /* Shallow 색상들을 위한 text 유틸리티 */
+  .text-fighting-shallow {
+    color: var(--color-fighting-shallow);
+  }
+  .text-poison-shallow {
+    color: var(--color-poison-shallow);
+  }
+  .text-ground-shallow {
+    color: var(--color-ground-shallow);
+  }
+  .text-flying-shallow {
+    color: var(--color-flying-shallow);
+  }
+  .text-psychic-shallow {
+    color: var(--color-psychic-shallow);
+  }
+  .text-bug-shallow {
+    color: var(--color-bug-shallow);
+  }
+  .text-rock-shallow {
+    color: var(--color-rock-shallow);
+  }
+  .text-ghost-shallow {
+    color: var(--color-ghost-shallow);
+  }
+  .text-dragon-shallow {
+    color: var(--color-dragon-shallow);
+  }
+  .text-dark-shallow {
+    color: var(--color-dark-shallow);
+  }
+  .text-steel-shallow {
+    color: var(--color-steel-shallow);
+  }
+  .text-fairy-shallow {
+    color: var(--color-fairy-shallow);
+  }
+  .text-normal-shallow {
+    color: var(--color-normal-shallow);
+  }
+  .text-fire-shallow {
+    color: var(--color-fire-shallow);
+  }
+  .text-water-shallow {
+    color: var(--color-water-shallow);
+  }
+  .text-electric-shallow {
+    color: var(--color-electric-shallow);
+  }
+  .text-grass-shallow {
+    color: var(--color-grass-shallow);
+  }
+  .text-ice-shallow {
+    color: var(--color-ice-shallow);
+  }
+
+  /* Shallow 색상들을 위한 background 유틸리티 */
+  .bg-fighting-shallow {
+    background-color: var(--color-fighting-shallow);
+  }
+  .bg-poison-shallow {
+    background-color: var(--color-poison-shallow);
+  }
+  .bg-ground-shallow {
+    background-color: var(--color-ground-shallow);
+  }
+  .bg-flying-shallow {
+    background-color: var(--color-flying-shallow);
+  }
+  .bg-psychic-shallow {
+    background-color: var(--color-psychic-shallow);
+  }
+  .bg-bug-shallow {
+    background-color: var(--color-bug-shallow);
+  }
+  .bg-rock-shallow {
+    background-color: var(--color-rock-shallow);
+  }
+  .bg-ghost-shallow {
+    background-color: var(--color-ghost-shallow);
+  }
+  .bg-dragon-shallow {
+    background-color: var(--color-dragon-shallow);
+  }
+  .bg-dark-shallow {
+    background-color: var(--color-dark-shallow);
+  }
+  .bg-steel-shallow {
+    background-color: var(--color-steel-shallow);
+  }
+  .bg-fairy-shallow {
+    background-color: var(--color-fairy-shallow);
+  }
+  .bg-normal-shallow {
+    background-color: var(--color-normal-shallow);
+  }
+  .bg-fire-shallow {
+    background-color: var(--color-fire-shallow);
+  }
+  .bg-water-shallow {
+    background-color: var(--color-water-shallow);
+  }
+  .bg-electric-shallow {
+    background-color: var(--color-electric-shallow);
+  }
+  .bg-grass-shallow {
+    background-color: var(--color-grass-shallow);
+  }
+  .bg-ice-shallow {
+    background-color: var(--color-ice-shallow);
   }
 }

@@ -85,6 +85,10 @@ export const SearchSection = ({className = ""}: SearchSectionProps) => {
       setIsToastMessageVisible(true);
       return;
     } else {
+      if (selectedMovesArrayStates.length >= 40) {
+        setIsToastMessageVisible(true);
+        return;
+      }
       setIsToastMessageVisible(false);
       setSelectedMovesArrayStates((prev) => [...prev, move]);
     }
@@ -95,8 +99,8 @@ export const SearchSection = ({className = ""}: SearchSectionProps) => {
       className={`${className} bg-gray-300 w-full h-screen flex flex-col gap-2 items-center justify-start font-bold`}
     >
       <div className="min-w-[360px] w-[80%]">
-        <Toast className="mt-36 " />
-        <p className="mt-2 w-full text-xs italic text-gray-600">기술들을 선택해 배우는 포켓몬을 찾아보세요!!</p>
+        <Toast className="mt-36" />
+        <p className="mt-2 w-full text-xs italic text-gray-600">배우는 포켓몬을 찾아볼 기술을 검색해 클릭</p>
         {/* Search Container = 검색창 + 드롭다운 + 검색결과없음 메시지 */}
         <div ref={searchContainerRef} className="relative mt-2">
           {/* 검색창 */}

@@ -14,8 +14,16 @@ const ToastContainer = ({className}: PropsWithChildren<ToastProps>) => {
 };
 
 const ToastItem = ({}: PropsWithChildren<{}>) => {
-  const {isToastMessageVisible} = useZustandStore();
-  return <>{isToastMessageVisible && <p className="text-red-600 text-sm">이미 선택된 기술입니다.</p>}</>;
+  const {isToastMessageVisible, selectedMovesArrayStates} = useZustandStore();
+  return (
+    <>
+      {isToastMessageVisible && (
+        <p className="text-red-600 text-sm">
+          {selectedMovesArrayStates.length >= 40 ? "최대 40개의 기술만 선택할 수 있습니다." : "이미 선택된 기술입니다."}
+        </p>
+      )}
+    </>
+  );
 };
 
 export const Toast = ({className}: PropsWithChildren<ToastProps>) => {

@@ -18,6 +18,12 @@ export interface koreanMoveType {
   hasKoreanName?: boolean;
   korDescription: string;
   hasKoreanDescription: boolean;
+  power: number | null;
+  accuracy: number | null;
+  pp: number | null;
+  priority: number;
+  effectChance: number | null;
+  target: string;
 }
 
 export type pokemonTypeEnNames =
