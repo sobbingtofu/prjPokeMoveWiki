@@ -31,4 +31,16 @@ export const useZustandStore = create<zustandStoreType>((set) => ({
 
   isToastMessageVisible: false,
   setIsToastMessageVisible: (update) => set(() => ({isToastMessageVisible: update})),
+
+  searchValue: "",
+  setSearchValue: (update) => set({searchValue: update}),
+
+  filteredMoves: [],
+  setFilteredMoves: (update) => set({filteredMoves: update}),
+
+  isDropdownOpen: false,
+  setIsDropdownOpen: (update) => set({isDropdownOpen: update}),
+
+  isDebouncing: false,
+  setIsDebouncing: (update) => set({isDebouncing: update}),
 }));

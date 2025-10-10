@@ -1,6 +1,6 @@
 "use client";
 
-import {useState, useEffect, useRef} from "react";
+import {useEffect, useRef} from "react";
 import {useZustandStore} from "@/store/zustandStore";
 import {koreanMoveType} from "@/logic/pokeapiLogics/type";
 import {CloseIcon} from "../../components/CloseIcon/CloseIcon";
@@ -12,18 +12,31 @@ interface SearchSectionProps {
 }
 
 export const SearchSection = ({className = ""}: SearchSectionProps) => {
-  const [searchValue, setSearchValue] = useState("");
-  const [filteredMoves, setFilteredMoves] = useState<koreanMoveType[]>([]);
-  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-  const [isDebouncing, setIsDebouncing] = useState(false);
-
-  const {koreanMovesArrayStates, selectedMovesArrayStates, setSelectedMovesArrayStates, setIsToastMessageVisible} =
-    useZustandStore();
+  const {
+    searchValue,
+    setSearchValue,
+    filteredMoves,
+    setFilteredMoves,
+    isDropdownOpen,
+    setIsDropdownOpen,
+    isDebouncing,
+    setIsDebouncing,
+    koreanMovesArrayStates,
+    selectedMovesArrayStates,
+    setSelectedMovesArrayStates,
+    setIsToastMessageVisible,
+  } = useZustandStore();
   const searchContainerRef = useRef<HTMLDivElement>(null);
   const debounceRef = useRef<NodeJS.Timeout | null>(null);
 
+  const prevSearchValueRef = useRef(searchValue); // 이전 searchValue를 저장하기 위한 ref
+
   // 디바운싱 처리 및 검색 결과 필터링
   useEffect(() => {
+    if (prevSearchValueRef.current === searchValue || searchValue.length < 2) {
+      return;
+    }
+
     if (debounceRef.current) {
       clearTimeout(debounceRef.current);
     }
@@ -32,6 +45,7 @@ export const SearchSection = ({className = ""}: SearchSectionProps) => {
       setFilteredMoves([]);
       setIsDropdownOpen(false);
       setIsDebouncing(false);
+      prevSearchValueRef.current = searchValue;
       return;
     }
 
@@ -42,31 +56,34 @@ export const SearchSection = ({className = ""}: SearchSectionProps) => {
         move.koreanName.toLowerCase().includes(searchValue.toLowerCase())
       );
       setFilteredMoves(filtered.slice(0, 20));
-      setIsDropdownOpen(filtered.length >= 0);
+      setIsDropdownOpen(filtered.length > 0);
       setIsDebouncing(false);
+
+      prevSearchValueRef.current = searchValue;
     }, 200);
 
     return () => {
+      setIsDebouncing(false);
       if (debounceRef.current) {
         clearTimeout(debounceRef.current);
       }
     };
-  }, [searchValue, koreanMovesArrayStates]);
+  }, [searchValue]);
 
   // 외부 클릭시 드롭다운 닫기
-  useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
-      if (searchContainerRef.current && !searchContainerRef.current.contains(event.target as Node)) {
-        setIsDropdownOpen(false);
-        setIsToastMessageVisible(false);
-      }
-    };
+  // useEffect(() => {
+  //   const handleClickOutside = (event: MouseEvent) => {
+  //     if (searchContainerRef.current && !searchContainerRef.current.contains(event.target as Node)) {
+  //       setIsDropdownOpen(false);
+  //       setIsToastMessageVisible(false);
+  //     }
+  //   };
 
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
-  }, [setIsToastMessageVisible]);
+  //   document.addEventListener("mousedown", handleClickOutside);
+  //   return () => {
+  //     document.removeEventListener("mousedown", handleClickOutside);
+  //   };
+  // }, [setIsToastMessageVisible]);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setIsToastMessageVisible(false);
@@ -81,6 +98,7 @@ export const SearchSection = ({className = ""}: SearchSectionProps) => {
   };
 
   const handleDropdownItemClick = (move: koreanMoveType) => {
+    console.log("Clicked move123:", move);
     if (selectedMovesArrayStates.find((m) => m.id === move.id)) {
       setIsToastMessageVisible(true);
       return;
@@ -107,30 +125,40 @@ export const SearchSection = ({className = ""}: SearchSectionProps) => {
           <div className="bg-white px-6 py-4 flex justify-between items-center shadow-sm  focus-within:border-blue-500 focus-within:ring-1 focus-within:ring-blue-500 w-full text-lg border-2 border-gray-300 rounded-lg focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all duration-200">
             <input
               type="text"
-              value={searchValue}
+              // value={searchValue}
               onChange={handleInputChange}
               onFocus={handleInputFocus}
               placeholder="추가할 기술 이름을 입력하세요"
               className=" w-full focus:outline-none bg-transparent"
+              onBlur={(e) => {
+                e.preventDefault();
+                console.log("input blur");
+              }}
             />
             {isDebouncing && <Loader size="small" color="blue" />}
             {!isDebouncing && searchValue.trim() !== "" && (
               <CloseIcon
                 onClick={() => {
                   setIsToastMessageVisible(false);
-                  setSearchValue("");
+                  // setSearchValue("");
                 }}
               />
             )}
           </div>
 
           {/* 드롭다운 결과 */}
-          {isDropdownOpen && filteredMoves.length >= 0 && (
-            <div className="absolute top-full left-0 right-0 mt-1 bg-white border border-gray-300 rounded-lg shadow-lg max-h-96 overflow-y-auto z-50">
+          {isDropdownOpen && (
+            <div
+              onMouseDown={(e) => e.preventDefault()}
+              className="absolute top-full left-0 right-0 mt-1 bg-white border border-gray-300 rounded-lg shadow-lg max-h-96 overflow-y-auto z-50"
+            >
               {filteredMoves.map((move) => (
                 <div
                   key={move.id}
-                  onClick={() => handleDropdownItemClick(move)}
+                  onMouseDown={(e) => {
+                    e.preventDefault();
+                    handleDropdownItemClick(move);
+                  }}
                   className="px-4 py-3 cursor-pointer hover:bg-gray-100 border-b border-gray-100 last:border-b-0 transition-colors duration-150"
                 >
                   <div className="flex gap-2.5 justify-between items-center">
@@ -157,7 +185,7 @@ export const SearchSection = ({className = ""}: SearchSectionProps) => {
           )}
 
           {/* 검색 결과 없을 시 메시지 */}
-          {isDropdownOpen && filteredMoves.length === 0 && searchValue.trim() !== "" && !isDebouncing && (
+          {filteredMoves.length === 0 && searchValue.trim() !== "" && searchValue.length >= 2 && !isDebouncing && (
             <div className="absolute top-full left-0 right-0 mt-1 bg-white border border-gray-300 rounded-lg shadow-lg p-4 z-50">
               <p className="text-gray-500 text-center">검색 결과가 없습니다.</p>
             </div>

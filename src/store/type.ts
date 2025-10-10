@@ -20,4 +20,13 @@ export interface zustandStoreType {
 
   isToastMessageVisible: boolean;
   setIsToastMessageVisible: (update: boolean) => void;
+
+  searchValue: string;
+  setSearchValue: (update: string) => void;
+  filteredMoves: koreanMoveType[];
+  setFilteredMoves: (update: koreanMoveType[]) => void;
+  isDropdownOpen: boolean;
+  setIsDropdownOpen: (update: boolean) => void;
+  isDebouncing: boolean;
+  setIsDebouncing: (update: boolean) => void;
 }
