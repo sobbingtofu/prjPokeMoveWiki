@@ -12,7 +12,9 @@ export const MoveCard = ({children, move, ...props}: PropsWithChildren<MoveCardP
       className={`bg-${move.type.toLowerCase()}-shallow flex flex-col gap-1 px-4 py-2 rounded-lg bg-gray-100 shadow-md`}
       {...props}
     >
-      <p className="text-sm font-bold">{move.koreanName}</p>
+      <div className="flex flex-start items-baseline justify-between">
+        <p className="text-sm font-bold">{move.koreanName}</p>
+      </div>
       <div className="flex flex-row items-baseline justify-between">
         <p className="text-xs font-bold italic">
           {move.korType} / {move.damageClass === "physical" ? "물리" : move.damageClass === "special" ? "특수" : "변화"}
