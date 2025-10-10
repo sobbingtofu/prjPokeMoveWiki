@@ -17,4 +17,7 @@ export interface zustandStoreType {
 
   selectedMovesArrayStates: koreanMoveType[];
   setSelectedMovesArrayStates: (update: koreanMoveType[] | ((prev: koreanMoveType[]) => koreanMoveType[])) => void;
+
+  isToastMessageVisible: boolean;
+  setIsToastMessageVisible: (update: boolean) => void;
 }

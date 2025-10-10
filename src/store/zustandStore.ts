@@ -28,4 +28,7 @@ export const useZustandStore = create<zustandStoreType>((set) => ({
       const next = typeof update === "function" ? update(state.selectedMovesArrayStates) : update;
       return {selectedMovesArrayStates: next};
     }),
+
+  isToastMessageVisible: false,
+  setIsToastMessageVisible: (update) => set(() => ({isToastMessageVisible: update})),
 }));
