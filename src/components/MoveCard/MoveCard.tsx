@@ -11,7 +11,7 @@ export const MoveCard = ({move, onClick, ...props}: PropsWithChildren<MoveCardPr
   return (
     <div
       onClick={onClick}
-      className={`bg-${move.type.toLowerCase()}-shallow xl:min-w-[224px] mselect-none select-none cursor-pointer flex flex-col gap-1 px-4 py-2 rounded-lg bg-gray-100 shadow-md`}
+      className={`bg-${move.type.toLowerCase()}-shallow h-fit xl:min-w-[224px] mselect-none select-none cursor-pointer flex flex-col gap-1 px-4 py-2 rounded-lg bg-gray-100 shadow-md`}
       {...props}
     >
       <div className="flex flex-start items-baseline justify-between ">
@@ -25,7 +25,7 @@ export const MoveCard = ({move, onClick, ...props}: PropsWithChildren<MoveCardPr
           {move.power ? `위력: ${move.power}` : "위력: --"} / {move.accuracy ? `명중: ${move.accuracy}` : "명중: --"}
         </p>
       </div>
-      <p className="text-xs sm:block hidden">{move.korDescription}</p>
+      <p className="text-xs sm:block hidden mb-1">{move.korDescription}</p>
     </div>
   );
 };

@@ -42,7 +42,8 @@ export const SearchSection = ({className = ""}: SearchSectionProps) => {
     const filtered = koreanMovesArrayStates.filter((move) =>
       move.koreanName.toLowerCase().includes(searchValue.toLowerCase())
     );
-    setFilteredMoves(filtered.slice(0, 20));
+    // setFilteredMoves(filtered.slice(0, 60));
+    setFilteredMoves(filtered);
     setIsDropdownOpen(filtered.length > 0);
   }, [searchValue, koreanMovesArrayStates, setFilteredMoves, setIsDropdownOpen]);
 
