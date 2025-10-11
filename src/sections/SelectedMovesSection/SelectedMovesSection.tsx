@@ -30,7 +30,7 @@ export const SelectedMovesSection = ({className = ""}: SelectedMovesSectionProps
             </div>
           </div>
 
-          <div className="grid xl:grid-cols-2 grid-cols-1 gap-x-8 gap-y-4 xl:min-w-[360px] min-w-[220px] p-4 sm:h-[70dvh] h-[25dvh] overflow-y-scroll">
+          <div className="grid content-start xl:grid-cols-2 grid-cols-1 gap-x-8 gap-y-4 xl:min-w-[360px] min-w-[220px] p-4 sm:h-[70dvh] h-[25dvh] overflow-y-scroll">
             {selectedMovesArrayStates.map((move) => (
               <MoveCard key={move.id} move={move} onClick={() => handleMoveCardClick(move.id)} />
             ))}
