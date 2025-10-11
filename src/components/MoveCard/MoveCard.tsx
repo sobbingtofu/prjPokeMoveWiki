@@ -25,7 +25,7 @@ export const MoveCard = ({move, onClick, ...props}: PropsWithChildren<MoveCardPr
           {move.power ? `위력: ${move.power}` : "위력: --"} / {move.accuracy ? `명중: ${move.accuracy}` : "명중: --"}
         </p>
       </div>
-      <p className="text-xs">{move.korDescription}</p>
+      <p className="text-xs sm:block hidden">{move.korDescription}</p>
     </div>
   );
 };
