@@ -11,7 +11,7 @@ export default function Home() {
   return (
     <>
       <InitialLoadingScreen />
-      <div className="flex flex-row">
+      <div className="flex sm:flex-row flex-col">
         <SearchSection className="flex-1" />
         <SelectedMovesSection className="flex-1" />
       </div>

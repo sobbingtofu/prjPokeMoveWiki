@@ -26,6 +26,7 @@ export const SearchSection = ({className = ""}: SearchSectionProps) => {
     setSelectedMovesArrayStates,
     setIsToastMessageVisible,
   } = useZustandStore();
+
   const searchContainerRef = useRef<HTMLDivElement>(null);
   const debounceRef = useRef<NodeJS.Timeout | null>(null);
   const inputValueRef = useRef<string>(""); // 실시간 입력값을 관리하는 ref
@@ -58,7 +59,7 @@ export const SearchSection = ({className = ""}: SearchSectionProps) => {
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
-  }, [setIsToastMessageVisible]);
+  }, [setIsToastMessageVisible, setIsDropdownOpen]);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setIsToastMessageVisible(false);
@@ -113,10 +114,10 @@ export const SearchSection = ({className = ""}: SearchSectionProps) => {
 
   return (
     <section
-      className={`${className} bg-gray-300 w-full h-screen flex flex-col gap-2 items-center justify-start font-bold`}
+      className={`${className} bg-gray-300 w-full sm:h-screen h-auto flex flex-col gap-2 items-center justify-start font-bold`}
     >
-      <div className="min-w-[360px] w-[80%]">
-        <Toast className="mt-36" />
+      <div className="sm:min-w-[280px] min-w-[280px] w-[80%] sm:mb-0 mb-36">
+        <Toast className="sm:mt-36 mt-8" />
         <p className="mt-2 w-full text-xs italic text-gray-600">배우는 포켓몬을 찾아볼 기술을 검색해 클릭</p>
         {/* Search Container = 검색창 + 드롭다운 + 검색결과없음 메시지 */}
         <div ref={searchContainerRef} className="relative mt-2">
@@ -142,7 +143,7 @@ export const SearchSection = ({className = ""}: SearchSectionProps) => {
           {isDropdownOpen && (
             <div
               onMouseDown={(e) => e.preventDefault()}
-              className="absolute top-full left-0 right-0 mt-1 bg-white border border-gray-300 rounded-lg shadow-lg max-h-96 overflow-y-auto z-50"
+              className="sm:max-h-96 max-h-[120px] absolute top-full left-0 right-0 mt-1 bg-white border border-gray-300 rounded-lg shadow-lg  overflow-y-auto z-50"
             >
               {filteredMoves.map((move) => (
                 <div

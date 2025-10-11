@@ -4,15 +4,17 @@ import {PropsWithChildren} from "react";
 interface MoveCardProps {
   move: koreanMoveType;
   key: number;
+  onClick?: () => void;
 }
 
-export const MoveCard = ({children, move, ...props}: PropsWithChildren<MoveCardProps>) => {
+export const MoveCard = ({move, onClick, ...props}: PropsWithChildren<MoveCardProps>) => {
   return (
     <div
-      className={`bg-${move.type.toLowerCase()}-shallow flex flex-col gap-1 px-4 py-2 rounded-lg bg-gray-100 shadow-md`}
+      onClick={onClick}
+      className={`bg-${move.type.toLowerCase()}-shallow xl:min-w-[224px] mselect-none select-none cursor-pointer flex flex-col gap-1 px-4 py-2 rounded-lg bg-gray-100 shadow-md`}
       {...props}
     >
-      <div className="flex flex-start items-baseline justify-between">
+      <div className="flex flex-start items-baseline justify-between ">
         <p className="text-sm font-bold">{move.koreanName}</p>
       </div>
       <div className="flex flex-row items-baseline justify-between">
