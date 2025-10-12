@@ -5,7 +5,7 @@ import {SearchSection} from "@/sections/SearchSection/SearchSection";
 import {usePokemonMoveData} from "@/hooks/useMoveDataLoader";
 import {SelectedMovesSection} from "@/sections/SelectedMovesSection/SelectedMovesSection";
 
-export default function Home() {
+export default function SearchPage() {
   usePokemonMoveData();
 
   return (

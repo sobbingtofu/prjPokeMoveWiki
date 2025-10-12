@@ -24,13 +24,15 @@ export const SelectedMovesSection = ({className = ""}: SelectedMovesSectionProps
             <p className="ml-2 inline-block text-sm italic text-gray-700 font-bold">{`(${selectedMovesArrayStates.length})개`}</p>
             <div
               className="ml-auto text-sm italic text-gray-700 font-bold cursor-pointer hover:text-gray-500"
-              onClick={() => setSelectedMovesArrayStates([])}
+              onClick={() => {
+                confirm("정말 모두 지우시겠습니까?") && setSelectedMovesArrayStates([]);
+              }}
             >
               <p>모두 지우기</p>
             </div>
           </div>
 
-          <div className="grid content-start xl:grid-cols-2 grid-cols-1 gap-x-8 gap-y-4 xl:min-w-[360px] min-w-[220px] p-4 sm:h-[70dvh] h-[25dvh] overflow-y-scroll">
+          <div className="grid content-start xl:grid-cols-2 grid-cols-1 gap-x-8 gap-y-4 xl:min-w-[360px] min-w-[220px] p-4 sm:h-[70dvh] h-[25dvh] overflow-y-scroll overflow-x-hidden">
             {selectedMovesArrayStates.map((move) => (
               <MoveCard key={move.id} move={move} onClick={() => handleMoveCardClick(move.id)} />
             ))}
