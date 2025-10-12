@@ -1,6 +1,6 @@
 import {MoveCard} from "@/components/MoveCard/MoveCard";
 import {useZustandStore} from "@/store/zustandStore";
-import {useEffect, useRef} from "react";
+import {useEffect, useRef, useState} from "react";
 
 interface SelectedMovesSectionProps {
   className?: string;
@@ -9,13 +9,16 @@ interface SelectedMovesSectionProps {
 export const SelectedMovesSection = ({className = ""}: SelectedMovesSectionProps) => {
   const {selectedMovesArrayStates, setSelectedMovesArrayStates} = useZustandStore();
 
-  const scrollContainerRef = useRef<HTMLDivElement>(null); // 스크롤 영역을 위한 ref 생성
+  const [isScrolledToBottom, setIsScrolledToBottom] = useState(false);
+  // 맨 아래 스크롤 여부 확인용 상태
 
-  const prevLengthRef = useRef(selectedMovesArrayStates.length); // 이전 배열 길이를 저장하기 위한 ref
+  const scrollContainerRef = useRef<HTMLDivElement>(null);
+
+  const prevLengthRef = useRef(selectedMovesArrayStates.length);
+  // 배열 길이 변경 시 비교 통한 추가/삭제인지 파악용 이전 배열 길이 저장 ref
 
   const handleMoveCardClick = (moveId: number) => {
     console.log("해당 기술 상세보기 넘어갈 예정:", moveId);
-    // setSelectedMovesArrayStates(selectedMovesArrayStates.filter((move) => move.id !== moveId));
   };
 
   const handleClickDeleteButton = () => {
@@ -24,6 +27,15 @@ export const SelectedMovesSection = ({className = ""}: SelectedMovesSectionProps
         selectedMovesArrayStates.filter((move) => move.isSelectedForDeletion).length
       }개를 목록에서 삭제하시겠습니까?`
     ) && setSelectedMovesArrayStates(selectedMovesArrayStates.filter((move) => !move.isSelectedForDeletion));
+  };
+
+  const handleScroll = () => {
+    if (scrollContainerRef.current) {
+      const {scrollTop, scrollHeight, clientHeight} = scrollContainerRef.current;
+      // 스크롤이 맨 아래에 도달했는지 확인 (여유값 5px 추가)
+      const isAtBottom = scrollTop + clientHeight >= scrollHeight - 5;
+      setIsScrolledToBottom(isAtBottom);
+    }
   };
 
   // 배열 길이가 증가했을 때만 (새로운 기술이 추가되었을 때만) 스크롤 동작
@@ -41,6 +53,10 @@ export const SelectedMovesSection = ({className = ""}: SelectedMovesSectionProps
     // 길이 다음 비교를 위해 저장
     prevLengthRef.current = currentLength;
   }, [selectedMovesArrayStates.length]);
+
+  useEffect(() => {
+    handleScroll();
+  }, [selectedMovesArrayStates]);
 
   return (
     <>
@@ -95,7 +111,8 @@ export const SelectedMovesSection = ({className = ""}: SelectedMovesSectionProps
           <div className="relative">
             <div
               ref={scrollContainerRef}
-              className="grid grid-cols-2 content-start gap-x-8 gap-y-4
+              onScroll={handleScroll}
+              className="grid grid-cols-2 content-start gap-x-8 gap-y-4 mb-5
             xl:min-w-[360px] min-w-[220px] py-4 sm:h-[70dvh] h-[25dvh]
             overflow-y-scroll overflow-x-hidden no-scrollbar"
             >
@@ -103,7 +120,9 @@ export const SelectedMovesSection = ({className = ""}: SelectedMovesSectionProps
                 <MoveCard key={move.id} move={move} onClick={() => handleMoveCardClick(move.id)} />
               ))}
             </div>
-            <div className="absolute bottom-0 left-0 right-0 h-16 bg-gradient-to-t from-white to-transparent pointer-events-none" />
+            {!isScrolledToBottom && (
+              <div className="absolute bottom-0 left-0 right-0 h-16 bg-gradient-to-t from-white to-transparent pointer-events-none" />
+            )}
           </div>
         </div>
       </section>
