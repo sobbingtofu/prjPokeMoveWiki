@@ -1,5 +1,6 @@
 import {MoveCard} from "@/components/MoveCard/MoveCard";
 import {useZustandStore} from "@/store/zustandStore";
+import {useEffect, useRef} from "react";
 
 interface SelectedMovesSectionProps {
   className?: string;
@@ -7,6 +8,10 @@ interface SelectedMovesSectionProps {
 
 export const SelectedMovesSection = ({className = ""}: SelectedMovesSectionProps) => {
   const {selectedMovesArrayStates, setSelectedMovesArrayStates} = useZustandStore();
+
+  const scrollContainerRef = useRef<HTMLDivElement>(null); // 스크롤 영역을 위한 ref 생성
+
+  const prevLengthRef = useRef(selectedMovesArrayStates.length); // 이전 배열 길이를 저장하기 위한 ref
 
   const handleMoveCardClick = (moveId: number) => {
     console.log("해당 기술 상세보기 넘어갈 예정:", moveId);
@@ -20,6 +25,22 @@ export const SelectedMovesSection = ({className = ""}: SelectedMovesSectionProps
       }개를 목록에서 삭제하시겠습니까?`
     ) && setSelectedMovesArrayStates(selectedMovesArrayStates.filter((move) => !move.isSelectedForDeletion));
   };
+
+  // 배열 길이가 증가했을 때만 (새로운 기술이 추가되었을 때만) 스크롤 동작
+  useEffect(() => {
+    const currentLength = selectedMovesArrayStates.length;
+    const prevLength = prevLengthRef.current;
+
+    if (currentLength > prevLength && scrollContainerRef.current) {
+      scrollContainerRef.current.scrollTo({
+        top: scrollContainerRef.current.scrollHeight,
+        behavior: "smooth",
+      });
+    }
+
+    // 길이 다음 비교를 위해 저장
+    prevLengthRef.current = currentLength;
+  }, [selectedMovesArrayStates.length]);
 
   return (
     <>
@@ -71,15 +92,18 @@ export const SelectedMovesSection = ({className = ""}: SelectedMovesSectionProps
               </button>
             </div>
           </div>
-
-          <div
-            className="flex flex-col content-start gap-x-8 gap-y-4
+          <div className="relative">
+            <div
+              ref={scrollContainerRef}
+              className="grid grid-cols-2 content-start gap-x-8 gap-y-4
             xl:min-w-[360px] min-w-[220px] py-4 sm:h-[70dvh] h-[25dvh]
-            overflow-y-scroll overflow-x-hidden"
-          >
-            {selectedMovesArrayStates.map((move) => (
-              <MoveCard key={move.id} move={move} onClick={() => handleMoveCardClick(move.id)} />
-            ))}
+            overflow-y-scroll overflow-x-hidden no-scrollbar"
+            >
+              {selectedMovesArrayStates.map((move) => (
+                <MoveCard key={move.id} move={move} onClick={() => handleMoveCardClick(move.id)} />
+              ))}
+            </div>
+            <div className="absolute bottom-0 left-0 right-0 h-16 bg-gradient-to-t from-white to-transparent pointer-events-none" />
           </div>
         </div>
       </section>
