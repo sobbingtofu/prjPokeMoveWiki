@@ -124,8 +124,8 @@ export const SearchSection = ({className = ""}: SearchSectionProps) => {
     <section
       className={`${className} bg-gray-300 w-full sm:h-screen h-auto flex flex-col gap-2 items-center justify-start font-bold`}
     >
-      <div className="sm:min-w-[280px] min-w-[280px] w-[80%] sm:mb-0 mb-36">
-        <Toast className="sm:mt-36 mt-8" />
+      <div className="sm:min-w-[280px] min-w-[280px] w-[80%] sm:mb-0 mb-24">
+        <Toast className="sm:mt-36 mt-2" />
         <p className="mt-2 w-full text-xs italic text-gray-600">배우는 포켓몬을 찾아볼 기술을 검색해 클릭</p>
         {/* Search Container = 검색창 + 드롭다운 + 검색결과없음 메시지 */}
         <div ref={searchContainerRef} className="relative mt-2">

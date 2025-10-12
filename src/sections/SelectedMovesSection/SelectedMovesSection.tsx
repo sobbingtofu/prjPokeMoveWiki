@@ -112,8 +112,8 @@ export const SelectedMovesSection = ({className = ""}: SelectedMovesSectionProps
             <div
               ref={scrollContainerRef}
               onScroll={handleScroll}
-              className="grid grid-cols-2 content-start gap-x-8 gap-y-4 mb-5
-            xl:min-w-[360px] min-w-[220px] py-4 sm:h-[70dvh] h-[25dvh]
+              className="grid lg:grid-cols-2 grid-cols-1 content-start gap-x-8 gap-y-4 mb-5
+            xl:min-w-[360px] min-w-[220px] py-4 sm:h-[70dvh] h-[36dvh]
             overflow-y-scroll overflow-x-hidden no-scrollbar"
             >
               {selectedMovesArrayStates.map((move) => (
