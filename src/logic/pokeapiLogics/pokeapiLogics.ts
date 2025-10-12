@@ -77,7 +77,9 @@ export const generateKoreanMoveData = async (initialMovesArr: initialMovesType[]
     const koreanMoveNameArr = await Promise.all(promises);
 
     // 불필요한 기술 제거 (섀도우 기술)
-    const filteredMoves = koreanMoveNameArr.filter((move) => move.type !== "shadow");
+    const filteredMoves = koreanMoveNameArr.filter(
+      (move) => move.type !== "shadow" && !move.korDescription.includes("사용할 수 없는 기술")
+    );
 
     // 4. 모든 데이터가 채워진 완전한 배열을 반환함
     return filteredMoves;

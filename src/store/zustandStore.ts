@@ -43,4 +43,7 @@ export const useZustandStore = create<zustandStoreType>((set) => ({
 
   isDebouncing: false,
   setIsDebouncing: (update) => set({isDebouncing: update}),
+
+  isSelectingForDeletionMode: false,
+  setIsSelectingForDeletionMode: (update) => set({isSelectingForDeletionMode: update}),
 }));

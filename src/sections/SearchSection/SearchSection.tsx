@@ -6,6 +6,7 @@ import {koreanMoveType} from "@/logic/pokeapiLogics/type";
 import {CloseIcon} from "../../components/CloseIcon/CloseIcon";
 import {Loader} from "../../components/Loader/Loader";
 import {Toast} from "@/components/Toast/Toast";
+import {selectedMoveType} from "@/store/type";
 
 interface SearchSectionProps {
   className?: string;
@@ -99,7 +100,13 @@ export const SearchSection = ({className = ""}: SearchSectionProps) => {
         return;
       }
       setIsToastMessageVisible(false);
-      setSelectedMovesArrayStates((prev) => [...prev, move]);
+      setSelectedMovesArrayStates((prev) => {
+        const newMove: selectedMoveType = {
+          ...move,
+          isSelectedForDeletion: false,
+        };
+        return [...prev, newMove];
+      });
     }
   };
 
@@ -133,7 +140,6 @@ export const SearchSection = ({className = ""}: SearchSectionProps) => {
               className=" w-full focus:outline-none bg-transparent"
               onBlur={(e) => {
                 e.preventDefault();
-                console.log("input blur");
               }}
             />
             {isDebouncing && <Loader size="small" color="blue" />}
