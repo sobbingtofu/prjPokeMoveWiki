@@ -10,7 +10,10 @@ export const SelectedMovesSection = ({className = ""}: SelectedMovesSectionProps
   const {selectedMovesArrayStates, setSelectedMovesArrayStates} = useZustandStore();
 
   const [isScrolledToBottom, setIsScrolledToBottom] = useState(false);
-  // 맨 아래 스크롤 여부 확인용 상태
+  // 맨 아래 스크롤 여부 확인용
+
+  const [isScrolledToTop, setIsScrolledToTop] = useState(false);
+  // 맨 위 스크롤 여부 확인용
 
   const scrollContainerRef = useRef<HTMLDivElement>(null);
 
@@ -34,6 +37,8 @@ export const SelectedMovesSection = ({className = ""}: SelectedMovesSectionProps
       const {scrollTop, scrollHeight, clientHeight} = scrollContainerRef.current;
       // 스크롤이 맨 아래에 도달했는지 확인 (여유값 5px 추가)
       const isAtBottom = scrollTop + clientHeight >= scrollHeight - 5;
+      const isAtTop = scrollTop <= 5;
+      setIsScrolledToTop(isAtTop);
       setIsScrolledToBottom(isAtBottom);
     }
   };
@@ -61,7 +66,7 @@ export const SelectedMovesSection = ({className = ""}: SelectedMovesSectionProps
   return (
     <>
       <section className={`${className} flex flex-col items-center  `}>
-        <div className="flex flex-col sm:mt-[60px] mt-[30px] w-[80%] gap-3">
+        <div className="flex flex-col sm:mt-[60px] mt-[30px] w-[90%] gap-3">
           <div className="flex w-full justify-center">
             <button className="w-[80%] py-4 rounded-lg bg-gray-700 hover:bg-gray-900 text-white font-black cursor-pointer">
               배우는 포켓몬 보기
@@ -109,11 +114,14 @@ export const SelectedMovesSection = ({className = ""}: SelectedMovesSectionProps
             </div>
           </div>
           <div className="relative">
+            {!isScrolledToTop && (
+              <div className="absolute top-0 left-0 right-0 h-16 bg-gradient-to-b from-white to-transparent pointer-events-none z-10" />
+            )}
             <div
               ref={scrollContainerRef}
               onScroll={handleScroll}
-              className="grid lg:grid-cols-2 grid-cols-1 content-start gap-x-8 gap-y-4 mb-5
-            xl:min-w-[360px] min-w-[220px] py-4 sm:h-[70dvh] h-[36dvh]
+              className="grid xl:grid-cols-2 grid-cols-1 content-start gap-x-8 gap-y-4 mb-5
+            xl:min-w-[360px] min-w-[220px] py-4 sm:h-[45dvh] h-[45dvh]
             overflow-y-scroll overflow-x-hidden no-scrollbar"
             >
               {selectedMovesArrayStates.map((move) => (

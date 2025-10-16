@@ -24,7 +24,7 @@ export const MoveCard = ({move, onClick, ...props}: PropsWithChildren<MoveCardPr
     <div
       onClick={onClick}
       className={`bg-${move.type.toLowerCase()}-shallow h-fit
-      xl:min-w-[224px] select-none cursor-pointer flex flex-row
+      xl:min-w-[200px] select-none cursor-pointer flex flex-row
       gap-2 px-4 py-3 rounded-lg bg-gray-100 shadow-md`}
       {...props}
     >

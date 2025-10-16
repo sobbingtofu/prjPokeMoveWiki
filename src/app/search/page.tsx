@@ -11,9 +11,10 @@ export default function SearchPage() {
   return (
     <>
       <InitialLoadingScreen />
-      <div className="flex sm:flex-row flex-col w-dvw h-dvh">
-        <SearchSection className="sm:flex-1" />
-        <SelectedMovesSection className="sm:flex-1" />
+
+      <div className="md:w-[40dvw] md:min-w-[400px] w-dvw h-dvh">
+        <SearchSection className="h-[30dvh]" />
+        <SelectedMovesSection className="h-[70dvh]" />
       </div>
     </>
   );
