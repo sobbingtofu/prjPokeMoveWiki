@@ -11,9 +11,11 @@ import MoveSearchDropdown from "@/components/MoveSearchDropdown/MoveSearchDropdo
 
 interface SearchSectionProps {
   className?: string;
+  smDropDownHeight: number;
+  dropDownHeight: number;
 }
 
-export const SearchSection = ({className = ""}: SearchSectionProps) => {
+export const SearchSection = ({className = "", smDropDownHeight, dropDownHeight}: SearchSectionProps) => {
   const {
     searchValue,
     setSearchValue,
@@ -91,7 +93,7 @@ export const SearchSection = ({className = ""}: SearchSectionProps) => {
     }
   };
 
-  const handleDropdownItemClick = (move: koreanMoveType) => {
+  const handleDropdownItemClick_searchLearningPokemon = (move: koreanMoveType) => {
     if (selectedMovesArrayStates.find((m) => m.id === move.id)) {
       setIsToastMessageVisible(true);
       return;
@@ -146,7 +148,14 @@ export const SearchSection = ({className = ""}: SearchSectionProps) => {
           </div>
 
           {/* 드롭다운 결과 */}
-          {isDropdownOpen && <MoveSearchDropdown move={filteredMoves} dropDownOnClick={handleDropdownItemClick} />}
+          {isDropdownOpen && (
+            <MoveSearchDropdown
+              dropDownHeight={dropDownHeight}
+              smDropDownHeight={smDropDownHeight}
+              move={filteredMoves}
+              dropDownOnClick={handleDropdownItemClick_searchLearningPokemon}
+            />
+          )}
 
           {/* 검색 결과 없을 시 메시지 */}
           {filteredMoves.length === 0 && searchValue.trim() !== "" && !isDebouncing && (

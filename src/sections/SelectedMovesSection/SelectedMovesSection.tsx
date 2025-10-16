@@ -59,7 +59,7 @@ export const SelectedMovesSection = ({className = ""}: SelectedMovesSectionProps
         <div className="flex flex-col sm:mt-[60px] mt-[30px] w-[90%] gap-3">
           <div className="flex w-full justify-center">
             <button className="w-[80%] py-4 rounded-lg bg-gray-700 hover:bg-gray-900 text-white font-black cursor-pointer">
-              배우는 포켓몬 보기
+              검색 실행
             </button>
           </div>
           <div className="flex items-baseline mt-3 justify-between select-none">

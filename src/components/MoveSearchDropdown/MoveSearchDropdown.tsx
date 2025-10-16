@@ -3,14 +3,22 @@ import {koreanMoveType} from "@/logic/pokeapiLogics/type";
 function MoveSearchDropdown({
   move: filteredMoves,
   dropDownOnClick,
+  smDropDownHeight,
+  dropDownHeight,
 }: {
   move: koreanMoveType[];
   dropDownOnClick: (move: koreanMoveType) => void;
+  smDropDownHeight: number;
+  dropDownHeight: number;
 }) {
   return (
     <div
       onMouseDown={(e) => e.preventDefault()}
-      className="sm:max-h-[160px] max-h-[120px] absolute top-full left-0 right-0 mt-1 bg-white border border-gray-300 rounded-lg shadow-lg  overflow-y-auto z-50"
+      className="absolute top-full left-0 right-0 mt-1 bg-white border border-gray-300 rounded-lg shadow-lg  overflow-y-auto z-50"
+      style={{
+        maxHeight: `${dropDownHeight}px`,
+        ...(window.innerWidth < 640 && {maxHeight: `${smDropDownHeight}px`}),
+      }}
     >
       {filteredMoves.map((move) => (
         <div
