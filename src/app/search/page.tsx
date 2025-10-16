@@ -4,6 +4,7 @@ import {InitialLoadingScreen} from "@/components/InitialLoadingScreen/InitialLoa
 import {SearchSection} from "@/sections/SearchSection/SearchSection";
 import {usePokemonMoveData} from "@/hooks/useMoveDataLoader";
 import {SelectedMovesSection} from "@/sections/SelectedMovesSection/SelectedMovesSection";
+import LearningPokemonsSection from "@/sections/LearningPokemonsSection/LearningPokemonsSection";
 
 export default function SearchPage() {
   usePokemonMoveData();
@@ -16,7 +17,9 @@ export default function SearchPage() {
           <SearchSection dropDownHeight={160} smDropDownHeight={120} className="h-[30dvh]" />
           <SelectedMovesSection className="h-[70dvh]" />
         </div>
-        <div className="md:w-[60dvw] md:block hidden bg-gray-700 h-dvh"></div>
+        <div className="md:w-[60dvw] md:block hidden bg-gray-700 h-dvh">
+          <LearningPokemonsSection />
+        </div>
       </div>
     </>
   );

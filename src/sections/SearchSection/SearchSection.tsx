@@ -143,7 +143,7 @@ export const SearchSection = ({className = "", smDropDownHeight, dropDownHeight}
                 e.preventDefault();
               }}
             />
-            {isDebouncing && <Loader size="small" color="blue" />}
+            {isDebouncing && <Loader />}
             {!isDebouncing && searchValue.trim() !== "" && <CloseIcon onClick={handleClickCloseIcon} />}
           </div>
 

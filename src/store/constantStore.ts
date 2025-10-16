@@ -465,3 +465,10 @@ export const TYPE_NAME_EN_TO_KO: {typeName: pokemonTypeEnNames; korTypeName: pok
     korTypeName: "???",
   },
 ];
+
+export const REGION_NAME_EN_TO_KO: {eng: string; kor: string}[] = [
+  {eng: "galar", kor: "가라르"},
+  {eng: "alola", kor: "알로라"},
+  {eng: "hisui", kor: "히스이"},
+  {eng: "paldea", kor: "팔데아"},
+];

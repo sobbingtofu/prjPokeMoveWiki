@@ -1,6 +1,9 @@
 import {MoveCard} from "@/components/MoveCard/MoveCard";
 import SelectedMovesDeleteButtons from "@/components/SelectedMovesDeleteButtons/SelectedMovesDeleteButtons";
+import {getLearningPokemons} from "@/logic/pokeapiLogics/pokeapiLogics";
+import {TYPE_NAME_EN_TO_KO} from "@/store/constantStore";
 import {useZustandStore} from "@/store/zustandStore";
+import axios from "axios";
 import {useEffect, useRef, useState} from "react";
 
 interface SelectedMovesSectionProps {
@@ -8,7 +11,13 @@ interface SelectedMovesSectionProps {
 }
 
 export const SelectedMovesSection = ({className = ""}: SelectedMovesSectionProps) => {
-  const {selectedMovesArrayStates} = useZustandStore();
+  const {
+    selectedMovesArrayStates,
+    setLastSearchMovesArrayStates,
+    setPokemonsLearningAllLastSearchMoves,
+    setLoadingStates,
+    setDetailedLearningPokemons,
+  } = useZustandStore();
 
   const [isScrolledToBottom, setIsScrolledToBottom] = useState(false);
   // 맨 아래 스크롤 여부 확인용
@@ -53,12 +62,43 @@ export const SelectedMovesSection = ({className = ""}: SelectedMovesSectionProps
     handleScroll();
   }, [selectedMovesArrayStates]);
 
+  const handleSearchButtonClick = async () => {
+    console.log(selectedMovesArrayStates);
+    setLoadingStates({isMovesLearningPokemonSearchLoading: true});
+
+    setLastSearchMovesArrayStates(selectedMovesArrayStates);
+
+    if (selectedMovesArrayStates.length === 0) {
+      setPokemonsLearningAllLastSearchMoves([]);
+      return;
+    }
+
+    const firstMoveLearners = selectedMovesArrayStates[0].learningPokemonEn;
+
+    const commonPokemons = firstMoveLearners.filter((pokemon) => {
+      // 첫 번째 기술을 배우는 포켓몬이 나머지 모든 기술도 배우는지 확인
+      return selectedMovesArrayStates
+        .slice(1)
+        .every((move) =>
+          move.learningPokemonEn.some((learner) => learner.name === pokemon.name && learner.url === pokemon.url)
+        );
+    });
+
+    setPokemonsLearningAllLastSearchMoves(commonPokemons);
+
+    const learningPokemons = await getLearningPokemons(commonPokemons);
+    setDetailedLearningPokemons(learningPokemons);
+    setLoadingStates({isMovesLearningPokemonSearchLoading: false});
+  };
   return (
     <>
       <section className={`${className} flex flex-col items-center  `}>
         <div className="flex flex-col sm:mt-[60px] mt-[30px] w-[90%] gap-3">
           <div className="flex w-full justify-center">
-            <button className="w-[80%] py-4 rounded-lg bg-gray-700 hover:bg-gray-900 text-white font-black cursor-pointer">
+            <button
+              onClick={handleSearchButtonClick}
+              className="w-[80%] py-4 rounded-lg bg-gray-700 hover:bg-gray-900 text-white font-black cursor-pointer"
+            >
               검색 실행
             </button>
           </div>

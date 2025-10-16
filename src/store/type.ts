@@ -1,11 +1,28 @@
-import {koreanMoveType} from "@/logic/pokeapiLogics/type";
+import {koreanMoveType, pokemonBasicInfoType} from "@/logic/pokeapiLogics/type";
 
 export interface loadingStatesType {
   isInitialMovesLoading: boolean;
   isKoreanMovesLoading: boolean;
+  isMovesLearningPokemonSearchLoading: boolean;
 }
 export interface selectedMoveType extends koreanMoveType {
   isSelectedForDeletion: boolean;
+}
+
+export interface detailedPokemInfoType {
+  pokemonId: string;
+  speciesId: string;
+
+  name: string;
+
+  basicUrl: string;
+  speciesUrl: string;
+
+  koreanName: string;
+
+  koreantypes: string[];
+
+  captureRate: number;
 }
 
 export interface zustandStoreType {
@@ -21,6 +38,21 @@ export interface zustandStoreType {
   selectedMovesArrayStates: selectedMoveType[];
   setSelectedMovesArrayStates: (
     update: selectedMoveType[] | ((prev: selectedMoveType[]) => selectedMoveType[])
+  ) => void;
+
+  lastSearchMovesArrayStates: selectedMoveType[];
+  setLastSearchMovesArrayStates: (
+    update: selectedMoveType[] | ((prev: selectedMoveType[]) => selectedMoveType[])
+  ) => void;
+
+  pokemonsLearningAllLastSearchMoves: pokemonBasicInfoType[];
+  setPokemonsLearningAllLastSearchMoves: (
+    update: pokemonBasicInfoType[] | ((prev: pokemonBasicInfoType[]) => pokemonBasicInfoType[])
+  ) => void;
+
+  detailedLearningPokemons: detailedPokemInfoType[];
+  setDetailedLearningPokemons: (
+    update: detailedPokemInfoType[] | ((prev: detailedPokemInfoType[]) => detailedPokemInfoType[])
   ) => void;
 
   isToastMessageVisible: boolean;

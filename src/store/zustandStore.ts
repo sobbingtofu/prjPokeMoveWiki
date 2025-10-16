@@ -8,6 +8,7 @@ export const useZustandStore = create<zustandStoreType>((set) => ({
   loadingStates: {
     isInitialMovesLoading: false,
     isKoreanMovesLoading: false,
+    isMovesLearningPokemonSearchLoading: false,
   },
   setLoadingStates: (update) =>
     set((state) => {
@@ -27,6 +28,27 @@ export const useZustandStore = create<zustandStoreType>((set) => ({
     set((state) => {
       const next = typeof update === "function" ? update(state.selectedMovesArrayStates) : update;
       return {selectedMovesArrayStates: next};
+    }),
+
+  lastSearchMovesArrayStates: [],
+  setLastSearchMovesArrayStates: (update) =>
+    set((state) => {
+      const next = typeof update === "function" ? update(state.lastSearchMovesArrayStates) : update;
+      return {lastSearchMovesArrayStates: next};
+    }),
+
+  pokemonsLearningAllLastSearchMoves: [],
+  setPokemonsLearningAllLastSearchMoves: (update) =>
+    set((state) => {
+      const next = typeof update === "function" ? update(state.pokemonsLearningAllLastSearchMoves) : update;
+      return {pokemonsLearningAllLastSearchMoves: next};
+    }),
+
+  detailedLearningPokemons: [],
+  setDetailedLearningPokemons: (update) =>
+    set((state) => {
+      const next = typeof update === "function" ? update(state.detailedLearningPokemons) : update;
+      return {detailedLearningPokemons: next};
     }),
 
   isToastMessageVisible: false,

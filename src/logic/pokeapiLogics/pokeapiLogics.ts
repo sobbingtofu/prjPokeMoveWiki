@@ -1,5 +1,5 @@
-import {initialMovesType, koreanMoveType} from "@/logic/pokeapiLogics/type";
-import {MOVE_SUPPLEMENTARY_INFO, TYPE_NAME_EN_TO_KO} from "@/store/constantStore";
+import {initialMovesType, koreanMoveType, pokemonBasicInfoType} from "@/logic/pokeapiLogics/type";
+import {MOVE_SUPPLEMENTARY_INFO, REGION_NAME_EN_TO_KO, TYPE_NAME_EN_TO_KO} from "@/store/constantStore";
 import axios from "axios";
 
 export const getInitialMoveData = async () => {
@@ -83,6 +83,65 @@ export const generateKoreanMoveData = async (initialMovesArr: initialMovesType[]
 
     // 4. 모든 데이터가 채워진 완전한 배열을 반환함
     return filteredMoves;
+  } catch (error) {
+    console.error("기술 국문 정보 호출 실패:", error);
+    return [];
+  }
+};
+
+export const getLearningPokemons = async (commonPokemons: pokemonBasicInfoType[]) => {
+  try {
+    // 1. map을 사용하여 Promise의 배열인 promises 생성
+    const promises = commonPokemons.map(async (pokemonInfo) => {
+      const {data: basicData} = await axios.get(pokemonInfo.url);
+
+      const speciesUrl = basicData.species.url;
+
+      const additionalFormTextRaw = pokemonInfo.name.includes("-")
+        ? pokemonInfo.name.slice(pokemonInfo.name.indexOf("-") + 1)
+        : "";
+
+      const additionalForm =
+        additionalFormTextRaw !== "" &&
+        REGION_NAME_EN_TO_KO.some((region) => additionalFormTextRaw.includes(region.eng))
+          ? " (" +
+            (REGION_NAME_EN_TO_KO.find((region) => additionalFormTextRaw.includes(region.eng))?.kor || "") +
+            " 리전폼)"
+          : "";
+
+      const {data: speciesData} = await axios.get(speciesUrl);
+
+      return {
+        pokemonId: basicData.id,
+        speciesId: speciesData.id,
+        basicUrl: pokemonInfo.url,
+        speciesUrl: speciesUrl,
+
+        name: pokemonInfo.name,
+        koreanName:
+          (speciesData.names.find(
+            (nameItem: {language: {name: string; url: string}; name: string}) => nameItem.language.name === "ko"
+          )?.name || pokemonInfo.name) + additionalForm,
+        koreantypes: basicData.types
+          .map((typeInfo: {slot: number; type: {name: string; url: string}}) => typeInfo.type.name)
+          .map(
+            (typeName: string) => TYPE_NAME_EN_TO_KO.find((type) => type.typeName === typeName)?.korTypeName || typeName
+          ),
+
+        captureRate: speciesData.capture_rate,
+      };
+    });
+
+    // 3. Promise.all을 기법 -  promises 배열의 각 promise가 해결(resolved)되면,
+    // 그 결과값들로 이루어진 배열이 반환됨
+    const learningPokemonsRaw = await Promise.all(promises);
+
+    const learningPokemons = learningPokemonsRaw.filter(
+      (pokemon, index, self) => index === self.findIndex((p) => p.koreanName === pokemon.koreanName)
+    );
+
+    // 4. 모든 데이터가 채워진 완전한 배열을 반환함
+    return learningPokemons;
   } catch (error) {
     console.error("기술 국문 정보 호출 실패:", error);
     return [];

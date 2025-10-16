@@ -9,7 +9,7 @@ export const InitialLoadingScreen = () => {
     <>
       {Object.values(loadingStates).some((isLoading) => isLoading) && (
         <div className="fixed inset-0 bg-black opacity-50 flex flex-col items-center justify-center z-50 gap-8">
-          <Loader size="medium" color="emerald" />
+          <Loader />
 
           <p className="text-lg font-semibold text-gray-100 text-center">
             {loadingStates.isInitialMovesLoading
@@ -18,7 +18,10 @@ export const InitialLoadingScreen = () => {
               : loadingStates.isKoreanMovesLoading
               ? // ? "기술 국문 로딩 중..."
                 "필요 데이터 구성 중..."
-              : "모든 기술 로딩 완료"}
+              : loadingStates.isMovesLearningPokemonSearchLoading
+              ? // ? "기술을 배우는 포켓몬 검색 중..."
+                "배우는 포켓몬 검색 중..."
+              : "모든 로딩 완료"}
           </p>
         </div>
       )}
