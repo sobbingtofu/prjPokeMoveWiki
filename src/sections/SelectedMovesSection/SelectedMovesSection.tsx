@@ -1,4 +1,5 @@
 import {MoveCard} from "@/components/MoveCard/MoveCard";
+import SelectedMovesDeleteButtons from "@/components/SelectedMovesDeleteButtons/SelectedMovesDeleteButtons";
 import {useZustandStore} from "@/store/zustandStore";
 import {useEffect, useRef, useState} from "react";
 
@@ -7,7 +8,7 @@ interface SelectedMovesSectionProps {
 }
 
 export const SelectedMovesSection = ({className = ""}: SelectedMovesSectionProps) => {
-  const {selectedMovesArrayStates, setSelectedMovesArrayStates} = useZustandStore();
+  const {selectedMovesArrayStates} = useZustandStore();
 
   const [isScrolledToBottom, setIsScrolledToBottom] = useState(false);
   // 맨 아래 스크롤 여부 확인용
@@ -24,18 +25,9 @@ export const SelectedMovesSection = ({className = ""}: SelectedMovesSectionProps
     console.log("해당 기술 상세보기 넘어갈 예정:", moveId);
   };
 
-  const handleClickDeleteButton = () => {
-    confirm(
-      `선택된 기술 ${
-        selectedMovesArrayStates.filter((move) => move.isSelectedForDeletion).length
-      }개를 목록에서 삭제하시겠습니까?`
-    ) && setSelectedMovesArrayStates(selectedMovesArrayStates.filter((move) => !move.isSelectedForDeletion));
-  };
-
   const handleScroll = () => {
     if (scrollContainerRef.current) {
       const {scrollTop, scrollHeight, clientHeight} = scrollContainerRef.current;
-      // 스크롤이 맨 아래에 도달했는지 확인 (여유값 5px 추가)
       const isAtBottom = scrollTop + clientHeight >= scrollHeight - 5;
       const isAtTop = scrollTop <= 5;
       setIsScrolledToTop(isAtTop);
@@ -54,8 +46,6 @@ export const SelectedMovesSection = ({className = ""}: SelectedMovesSectionProps
         behavior: "smooth",
       });
     }
-
-    // 길이 다음 비교를 위해 저장
     prevLengthRef.current = currentLength;
   }, [selectedMovesArrayStates.length]);
 
@@ -77,41 +67,7 @@ export const SelectedMovesSection = ({className = ""}: SelectedMovesSectionProps
               <h2 className="text-2xl font-bold ">선택된 기술</h2>
               <p className="ml-2 inline-block text-sm italic text-gray-700 font-bold">{`(${selectedMovesArrayStates.length}개)`}</p>
             </div>
-            <div className="flex items-baseline gap-7">
-              <button className="ml-auto text-sm italic  cursor-pointer " onClick={handleClickDeleteButton}>
-                {selectedMovesArrayStates.filter((move) => move.isSelectedForDeletion).length > 0 && (
-                  <p className="text-red-500 font-bold hover:text-red-700 transition-colors duration-150">삭제</p>
-                )}
-              </button>
-              <button
-                className="ml-auto  font-bold cursor-pointer "
-                onClick={() => {
-                  if (selectedMovesArrayStates.some((move) => !move.isSelectedForDeletion)) {
-                    setSelectedMovesArrayStates((prev) =>
-                      prev.map((move) => ({
-                        ...move,
-                        isSelectedForDeletion: true,
-                      }))
-                    );
-                  } else {
-                    setSelectedMovesArrayStates((prev) =>
-                      prev.map((move) => ({
-                        ...move,
-                        isSelectedForDeletion: false,
-                      }))
-                    );
-                  }
-                }}
-              >
-                <p className="text-sm italic text-gray-700 hover:text-gray-500">
-                  {selectedMovesArrayStates.some((move) => !move.isSelectedForDeletion)
-                    ? "전체 선택"
-                    : selectedMovesArrayStates.length > 0
-                    ? "전체 해제"
-                    : ""}
-                </p>
-              </button>
-            </div>
+            <SelectedMovesDeleteButtons />
           </div>
           <div className="relative">
             {!isScrolledToTop && (
