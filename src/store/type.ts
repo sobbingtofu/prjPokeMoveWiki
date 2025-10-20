@@ -15,13 +15,14 @@ export interface selectedMoveType extends koreanMoveType {
 }
 
 export interface versionDetailType {
+  genNumber: number;
   versionName: string;
   learnMethod: string;
   learnedLevel: number;
 }
 
 export interface moveDetailType {
-  move: string;
+  moveKorName: string;
   versionDetails: versionDetailType[];
 }
 

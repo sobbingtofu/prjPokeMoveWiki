@@ -35,7 +35,7 @@ export const usePokemonMoveData = () => {
       getKoreanMoveData()
         .then((koreanMoves) => {
           if (koreanMoves) {
-            console.log("데이터 로딩 성공:", koreanMoves);
+            // console.log("데이터 로딩 성공:", koreanMoves);
             setKoreanMovesArrayStates(koreanMoves);
           } else {
             setKoreanMovesArrayStates([]);

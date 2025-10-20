@@ -4,7 +4,12 @@ import {
   pokemonBasicInfoType,
   versionGroupDetailType,
 } from "@/logic/pokeapiLogics/type";
-import {MOVE_SUPPLEMENTARY_INFO, REGION_NAME_EN_TO_KO, TYPE_NAME_EN_TO_KO} from "@/store/constantStore";
+import {
+  MOVE_SUPPLEMENTARY_INFO,
+  REGION_NAME_EN_TO_KO,
+  TYPE_NAME_EN_TO_KO,
+  VERSION_GROUP_TO_GEN,
+} from "@/store/constantStore";
 import {detailedPokemInfoType, moveDetailType, selectedMoveType} from "@/store/type";
 import axios from "axios";
 
@@ -224,7 +229,7 @@ export const getLearningPokemonsDetail = async (commonPokemons: pokemonBasicInfo
     );
 
     // 4. 모든 데이터가 채워진 완전한 배열을 반환함
-    console.log("학습 포켓몬 상세정보 호출 완료:", learningPokemons);
+    // console.log("학습 포켓몬 상세정보 호출 완료:", learningPokemons);
     return learningPokemons;
   } catch (error) {
     console.error("기술 국문 정보 호출 실패:", error);
@@ -232,7 +237,13 @@ export const getLearningPokemonsDetail = async (commonPokemons: pokemonBasicInfo
   }
 };
 
-// 04. 포켓몬 - 기술에 대해서 배우는 방법 및 세대 정보 추가
+// 유틸리티 함수: 버전 그룹명으로 세대 번호 조회
+const getGenNumberByVersionGroup = (versionGroupName: string): number => {
+  const genInfo = VERSION_GROUP_TO_GEN.find((gen) => gen.versionGroups.includes(versionGroupName));
+  return genInfo?.genNumber || 0;
+};
+
+// 04. 검색된 포켓몬에 대해서 검색 대상 기술 배우는 방법 및 세대 정보 추가
 export const addLearningMethodsAndGensToPokemons = async (
   pokemons: detailedPokemInfoType[],
   selectedMoves: selectedMoveType[]
@@ -243,32 +254,36 @@ export const addLearningMethodsAndGensToPokemons = async (
       // 포켓몬의 상세정보 조회
       const {data: pokemonData} = await axios.get(pokemon.basicUrl);
 
-      // selectedMoves와 일치하는 기술들의 상세정보 추출
+      // selectedMoves와 일치하는 기술들의 상세정보 추출해 넣을 배열 생성
       const moveDetails: moveDetailType[] = [];
 
       selectedMoves.forEach((selectedMoveName) => {
-        // 포켓몬의 moves 배열에서 현재 기술 찾기
+        // 포켓몬의 moves 배열에서 현재 기술 찾아 moveObj에 할당
         const moveObj = pokemonData.moves.find(
           (moveItem: {move: {name: string; url: string}; version_group_details: any[]}) =>
             moveItem.move.name === selectedMoveName.name
         );
 
-        // 일치하는 기술이 있으면 moveDetails에 추가
+        // 일치하는 기술이 있으면 (=moveObj가 있으면) moveDetails에 적절히 손봐서 추가
         if (moveObj) {
           const versionDetails = moveObj.version_group_details.map(
             (detail: {
               level_learned_at: number;
               move_learn_method: {name: string; url: string};
               version_group: {name: string; url: string};
-            }) => ({
-              versionName: detail.version_group.name,
-              learnMethod: detail.move_learn_method.name,
-              learnedLevel: detail.level_learned_at,
-            })
+            }) => {
+              const genNumber = getGenNumberByVersionGroup(detail.version_group.name);
+              return {
+                genNumber: genNumber,
+                versionName: detail.version_group.name,
+                learnMethod: detail.move_learn_method.name,
+                learnedLevel: detail.level_learned_at,
+              };
+            }
           );
 
           moveDetails.push({
-            move: selectedMoveName.name,
+            moveKorName: selectedMoveName.koreanName,
             versionDetails,
           });
         }
@@ -283,10 +298,10 @@ export const addLearningMethodsAndGensToPokemons = async (
 
     const updatedPokemons = await Promise.all(updatedPokemonsPromises);
 
-    console.log("포켓몬 기술 상세정보 추가 완료:", updatedPokemons);
+    console.log("검색된 포켓몬에 대해서 검색 대상 기술 배우는 방법 및 세대 정보 추가 완료:", updatedPokemons);
     return updatedPokemons;
   } catch (error) {
-    console.error("포켓몬 기술 정보 호출 실패:", error);
+    console.error("검색된 포켓몬에 대해서 검색 대상 기술 배우는 방법 및 세대 정보 추가 실패:", error);
     return [];
   }
 };

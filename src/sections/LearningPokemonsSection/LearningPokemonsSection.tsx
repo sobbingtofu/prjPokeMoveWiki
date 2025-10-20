@@ -1,4 +1,4 @@
-import PokemonCard from "@/components/PokmemonCard/PokemonCard";
+import PokemonCard from "@/components/PokemonCard/PokemonCard";
 import {useZustandStore} from "@/store/zustandStore";
 import React from "react";
 

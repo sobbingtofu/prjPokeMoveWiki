@@ -472,3 +472,49 @@ export const REGION_NAME_EN_TO_KO: {eng: string; kor: string}[] = [
   {eng: "hisui", kor: "히스이"},
   {eng: "paldea", kor: "팔데아"},
 ];
+
+// 포켓몬 게임 세대별 버전 그룹 매핑
+export const VERSION_GROUP_TO_GEN = [
+  {
+    genNumber: 1,
+    versionGroups: ["red-blue", "yellow"],
+  },
+  {
+    genNumber: 2,
+    versionGroups: ["gold-silver", "crystal"],
+  },
+  {
+    genNumber: 3,
+    versionGroups: ["ruby-sapphire", "emerald", "firered-leafgreen"],
+  },
+  {
+    genNumber: 4,
+    versionGroups: ["diamond-pearl", "platinum", "heartgold-soulsilver"],
+  },
+  {
+    genNumber: 5,
+    versionGroups: ["black-white", "black-2-white-2"],
+  },
+  {
+    genNumber: 6,
+    versionGroups: ["x-y", "omega-ruby-alpha-sapphire"],
+  },
+  {
+    genNumber: 7,
+    versionGroups: ["sun-moon", "ultra-sun-ultra-moon", "lets-go-pikachu-lets-go-eevee"],
+  },
+  {
+    genNumber: 8,
+    versionGroups: [
+      "sword-shield",
+      "the-isle-of-armor",
+      "the-crown-tundra",
+      "brilliant-diamond-and-shining-pearl",
+      "legends-arceus",
+    ],
+  },
+  {
+    genNumber: 9,
+    versionGroups: ["scarlet-violet", "the-teal-mask", "the-indigo-disk"],
+  },
+];

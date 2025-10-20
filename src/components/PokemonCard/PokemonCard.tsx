@@ -19,9 +19,21 @@ function PokemonCard({pokemon}: {pokemon: detailedPokemInfoType}) {
           ))}
         </div>
       </div>
-      <div className="text-xs mt-12">
-        <p>basicURL : {pokemon.basicUrl}</p>
-        <p>speciesURL : {pokemon.speciesUrl}</p>
+      <div>
+        {pokemon.moveDetails &&
+          pokemon.moveDetails.length > 0 &&
+          pokemon.moveDetails.map((moveItem) => (
+            <div key={moveItem.moveKorName} className="mb-2">
+              <p className="font-bold">{moveItem.moveKorName}</p>
+              <div className="flex">
+                {moveItem.versionDetails.map((versionDetail, idx) => (
+                  <div key={idx} className="ml-2">
+                    <p>{versionDetail.versionName}</p>
+                  </div>
+                ))}
+              </div>
+            </div>
+          ))}
       </div>
     </div>
   );

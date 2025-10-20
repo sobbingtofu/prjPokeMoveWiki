@@ -63,7 +63,7 @@ export const SelectedMovesSection = ({className = ""}: SelectedMovesSectionProps
   }, [selectedMovesArrayStates]);
 
   const handleSearchButtonClick = async () => {
-    console.log(selectedMovesArrayStates);
+    // console.log(selectedMovesArrayStates);
     setLoadingStates({isMovesLearningPokemonSearchLoading: true});
 
     setLastSearchMovesArrayStates(selectedMovesArrayStates);
