@@ -44,11 +44,11 @@ export const useZustandStore = create<zustandStoreType>((set) => ({
       return {pokemonsLearningAllLastSearchMoves: next};
     }),
 
-  detailedLearningPokemons: [],
-  setDetailedLearningPokemons: (update) =>
+  detailedLearningPokemons_PreFilter: [],
+  setDetailedLearningPokemons_PreFilter: (update) =>
     set((state) => {
-      const next = typeof update === "function" ? update(state.detailedLearningPokemons) : update;
-      return {detailedLearningPokemons: next};
+      const next = typeof update === "function" ? update(state.detailedLearningPokemons_PreFilter) : update;
+      return {detailedLearningPokemons_PreFilter: next};
     }),
 
   isToastMessageVisible: false,

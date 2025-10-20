@@ -1,4 +1,9 @@
-import {koreanMoveType, pokemonBasicInfoType} from "@/logic/pokeapiLogics/type";
+import {
+  koreanMoveType,
+  pokemonBasicInfoType,
+  pokemonTypeEnNames,
+  pokemonTypeKorNames,
+} from "@/logic/pokeapiLogics/type";
 
 export interface loadingStatesType {
   isInitialMovesLoading: boolean;
@@ -7,6 +12,17 @@ export interface loadingStatesType {
 }
 export interface selectedMoveType extends koreanMoveType {
   isSelectedForDeletion: boolean;
+}
+
+export interface versionDetailType {
+  versionName: string;
+  learnMethod: string;
+  learnedLevel: number;
+}
+
+export interface moveDetailType {
+  move: string;
+  versionDetails: versionDetailType[];
 }
 
 export interface detailedPokemInfoType {
@@ -20,9 +36,16 @@ export interface detailedPokemInfoType {
 
   koreanName: string;
 
-  koreantypes: string[];
+  types: pokemonTypeEnNames[];
+  koreantypes: pokemonTypeKorNames[];
 
   captureRate: number;
+
+  spriteUrl: string;
+
+  stats: {statName: string; statValue: number}[];
+
+  moveDetails?: moveDetailType[];
 }
 
 export interface zustandStoreType {
@@ -50,8 +73,8 @@ export interface zustandStoreType {
     update: pokemonBasicInfoType[] | ((prev: pokemonBasicInfoType[]) => pokemonBasicInfoType[])
   ) => void;
 
-  detailedLearningPokemons: detailedPokemInfoType[];
-  setDetailedLearningPokemons: (
+  detailedLearningPokemons_PreFilter: detailedPokemInfoType[];
+  setDetailedLearningPokemons_PreFilter: (
     update: detailedPokemInfoType[] | ((prev: detailedPokemInfoType[]) => detailedPokemInfoType[])
   ) => void;
 

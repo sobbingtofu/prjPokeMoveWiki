@@ -98,7 +98,7 @@ export const SearchSection = ({className = "", smDropDownHeight, dropDownHeight}
       setIsToastMessageVisible(true);
       return;
     } else {
-      if (selectedMovesArrayStates.length >= 40) {
+      if (selectedMovesArrayStates.length >= 8) {
         setIsToastMessageVisible(true);
         return;
       }

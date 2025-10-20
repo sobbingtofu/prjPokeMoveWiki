@@ -1,4 +1,5 @@
 import {koreanMoveType} from "@/logic/pokeapiLogics/type";
+import TypeChip from "../TypeChip/TypeChip";
 
 function MoveSearchDropdown({
   move: filteredMoves,
@@ -39,13 +40,7 @@ function MoveSearchDropdown({
                 {move.damageClass === "physical" ? "물리" : move.damageClass === "special" ? "특수" : "변화"}
               </p>
             </div>
-            <div className="w-1/12 flex justify-center items-center min-w-[65px]">
-              <p
-                className={`rounded-full font-bold w-[65px] text-sm text-center text-white bg-${move.type.toLowerCase()} px-2.5 py-1.5`}
-              >
-                {move.korType}
-              </p>
-            </div>
+            <TypeChip type={move.type} korType={move.korType} />
           </div>
         </div>
       ))}

@@ -19,7 +19,7 @@ const ToastItem = ({}: PropsWithChildren<{}>) => {
     <>
       {isToastMessageVisible && (
         <p className="text-red-600 text-sm">
-          {selectedMovesArrayStates.length >= 40 ? "최대 40개의 기술만 선택할 수 있습니다." : "이미 선택된 기술입니다."}
+          {selectedMovesArrayStates.length >= 8 ? "최대 8개의 기술만 선택할 수 있습니다." : "이미 선택된 기술입니다."}
         </p>
       )}
     </>

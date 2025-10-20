@@ -4,9 +4,16 @@ export interface initialMovesType {
   url: string;
 }
 
+export interface versionGroupDetailType {
+  versionName: string;
+  levelLearned: number;
+  learnMethod: string;
+}
+
 export interface pokemonBasicInfoType {
   name: string;
   url: string;
+  version_group_details?: versionGroupDetailType[];
 }
 
 export type damageClassType = "physical" | "special" | "status";

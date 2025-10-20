@@ -1,4 +1,8 @@
-import {getInitialMoveData, generateKoreanMoveData} from "@/logic/pokeapiLogics/pokeapiLogics";
+import {
+  getInitialMoveData,
+  generateKoreanMoveData,
+  addLearningMethodsAndGens,
+} from "@/logic/pokeapiLogics/pokeapiLogics";
 import {useZustandStore} from "@/store/zustandStore";
 import {useEffect} from "react";
 
@@ -18,7 +22,10 @@ export const usePokemonMoveData = () => {
           setLoadingStates({isKoreanMovesLoading: false});
           if (!koreanMoves) throw new Error("Korean moves data is undefined");
 
+          // const initialMovesWithLearningMethodsGen = await addLearningMethodsAndGens(koreanMoves);
+
           // console.log("Korean moves data loaded:", koreanMoves);
+          // return initialMovesWithLearningMethodsGen;
           return koreanMoves;
         } catch (error) {
           console.error("데이터 로딩 실패:", error);
