@@ -79,6 +79,47 @@ export interface zustandStoreType {
     update: detailedPokemInfoType[] | ((prev: detailedPokemInfoType[]) => detailedPokemInfoType[])
   ) => void;
 
+  genFilter: {
+    gen1: boolean;
+    gen2: boolean;
+    gen3: boolean;
+    gen4: boolean;
+    gen5: boolean;
+    gen6: boolean;
+    gen7: boolean;
+    gen8: boolean;
+    gen9: boolean;
+  };
+  setGenFilter: (
+    update:
+      | Partial<zustandStoreType["genFilter"]>
+      | ((prev: zustandStoreType["genFilter"]) => zustandStoreType["genFilter"])
+  ) => void;
+
+  learnMethodFilter: {
+    levelUp: boolean;
+    tutor: boolean;
+    machine: boolean;
+  };
+
+  setLearnMethodFilter: (
+    update:
+      | Partial<zustandStoreType["learnMethodFilter"]>
+      | ((prev: zustandStoreType["learnMethodFilter"]) => zustandStoreType["learnMethodFilter"])
+  ) => void;
+
+  sortOption: {
+    hp: boolean;
+    attack: boolean;
+    defense: boolean;
+    specialAttack: boolean;
+    specialDefense: boolean;
+    speed: boolean;
+  };
+  setSortOption: (
+    update: zustandStoreType["sortOption"] | ((prev: zustandStoreType["sortOption"]) => zustandStoreType["sortOption"])
+  ) => void;
+
   isToastMessageVisible: boolean;
   setIsToastMessageVisible: (update: boolean) => void;
 

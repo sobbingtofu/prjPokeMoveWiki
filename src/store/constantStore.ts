@@ -529,8 +529,26 @@ export const STAT_LABELS = [
 ];
 
 export const METHOD_NAME_MAP: {[key: string]: string} = {
-  "level-up": "레벨업",
+  levelUp: "레벨업",
   tutor: "기술가르침",
   machine: "기술머신",
   egg: "레벨업",
 };
+
+export const LEARN_METHOD_OPTIONS = [
+  {key: "levelUp", label: METHOD_NAME_MAP["levelUp"]},
+  {key: "tutor", label: METHOD_NAME_MAP["tutor"]},
+  {key: "machine", label: METHOD_NAME_MAP["machine"]},
+];
+
+export const GEN_OPTIONS = [
+  {key: "gen1", label: "1세대"},
+  {key: "gen2", label: "2세대"},
+  {key: "gen3", label: "3세대"},
+  {key: "gen4", label: "4세대"},
+  {key: "gen5", label: "5세대"},
+  {key: "gen6", label: "6세대"},
+  {key: "gen7", label: "7세대"},
+  {key: "gen8", label: "8세대"},
+  {key: "gen9", label: "9세대"},
+];

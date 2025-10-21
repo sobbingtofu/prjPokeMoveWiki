@@ -51,6 +51,51 @@ export const useZustandStore = create<zustandStoreType>((set) => ({
       return {detailedLearningPokemons_PreFilter: next};
     }),
 
+  genFilter: {
+    gen1: true,
+    gen2: true,
+    gen3: true,
+    gen4: true,
+    gen5: true,
+    gen6: true,
+    gen7: true,
+    gen8: true,
+    gen9: true,
+  },
+  setGenFilter: (update) =>
+    set((state) => {
+      const prev = state.genFilter;
+      const next = typeof update === "function" ? update(prev) : {...prev, ...update};
+      return {genFilter: next};
+    }),
+
+  learnMethodFilter: {
+    levelUp: true,
+    tutor: true,
+    machine: true,
+  },
+  setLearnMethodFilter: (update) =>
+    set((state) => {
+      const prev = state.learnMethodFilter;
+      const next = typeof update === "function" ? update(prev) : {...prev, ...update};
+      return {learnMethodFilter: next};
+    }),
+
+  sortOption: {
+    hp: false,
+    attack: false,
+    defense: false,
+    speed: false,
+    specialAttack: false,
+    specialDefense: false,
+  },
+  setSortOption: (update) =>
+    set((state) => {
+      const prev = state.sortOption;
+      const next = typeof update === "function" ? update(prev) : {...prev, ...update};
+      return {sortOption: next};
+    }),
+
   isToastMessageVisible: false,
   setIsToastMessageVisible: (update) => set(() => ({isToastMessageVisible: update})),
 
