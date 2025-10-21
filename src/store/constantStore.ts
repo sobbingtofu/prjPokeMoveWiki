@@ -518,3 +518,19 @@ export const VERSION_GROUP_TO_GEN = [
     versionGroups: ["scarlet-violet", "the-teal-mask", "the-indigo-disk"],
   },
 ];
+
+export const STAT_LABELS = [
+  {statName: "hp", label: "HP"},
+  {statName: "attack", label: "공격"},
+  {statName: "defense", label: "방어"},
+  {statName: "speed", label: "스피드"},
+  {statName: "special-attack", label: "특공"},
+  {statName: "special-defense", label: "특방"},
+];
+
+export const METHOD_NAME_MAP: {[key: string]: string} = {
+  "level-up": "레벨업",
+  tutor: "기술가르침",
+  machine: "기술머신",
+  egg: "레벨업",
+};

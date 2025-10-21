@@ -1,6 +1,7 @@
 import {detailedPokemInfoType} from "@/store/type";
 import React from "react";
 import TypeChip from "../TypeChip/TypeChip";
+import {STAT_LABELS} from "@/store/constantStore";
 
 interface LearnMethodDetail {
   methodName: string;
@@ -51,8 +52,9 @@ function PokemonCard({pokemon}: {pokemon: detailedPokemInfoType}) {
   return (
     <div
       key={pokemon.name}
-      className="text-sm font-bold px-3 py-2 bg-gray-100 rounded-2xl flex flex-col justify-start items-start gap-2"
+      className="text-sm font-bold px-4 py-2 bg-gray-100 rounded-2xl flex flex-col justify-start items-start gap-4"
     >
+      {/* 이미지, 이름, 타입칩 */}
       <div className="w-full flex flex-col items-center">
         <div className="flex justify-center items-center w-[100px] h-[100px]">
           <img src={pokemon.spriteUrl} alt={pokemon.koreanName} />
@@ -62,6 +64,20 @@ function PokemonCard({pokemon}: {pokemon: detailedPokemInfoType}) {
           {pokemon.types.map((type, index) => (
             <TypeChip key={type} type={type} korType={pokemon.koreantypes[index] || ""} textSize="xs" />
           ))}
+        </div>
+      </div>
+
+      <div className="text-[7pt] w-full">
+        <div className="grid grid-cols-3 gap-y-2 w-full">
+          {STAT_LABELS.map((stat) => {
+            const statValue = pokemon.stats.find((s) => s.statName === stat.statName)?.statValue;
+            return (
+              <div key={stat.statName} className="flex flex-col items-center">
+                <p className="text-center">{stat.label}</p>
+                <p className="text-center">{statValue}</p>
+              </div>
+            );
+          })}
         </div>
       </div>
 
@@ -76,19 +92,19 @@ function PokemonCard({pokemon}: {pokemon: detailedPokemInfoType}) {
                 {moveItem.uniqueVersionDetails.map((versionDetail, idx) => (
                   <div key={idx} className="flex gap-3.5 text-[8pt] ml-2">
                     <p>{versionDetail.genNumber}세대</p>
-                    <div className="flex gap-2 ">
+                    <div className="flex gap-1.5">
                       {versionDetail.learnMethod.map((method, methodIdx) => {
                         const methodNameMap: {[key: string]: string} = {
                           "level-up": "레벨업",
-                          tutor: "기술가르침",
-                          machine: "기술머신",
+                          tutor: "가르침",
+                          machine: "머신",
                           egg: "레벨업",
                         };
 
                         const korMethodName = methodNameMap[method.methodName] || method.methodName;
 
                         return (
-                          <div key={methodIdx} className="flex">
+                          <div key={methodIdx} className="flex w-[53px]">
                             <p>{korMethodName}</p>
                             {korMethodName == "레벨업" && <p>({method.learnedLevel})</p>}
                           </div>
