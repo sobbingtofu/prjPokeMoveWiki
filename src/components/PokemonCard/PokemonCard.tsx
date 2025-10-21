@@ -2,6 +2,7 @@ import {detailedPokemInfoType} from "@/store/type";
 import React from "react";
 import TypeChip from "../TypeChip/TypeChip";
 import {STAT_LABELS} from "@/store/constantStore";
+import {useZustandStore} from "@/store/zustandStore";
 
 interface LearnMethodDetail {
   methodName: string;
@@ -9,6 +10,8 @@ interface LearnMethodDetail {
 }
 
 function PokemonCard({pokemon}: {pokemon: detailedPokemInfoType}) {
+  const {genFilter, learnMethodFilter} = useZustandStore();
+
   const pokemonMoveDetails = pokemon.moveDetails || [];
   const refinedMoveDetails = pokemonMoveDetails.map((move) => {
     const versionMap = new Map<number, LearnMethodDetail[]>();
@@ -52,7 +55,7 @@ function PokemonCard({pokemon}: {pokemon: detailedPokemInfoType}) {
   return (
     <div
       key={pokemon.name}
-      className="text-sm font-bold px-4 py-2 bg-gray-100 rounded-2xl flex flex-col justify-start items-start gap-4"
+      className="text-sm font-bold px-4 py-2 bg-gray-100 rounded-2xl flex flex-col justify-start items-start gap-4 h-min"
     >
       {/* 이미지, 이름, 타입칩 */}
       <div className="w-full flex flex-col items-center">
@@ -89,30 +92,50 @@ function PokemonCard({pokemon}: {pokemon: detailedPokemInfoType}) {
             <div key={moveItem.moveKorName} className="mb-2">
               <p className="font-bold text-xs">{moveItem.moveKorName}</p>
               <div className="flex flex-col ">
-                {moveItem.uniqueVersionDetails.map((versionDetail, idx) => (
-                  <div key={idx} className="flex gap-3.5 text-[8pt] ml-2">
-                    <p>{versionDetail.genNumber}세대</p>
-                    <div className="flex gap-1.5">
-                      {versionDetail.learnMethod.map((method, methodIdx) => {
-                        const methodNameMap: {[key: string]: string} = {
-                          "level-up": "레벨업",
-                          tutor: "가르침",
-                          machine: "머신",
-                          egg: "레벨업",
-                        };
+                {moveItem.uniqueVersionDetails.map((versionDetail, idx) => {
+                  const activatedGenNumber = Object.entries(genFilter).find(([key, value]) => value)?.[0];
+                  const trimmedActivatedGenNumber = activatedGenNumber
+                    ? parseInt(activatedGenNumber.replace("gen", ""))
+                    : null;
+                  return (
+                    <>
+                      {versionDetail.genNumber === trimmedActivatedGenNumber && (
+                        <div key={idx} className="flex gap-3.5 text-[8pt] ml-2">
+                          <div className="flex gap-1.5 items-center">
+                            {versionDetail.learnMethod.map((method, methodIdx) => {
+                              const methodNameMap: {[key: string]: string} = {
+                                "level-up": "레벨업",
+                                tutor: "기술가르침",
+                                machine: "기술머신",
+                                egg: "레벨업",
+                              };
 
-                        const korMethodName = methodNameMap[method.methodName] || method.methodName;
+                              const activatedLearnMethods =
+                                Object.entries(learnMethodFilter)
+                                  .filter(([key, value]) => value)
+                                  .map((item) => {
+                                    return item[0];
+                                  }) || [];
 
-                        return (
-                          <div key={methodIdx} className="flex w-[53px]">
-                            <p>{korMethodName}</p>
-                            {korMethodName == "레벨업" && <p>({method.learnedLevel})</p>}
+                              const korMethodName = methodNameMap[method.methodName] || method.methodName;
+                              return (
+                                <>
+                                  {activatedLearnMethods.includes(method.methodName) && (
+                                    <div key={methodIdx} className="flex max-w-[53px]">
+                                      <p>{korMethodName}</p>
+                                      {korMethodName == "레벨업" && <p>({method.learnedLevel})</p>}
+                                    </div>
+                                  )}
+                                </>
+                              );
+                            })}
+                            <p className="text-gray-600  italic">({versionDetail.genNumber}세대)</p>
                           </div>
-                        );
-                      })}
-                    </div>
-                  </div>
-                ))}
+                        </div>
+                      )}
+                    </>
+                  );
+                })}
               </div>
             </div>
           ))}

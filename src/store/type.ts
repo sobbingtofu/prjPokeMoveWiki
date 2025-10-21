@@ -79,6 +79,11 @@ export interface zustandStoreType {
     update: detailedPokemInfoType[] | ((prev: detailedPokemInfoType[]) => detailedPokemInfoType[])
   ) => void;
 
+  detailedLearningPokemons_Filtered: detailedPokemInfoType[];
+  setDetailedLearningPokemons_Filtered: (
+    update: detailedPokemInfoType[] | ((prev: detailedPokemInfoType[]) => detailedPokemInfoType[])
+  ) => void;
+
   genFilter: {
     gen1: boolean;
     gen2: boolean;
@@ -97,7 +102,7 @@ export interface zustandStoreType {
   ) => void;
 
   learnMethodFilter: {
-    levelUp: boolean;
+    "level-up": boolean;
     tutor: boolean;
     machine: boolean;
   };

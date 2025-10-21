@@ -31,11 +31,11 @@ export const FilterDropdown = ({title, options, selectedOptions, onToggle}: Filt
   }, []);
 
   return (
-    <div ref={dropdownRef} className="relative w-[130px]">
+    <div ref={dropdownRef} className="relative w-[110px]">
       {/* 필터 버튼 */}
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="text-white font-bold text-sm px-4 py-2 bg-gray-700 hover:bg-gray-600 rounded-lg transition-colors w-full"
+        className="text-white font-bold text-xs px-4 py-2 bg-gray-600 hover:bg-gray-500 rounded-lg transition-colors w-full"
       >
         {title}
       </button>
@@ -48,25 +48,17 @@ export const FilterDropdown = ({title, options, selectedOptions, onToggle}: Filt
               key={option.key}
               onClick={() => {
                 onToggle(option.key);
+                setIsOpen(false);
               }}
-              className={`w-full text-left px-2 py-2.5 text-sm font-bold transition-colors flex justify-content items-center ${
+              className={`w-full text-left px-2 py-2.5 font-bold transition-colors flex justify-content items-center ${
                 selectedOptions[option.key] ? "bg-cyan-700 text-white" : "bg-gray-800 text-gray-300 hover:bg-gray-700"
               }`}
             >
-              <input type="checkbox" checked={selectedOptions[option.key]} readOnly className=" accent-blue-500" />
-              <div className="flex justify-center items-center w-full mr-1">
+              <div className="flex justify-center items-center w-full mr-0">
                 <p>{option.label}</p>
               </div>
             </button>
           ))}
-          <div className="flex justify-center">
-            <button
-              className="my-4 bg-gray-300 rounded-lg px-6 py-2
-              text-gray-900 cursor-pointer hover:bg-gray-400 transition-all duration-150 shadow-lg"
-            >
-              적용
-            </button>
-          </div>
         </div>
       )}
     </div>

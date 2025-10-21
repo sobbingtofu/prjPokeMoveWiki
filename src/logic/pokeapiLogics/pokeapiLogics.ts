@@ -298,7 +298,7 @@ export const addLearningMethodsAndGensToPokemons = async (
 
     const updatedPokemons = await Promise.all(updatedPokemonsPromises);
 
-    console.log("검색된 포켓몬에 대해서 검색 대상 기술 배우는 방법 및 세대 정보 추가 완료:", updatedPokemons);
+    // console.log("검색된 포켓몬에 대해서 검색 대상 기술 배우는 방법 및 세대 정보 추가 완료:", updatedPokemons);
     return updatedPokemons;
   } catch (error) {
     console.error("검색된 포켓몬에 대해서 검색 대상 기술 배우는 방법 및 세대 정보 추가 실패:", error);

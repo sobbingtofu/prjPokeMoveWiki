@@ -51,15 +51,22 @@ export const useZustandStore = create<zustandStoreType>((set) => ({
       return {detailedLearningPokemons_PreFilter: next};
     }),
 
+  detailedLearningPokemons_Filtered: [],
+  setDetailedLearningPokemons_Filtered: (update) =>
+    set((state) => {
+      const next = typeof update === "function" ? update(state.detailedLearningPokemons_Filtered) : update;
+      return {detailedLearningPokemons_Filtered: next};
+    }),
+
   genFilter: {
-    gen1: true,
-    gen2: true,
-    gen3: true,
-    gen4: true,
-    gen5: true,
-    gen6: true,
-    gen7: true,
-    gen8: true,
+    gen1: false,
+    gen2: false,
+    gen3: false,
+    gen4: false,
+    gen5: false,
+    gen6: false,
+    gen7: false,
+    gen8: false,
     gen9: true,
   },
   setGenFilter: (update) =>
@@ -70,7 +77,7 @@ export const useZustandStore = create<zustandStoreType>((set) => ({
     }),
 
   learnMethodFilter: {
-    levelUp: true,
+    "level-up": true,
     tutor: true,
     machine: true,
   },

@@ -529,14 +529,14 @@ export const STAT_LABELS = [
 ];
 
 export const METHOD_NAME_MAP: {[key: string]: string} = {
-  levelUp: "레벨업",
+  "level-up": "레벨업",
   tutor: "기술가르침",
   machine: "기술머신",
   egg: "레벨업",
 };
 
 export const LEARN_METHOD_OPTIONS = [
-  {key: "levelUp", label: METHOD_NAME_MAP["levelUp"]},
+  {key: "level-up", label: METHOD_NAME_MAP["level-up"]},
   {key: "tutor", label: METHOD_NAME_MAP["tutor"]},
   {key: "machine", label: METHOD_NAME_MAP["machine"]},
 ];
