@@ -1,5 +1,7 @@
 @import "tailwindcss";
 
+@plugin 'tailwind-scrollbar';
+
 .no-scrollbar::-webkit-scrollbar {
   display: none; /* Chrome, Safari, Opera*/
 }

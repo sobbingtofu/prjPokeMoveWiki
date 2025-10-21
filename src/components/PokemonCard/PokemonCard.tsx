@@ -51,7 +51,7 @@ function PokemonCard({pokemon}: {pokemon: detailedPokemInfoType}) {
   return (
     <div
       key={pokemon.name}
-      className="text-sm font-bold px-3 py-2 bg-gray-100 rounded-2xl flex flex-col justify-center items-start gap-2"
+      className="text-sm font-bold px-3 py-2 bg-gray-100 rounded-2xl flex flex-col justify-start items-start gap-2"
     >
       <div className="w-full flex flex-col items-center">
         <div className="flex justify-center items-center w-[100px] h-[100px]">
@@ -71,26 +71,26 @@ function PokemonCard({pokemon}: {pokemon: detailedPokemInfoType}) {
           refinedMoveDetails.length > 0 &&
           refinedMoveDetails.map((moveItem) => (
             <div key={moveItem.moveKorName} className="mb-2">
-              <p className="font-bold">{moveItem.moveKorName}</p>
-              <div className="flex flex-col">
+              <p className="font-bold text-xs">{moveItem.moveKorName}</p>
+              <div className="flex flex-col ">
                 {moveItem.uniqueVersionDetails.map((versionDetail, idx) => (
-                  <div key={idx} className="ml-2 flex gap-2">
-                    <p>{versionDetail.genNumber}</p>
-                    <div className="flex gap-1">
+                  <div key={idx} className="flex gap-3.5 text-[8pt] ml-2">
+                    <p>{versionDetail.genNumber}세대</p>
+                    <div className="flex gap-2 ">
                       {versionDetail.learnMethod.map((method, methodIdx) => {
                         const methodNameMap: {[key: string]: string} = {
                           "level-up": "레벨업",
                           tutor: "기술가르침",
                           machine: "기술머신",
-                          egg: "알",
+                          egg: "레벨업",
                         };
 
                         const korMethodName = methodNameMap[method.methodName] || method.methodName;
 
                         return (
-                          <div key={methodIdx} className="flex gap-1">
+                          <div key={methodIdx} className="flex">
                             <p>{korMethodName}</p>
-                            {method.learnedLevel > 0 && <p>Lv.{method.learnedLevel}</p>}
+                            {korMethodName == "레벨업" && <p>({method.learnedLevel})</p>}
                           </div>
                         );
                       })}
