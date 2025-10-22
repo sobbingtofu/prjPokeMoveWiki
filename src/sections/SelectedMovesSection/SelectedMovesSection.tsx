@@ -2,6 +2,7 @@ import {MoveCard} from "@/components/MoveCard/MoveCard";
 import ScrollContainer from "@/components/ScrollContainer/ScrollContainer";
 import SelectedMovesDeleteButtons from "@/components/SelectedMovesDeleteButtons/SelectedMovesDeleteButtons";
 import useApplyFilters from "@/hooks/useApplyFilters";
+import useApplyFiltersChange from "@/hooks/useApplyFiltersChange";
 import useHandleSearchBtnClick from "@/hooks/useHandleSearchBtnClick";
 import {addLearningMethodsAndGensToPokemons, getLearningPokemonsDetail} from "@/logic/pokeapiLogics/pokeapiLogics";
 import {detailedPokemInfoType} from "@/store/type";
@@ -13,31 +14,15 @@ interface SelectedMovesSectionProps {
 }
 
 export const SelectedMovesSection = ({className = ""}: SelectedMovesSectionProps) => {
-  const {
-    detailedLearningPokemons_PreFilter,
-    selectedMovesArrayStates,
-    setLastSearchMovesArrayStates,
-    setPokemonsLearningAllLastSearchMoves,
-    setLoadingStates,
-    setDetailedLearningPokemons_PreFilter,
-    genFilter,
-    learnMethodFilter,
-  } = useZustandStore();
+  const {selectedMovesArrayStates} = useZustandStore();
 
   const handleMoveCardClick = (moveId: number) => {
     console.log("해당 기술 상세보기 넘어갈 예정:", moveId);
   };
 
-  // 필터 적용 함수
-  const applyFilters = useApplyFilters();
-
-  const applySorting = () => {};
-
   const handleSearchButtonClick = useHandleSearchBtnClick();
 
-  useEffect(() => {
-    applyFilters(detailedLearningPokemons_PreFilter);
-  }, [genFilter, learnMethodFilter]);
+  useApplyFiltersChange();
 
   return (
     <>

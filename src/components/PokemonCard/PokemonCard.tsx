@@ -70,6 +70,7 @@ function PokemonCard({pokemon}: {pokemon: detailedPokemInfoType}) {
         </div>
       </div>
 
+      {/* 스탯 표시 */}
       <div className="text-[7pt] w-full">
         <div className="grid grid-cols-3 gap-y-2 w-full">
           {STAT_LABELS.map((stat) => {
