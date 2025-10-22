@@ -1,6 +1,8 @@
 import {MoveCard} from "@/components/MoveCard/MoveCard";
 import ScrollContainer from "@/components/ScrollContainer/ScrollContainer";
 import SelectedMovesDeleteButtons from "@/components/SelectedMovesDeleteButtons/SelectedMovesDeleteButtons";
+import useApplyFilters from "@/hooks/useApplyFilters";
+import useHandleSearchBtnClick from "@/hooks/useHandleSearchBtnClick";
 import {addLearningMethodsAndGensToPokemons, getLearningPokemonsDetail} from "@/logic/pokeapiLogics/pokeapiLogics";
 import {detailedPokemInfoType} from "@/store/type";
 import {useZustandStore} from "@/store/zustandStore";
@@ -18,7 +20,6 @@ export const SelectedMovesSection = ({className = ""}: SelectedMovesSectionProps
     setPokemonsLearningAllLastSearchMoves,
     setLoadingStates,
     setDetailedLearningPokemons_PreFilter,
-    setDetailedLearningPokemons_Filtered,
     genFilter,
     learnMethodFilter,
   } = useZustandStore();
@@ -28,84 +29,11 @@ export const SelectedMovesSection = ({className = ""}: SelectedMovesSectionProps
   };
 
   // 필터 적용 함수
-  const applyFilters = (detailedLearningPokemons_PreFilter: detailedPokemInfoType[]) => {
-    const filtered = detailedLearningPokemons_PreFilter.filter((pokemon) => {
-      // 각 포켓몬의 moveDetails를 순회
-      const hasMatchingMove = pokemon.moveDetails?.some((moveDetail) => {
-        // 해당 기술의 versionDetails를 순회
-        return moveDetail.versionDetails.some((versionDetail) => {
-          // 선택된 세대인지 확인
-          const genKey = `gen${versionDetail.genNumber}`;
-          const isGenSelected = genFilter[genKey as keyof typeof genFilter];
+  const applyFilters = useApplyFilters();
 
-          // 선택된 학습 방법인지 확인
-          const learnMethodKey = versionDetail.learnMethod;
-          let methodKey: keyof typeof learnMethodFilter;
+  const applySorting = () => {};
 
-          if (learnMethodKey === "level-up") {
-            methodKey = "level-up";
-          } else if (learnMethodKey === "tutor") {
-            methodKey = "tutor";
-          } else if (learnMethodKey === "machine") {
-            methodKey = "machine";
-          } else {
-            return false;
-          }
-
-          const isMethodSelected = learnMethodFilter[methodKey];
-
-          // 세대와 학습 방법이 모두 선택되었으면 true
-          return isGenSelected && isMethodSelected;
-        });
-      });
-
-      return hasMatchingMove;
-    });
-
-    setDetailedLearningPokemons_Filtered(filtered);
-  };
-
-  const handleSearchButtonClick = async () => {
-    // console.log(selectedMovesArrayStates);
-    setLoadingStates({isMovesLearningPokemonSearchLoading: true});
-
-    setLastSearchMovesArrayStates(selectedMovesArrayStates);
-
-    if (selectedMovesArrayStates.length === 0) {
-      setPokemonsLearningAllLastSearchMoves([]);
-      setDetailedLearningPokemons_PreFilter([]);
-    } else {
-      const firstMoveLearners = selectedMovesArrayStates[0].learningPokemonEn;
-
-      const commonPokemons = firstMoveLearners.filter((pokemon) => {
-        // 첫 번째 기술을 배우는 포켓몬이 나머지 모든 기술도 배우는지 확인
-        return selectedMovesArrayStates
-          .slice(1)
-          .every((move) =>
-            move.learningPokemonEn.some((learner) => learner.name === pokemon.name && learner.url === pokemon.url)
-          );
-      });
-
-      setPokemonsLearningAllLastSearchMoves(commonPokemons);
-
-      const learningPokemons = await getLearningPokemonsDetail(commonPokemons);
-
-      if (!learningPokemons) throw new Error("learningPokemons Error");
-
-      const learningPokemonsWithMoveDetails = await addLearningMethodsAndGensToPokemons(
-        learningPokemons,
-        selectedMovesArrayStates
-      );
-
-      if (!learningPokemonsWithMoveDetails) throw new Error("learningPokemonsWithMoveDetails Error");
-
-      setDetailedLearningPokemons_PreFilter(learningPokemonsWithMoveDetails);
-
-      applyFilters(learningPokemonsWithMoveDetails);
-    }
-
-    setLoadingStates({isMovesLearningPokemonSearchLoading: false});
-  };
+  const handleSearchButtonClick = useHandleSearchBtnClick();
 
   useEffect(() => {
     applyFilters(detailedLearningPokemons_PreFilter);

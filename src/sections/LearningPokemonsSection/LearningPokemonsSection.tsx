@@ -27,7 +27,7 @@ function LearningPokemonsSection({className = ""}: LearningPokemonsSectionProps)
     });
   };
 
-  const test =
+  const currentGenText =
     GEN_OPTIONS.find((option) => {
       return option.key === Object.entries(genFilter).find(([key, value]) => value)?.[0];
     })?.label || "모든";
@@ -37,7 +37,12 @@ function LearningPokemonsSection({className = ""}: LearningPokemonsSectionProps)
       <div className="flex justify-between items-end w-full">
         <h3 className="text-white font-bold text-2xl">배우는 포켓몬 ({detailedLearningPokemons_Filtered.length})</h3>
         <div className="flex flex-row gap-4 text-white font-bold text-xs">
-          <FilterDropdown title={test} options={GEN_OPTIONS} selectedOptions={genFilter} onToggle={handleGenToggle} />
+          <FilterDropdown
+            title={currentGenText}
+            options={GEN_OPTIONS}
+            selectedOptions={genFilter}
+            onToggle={handleGenToggle}
+          />
           <FilterDropdown
             title="배우는 방법"
             options={LEARN_METHOD_OPTIONS}

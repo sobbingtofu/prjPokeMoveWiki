@@ -1,0 +1,48 @@
+import {detailedPokemInfoType} from "@/store/type";
+import {useZustandStore} from "@/store/zustandStore";
+
+function useApplyFilters() {
+  const {setDetailedLearningPokemons_Filtered, genFilter, learnMethodFilter} = useZustandStore();
+
+  // 필터 적용 함수
+  const applyFilters = (detailedLearningPokemons_PreFilter: detailedPokemInfoType[]) => {
+    const filtered = detailedLearningPokemons_PreFilter.filter((pokemon) => {
+      // 각 포켓몬의 moveDetails를 순회
+      const hasMatchingMove = pokemon.moveDetails?.some((moveDetail) => {
+        // 해당 기술의 versionDetails를 순회
+        return moveDetail.versionDetails.some((versionDetail) => {
+          // 선택된 세대인지 확인
+          const genKey = `gen${versionDetail.genNumber}`;
+          const isGenSelected = genFilter[genKey as keyof typeof genFilter];
+
+          // 선택된 학습 방법인지 확인
+          const learnMethodKey = versionDetail.learnMethod;
+          let methodKey: keyof typeof learnMethodFilter;
+
+          if (learnMethodKey === "level-up") {
+            methodKey = "level-up";
+          } else if (learnMethodKey === "tutor") {
+            methodKey = "tutor";
+          } else if (learnMethodKey === "machine") {
+            methodKey = "machine";
+          } else {
+            return false;
+          }
+
+          const isMethodSelected = learnMethodFilter[methodKey];
+
+          // 세대와 학습 방법이 모두 선택되었으면 true
+          return isGenSelected && isMethodSelected;
+        });
+      });
+
+      return hasMatchingMove;
+    });
+
+    setDetailedLearningPokemons_Filtered(filtered);
+  };
+
+  return applyFilters;
+}
+
+export default useApplyFilters;

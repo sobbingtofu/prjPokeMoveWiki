@@ -98,9 +98,9 @@ function PokemonCard({pokemon}: {pokemon: detailedPokemInfoType}) {
                     ? parseInt(activatedGenNumber.replace("gen", ""))
                     : null;
                   return (
-                    <>
+                    <div key={idx}>
                       {versionDetail.genNumber === trimmedActivatedGenNumber && (
-                        <div key={idx} className="flex gap-3.5 text-[8pt] ml-2">
+                        <div className="flex gap-3.5 text-[8pt] ml-2">
                           <div className="flex gap-1.5 items-center">
                             {versionDetail.learnMethod.map((method, methodIdx) => {
                               const methodNameMap: {[key: string]: string} = {
@@ -119,21 +119,21 @@ function PokemonCard({pokemon}: {pokemon: detailedPokemInfoType}) {
 
                               const korMethodName = methodNameMap[method.methodName] || method.methodName;
                               return (
-                                <>
+                                <div key={methodIdx}>
                                   {activatedLearnMethods.includes(method.methodName) && (
-                                    <div key={methodIdx} className="flex max-w-[53px]">
+                                    <div className="flex max-w-[53px]">
                                       <p>{korMethodName}</p>
                                       {korMethodName == "레벨업" && <p>({method.learnedLevel})</p>}
                                     </div>
                                   )}
-                                </>
+                                </div>
                               );
                             })}
                             <p className="text-gray-600  italic">({versionDetail.genNumber}세대)</p>
                           </div>
                         </div>
                       )}
-                    </>
+                    </div>
                   );
                 })}
               </div>
