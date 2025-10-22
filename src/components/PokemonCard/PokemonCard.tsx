@@ -12,6 +12,14 @@ interface LearnMethodDetail {
 function PokemonCard({pokemon}: {pokemon: detailedPokemInfoType}) {
   const {genFilter, learnMethodFilter} = useZustandStore();
 
+  const pokemonMainName =
+    pokemon.koreanName.indexOf("(") > -1
+      ? pokemon.koreanName.slice(0, pokemon.koreanName.indexOf("("))
+      : pokemon.koreanName;
+  const pokemonRegionSubname = pokemon.koreanName.includes("(")
+    ? pokemon.koreanName.slice(pokemon.koreanName.indexOf("("))
+    : "";
+
   const pokemonMoveDetails = pokemon.moveDetails || [];
   const refinedMoveDetails = pokemonMoveDetails.map((move) => {
     const versionMap = new Map<number, LearnMethodDetail[]>();
@@ -62,7 +70,8 @@ function PokemonCard({pokemon}: {pokemon: detailedPokemInfoType}) {
         <div className="flex justify-center items-center w-[100px] h-[100px]">
           <img src={pokemon.spriteUrl} alt={pokemon.koreanName} />
         </div>
-        <p className="text-lg">{pokemon.koreanName}</p>
+        <p className="text-lg">{pokemonMainName}</p>
+        <p className="text-lg">{pokemonRegionSubname}</p>
         <div className="w-full flex flex-row justify-center gap-2">
           {pokemon.types.map((type, index) => (
             <TypeChip key={type} type={type} korType={pokemon.koreantypes[index] || ""} textSize="xs" />

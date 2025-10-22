@@ -1,6 +1,7 @@
 import {addLearningMethodsAndGensToPokemons, getLearningPokemonsDetail} from "@/logic/pokeapiLogics/pokeapiLogics";
 import {useZustandStore} from "@/store/zustandStore";
 import useApplyFilters from "./useApplyFilters";
+import useApplySortings from "./useApplySortings";
 
 function useHandleSearchBtnClick() {
   const {
@@ -10,11 +11,10 @@ function useHandleSearchBtnClick() {
     setPokemonsLearningAllLastSearchMoves,
     setLoadingStates,
     setDetailedLearningPokemons_PreFilter,
-    genFilter,
-    learnMethodFilter,
   } = useZustandStore();
 
   const applyFilters = useApplyFilters();
+  const applySortings = useApplySortings();
 
   const handleSearchButtonClick = async () => {
     // console.log(selectedMovesArrayStates);
@@ -52,7 +52,9 @@ function useHandleSearchBtnClick() {
 
       setDetailedLearningPokemons_PreFilter(learningPokemonsWithMoveDetails);
 
-      applyFilters(learningPokemonsWithMoveDetails);
+      const filtered = applyFilters(learningPokemonsWithMoveDetails);
+      const sorted = applySortings(filtered);
+      console.log("최종 정렬된 포켓몬들:", sorted);
     }
 
     setLoadingStates({isMovesLearningPokemonSearchLoading: false});

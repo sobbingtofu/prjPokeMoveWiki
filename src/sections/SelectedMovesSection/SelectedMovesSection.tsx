@@ -1,13 +1,10 @@
 import {MoveCard} from "@/components/MoveCard/MoveCard";
 import ScrollContainer from "@/components/ScrollContainer/ScrollContainer";
 import SelectedMovesDeleteButtons from "@/components/SelectedMovesDeleteButtons/SelectedMovesDeleteButtons";
-import useApplyFilters from "@/hooks/useApplyFilters";
 import useApplyFiltersChange from "@/hooks/useApplyFiltersChange";
 import useHandleSearchBtnClick from "@/hooks/useHandleSearchBtnClick";
-import {addLearningMethodsAndGensToPokemons, getLearningPokemonsDetail} from "@/logic/pokeapiLogics/pokeapiLogics";
-import {detailedPokemInfoType} from "@/store/type";
+
 import {useZustandStore} from "@/store/zustandStore";
-import {useEffect} from "react";
 
 interface SelectedMovesSectionProps {
   className?: string;

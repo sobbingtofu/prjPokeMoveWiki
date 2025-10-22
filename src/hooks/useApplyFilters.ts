@@ -40,6 +40,7 @@ function useApplyFilters() {
     });
 
     setDetailedLearningPokemons_Filtered(filtered);
+    return filtered;
   };
 
   return applyFilters;

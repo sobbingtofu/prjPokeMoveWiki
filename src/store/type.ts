@@ -49,6 +49,8 @@ export interface detailedPokemInfoType {
   moveDetails?: moveDetailType[];
 }
 
+export type sortOptionType = "asc" | "desc" | "deactivated";
+
 export interface zustandStoreType {
   isFirstAccessToApp: boolean;
   setIsFirstAccessToApp: (update: boolean) => void;
@@ -114,12 +116,13 @@ export interface zustandStoreType {
   ) => void;
 
   sortOption: {
-    hp: boolean;
-    attack: boolean;
-    defense: boolean;
-    specialAttack: boolean;
-    specialDefense: boolean;
-    speed: boolean;
+    alphabetical: sortOptionType;
+    hp: sortOptionType;
+    attack: sortOptionType;
+    defense: sortOptionType;
+    specialAttack: sortOptionType;
+    specialDefense: sortOptionType;
+    speed: sortOptionType;
   };
   setSortOption: (
     update: zustandStoreType["sortOption"] | ((prev: zustandStoreType["sortOption"]) => zustandStoreType["sortOption"])
