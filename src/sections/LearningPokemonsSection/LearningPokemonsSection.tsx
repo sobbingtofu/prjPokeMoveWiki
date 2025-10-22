@@ -66,7 +66,7 @@ function LearningPokemonsSection({className = ""}: LearningPokemonsSectionProps)
       </div>
       {detailedLearningPokemons_Filtered.length > 0 && (
         <div
-          className="grid grid-cols-4 w-full gap-x-3 gap-y-2 h-[75dvh]
+          className="grid grid-cols-4 w-full gap-x-3 gap-y-2 h-[75dvh] auto-rows-max
           pr-2 overflow-y-scroll scrollbar-thin scrollbar-track-gray-700 scrollbar-thumb-gray-500
           no-scrollbar-buttons
           "

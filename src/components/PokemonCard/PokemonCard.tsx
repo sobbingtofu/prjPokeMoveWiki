@@ -63,7 +63,7 @@ function PokemonCard({pokemon}: {pokemon: detailedPokemInfoType}) {
   return (
     <div
       key={pokemon.name}
-      className="text-sm font-bold px-4 py-2 bg-gray-100 rounded-2xl flex flex-col justify-start items-start gap-4 h-min"
+      className="text-sm font-bold px-4 py-2 bg-gray-100 rounded-2xl flex flex-col justify-start items-start gap-4"
     >
       {/* 이미지, 이름, 타입칩 */}
       <div className="w-full flex flex-col items-center gap-1">
