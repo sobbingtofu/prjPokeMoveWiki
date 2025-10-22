@@ -10,9 +10,10 @@ interface FilterDropdownProps {
   options: FilterOption[];
   selectedOptions: {[key: string]: boolean};
   onToggle: (key: string) => void;
+  width?: number;
 }
 
-export const FilterSortDropdown = ({title, options, selectedOptions, onToggle}: FilterDropdownProps) => {
+export const FilterSortDropdown = ({title, options, selectedOptions, onToggle, width = 110}: FilterDropdownProps) => {
   const [isOpen, setIsOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
 
@@ -31,7 +32,7 @@ export const FilterSortDropdown = ({title, options, selectedOptions, onToggle}: 
   }, []);
 
   return (
-    <div ref={dropdownRef} className="relative w-[110px]">
+    <div ref={dropdownRef} className={`relative `} style={width ? {width: `${width}px`} : {width: "110px"}}>
       {/* 필터 버튼 */}
       <button
         onClick={() => setIsOpen(!isOpen)}

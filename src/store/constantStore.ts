@@ -524,8 +524,8 @@ export const STAT_LABELS = [
   {statName: "attack", label: "공격"},
   {statName: "defense", label: "방어"},
   {statName: "speed", label: "스피드"},
-  {statName: "special-attack", label: "특공"},
-  {statName: "special-defense", label: "특방"},
+  {statName: "specialAttack", label: "특공"},
+  {statName: "specialDefense", label: "특방"},
 ];
 
 export const METHOD_NAME_MAP: {[key: string]: string} = {
@@ -561,6 +561,11 @@ export const SORT_OPTIONS = [
   {key: "speed", label: "스피드"},
   {key: "specialAttack", label: "특공"},
   {key: "specialDefense", label: "특방"},
+  {key: "hp_defense", label: "hp+방어"},
+  {key: "hp_specialDefense", label: "hp+특방"},
+  {key: "hp_defense_specialDefense", label: "hp+방어+특방"},
+  {key: "attack_speed", label: "공격+스피드"},
+  {key: "specialAttack_speed", label: "특공+스피드"},
 ];
 
 export const SORT_ASC_DESC_OPTIONS = [

@@ -96,6 +96,11 @@ export const useZustandStore = create<zustandStoreType>((set) => ({
     speed: false,
     specialAttack: false,
     specialDefense: false,
+    hp_defense: false,
+    hp_specialDefense: false,
+    hp_defense_specialDefense: false,
+    attack_speed: false,
+    specialAttack_speed: false,
   },
   setSortOption: (update) =>
     set((state) => {

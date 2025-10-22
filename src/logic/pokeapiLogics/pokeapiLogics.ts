@@ -187,6 +187,15 @@ export const getLearningPokemonsDetail = async (commonPokemons: pokemonBasicInfo
 
       const {data: speciesData} = await axios.get(speciesUrl);
 
+      const newStatNamesMap: {[key: string]: string} = {
+        hp: "hp",
+        attack: "attack",
+        defense: "defense",
+        "special-attack": "specialAttack",
+        "special-defense": "specialDefense",
+        speed: "speed",
+      };
+
       return {
         pokemonId: basicData.id,
         speciesId: speciesData.id,
@@ -213,7 +222,7 @@ export const getLearningPokemonsDetail = async (commonPokemons: pokemonBasicInfo
 
         stats: basicData.stats.map(
           (statInfo: {base_stat: number; effort: number; stat: {name: string; url: string}}) => ({
-            statName: statInfo.stat.name,
+            statName: newStatNamesMap[statInfo.stat.name] || statInfo.stat.name,
             statValue: statInfo.base_stat,
           })
         ),

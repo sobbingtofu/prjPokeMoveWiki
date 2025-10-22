@@ -121,6 +121,11 @@ export interface zustandStoreType {
     speed: boolean;
     specialAttack: boolean;
     specialDefense: boolean;
+    hp_defense: boolean;
+    hp_specialDefense: boolean;
+    hp_defense_specialDefense: boolean;
+    attack_speed: boolean;
+    specialAttack_speed: boolean;
   };
   setSortOption: (
     update: zustandStoreType["sortOption"] | ((prev: zustandStoreType["sortOption"]) => zustandStoreType["sortOption"])

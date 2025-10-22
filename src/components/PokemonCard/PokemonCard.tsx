@@ -71,7 +71,7 @@ function PokemonCard({pokemon}: {pokemon: detailedPokemInfoType}) {
           <img src={pokemon.spriteUrl} alt={pokemon.koreanName} />
         </div>
         <p className="text-lg">{pokemonMainName}</p>
-        <p className="text-[7pt] h-[14px]">{pokemonRegionSubname}</p>
+        <p className="text-[8pt] h-[14px]">{pokemonRegionSubname}</p>
         <div className="w-full flex flex-row justify-center gap-2 mt-1">
           {pokemon.types.map((type, index) => (
             <TypeChip key={type} type={type} korType={pokemon.koreantypes[index] || ""} textSize="xs" />
@@ -80,7 +80,7 @@ function PokemonCard({pokemon}: {pokemon: detailedPokemInfoType}) {
       </div>
 
       {/* 스탯 표시 */}
-      <div className="text-[7pt] w-full mt-1">
+      <div className="text-[9pt] w-full mt-1">
         <div className="grid grid-cols-3 gap-y-2 w-full">
           {STAT_LABELS.map((stat) => {
             const statValue = pokemon.stats.find((s) => s.statName === stat.statName)?.statValue;
@@ -91,16 +91,25 @@ function PokemonCard({pokemon}: {pokemon: detailedPokemInfoType}) {
               </div>
             );
           })}
+          <p>
+            {(pokemon.stats.find((s) => s.statName === "hp")?.statValue || 0) +
+              (pokemon.stats.find((s) => s.statName === "defense")?.statValue || 0)}
+          </p>
+          <p>
+            {(pokemon.stats.find((s) => s.statName === "hp")?.statValue || 0) +
+              (pokemon.stats.find((s) => s.statName === "defense")?.statValue || 0) +
+              (pokemon.stats.find((s) => s.statName === "specialDefense")?.statValue || 0)}
+          </p>
         </div>
       </div>
 
       {/* 기술 별 배우는 세대 표시 */}
-      <div className="w-full flex flex-col gap-1.5">
+      <div className="w-full flex flex-col gap-1.5 px-4">
         {pokemon.moveDetails &&
           refinedMoveDetails.length > 0 &&
           refinedMoveDetails.map((moveItem) => (
             <div key={moveItem.moveKorName} className="mb-2 flex flex-col gap-0.5">
-              <p className="font-bold text-xs">{moveItem.moveKorName} </p>
+              <p className="font-bold text-sm">{moveItem.moveKorName} </p>
               <div className="flex flex-col ">
                 {moveItem.uniqueVersionDetails.map((versionDetail, idx) => {
                   const activatedGenNumber = Object.entries(genFilter).find(([key, value]) => value)?.[0];
@@ -110,8 +119,8 @@ function PokemonCard({pokemon}: {pokemon: detailedPokemInfoType}) {
                   return (
                     <div key={idx}>
                       {versionDetail.genNumber === trimmedActivatedGenNumber && (
-                        <div className="flex gap-3.5 text-[8pt]">
-                          <div className="flex gap-1.5 items-center">
+                        <div className="flex gap-3.5">
+                          <div className="flex gap-0 items-center">
                             {versionDetail.learnMethod.map((method, methodIdx) => {
                               const methodNameMap: {[key: string]: string} = {
                                 "level-up": "레벨업",
@@ -131,8 +140,10 @@ function PokemonCard({pokemon}: {pokemon: detailedPokemInfoType}) {
                               return (
                                 <div key={methodIdx}>
                                   {activatedLearnMethods.includes(method.methodName) && (
-                                    <div className="flex max-w-[56px] text-gray-600">
-                                      <p>{korMethodName}</p>
+                                    <div className="flex max-w-[70px] text-gray-600 text-xs">
+                                      <p>
+                                        {methodIdx > 0 && ", "} {korMethodName}
+                                      </p>
                                       {korMethodName == "레벨업" && <p>({method.learnedLevel})</p>}
                                     </div>
                                   )}

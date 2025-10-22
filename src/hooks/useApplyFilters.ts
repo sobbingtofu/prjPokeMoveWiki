@@ -10,8 +10,8 @@ function useApplyFilters() {
 
   // 필터 적용 함수
   const applyFilters = (detailedLearningPokemons_Filtered: detailedPokemInfoType[]) => {
-    console.log("Applying filters:", {genFilter, learnMethodFilter});
-    console.log("Initial Pokemons:", detailedLearningPokemons_Filtered);
+    // console.log("Applying filters:", {genFilter, learnMethodFilter});
+    // console.log("Initial Pokemons:", detailedLearningPokemons_Filtered);
     const filtered = detailedLearningPokemons_Filtered.filter((pokemon) => {
       // 각 포켓몬의 moveDetails를 순회
       const hasMatchingMove = pokemon.moveDetails?.every((moveDetail) => {
