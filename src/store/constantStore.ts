@@ -552,3 +552,13 @@ export const GEN_OPTIONS = [
   {key: "gen8", label: "8세대"},
   {key: "gen9", label: "9세대"},
 ];
+
+export const SORT_OPTIONS = [
+  {key: "alphabetical", label: "가나다순"},
+  {key: "hp", label: "hp"},
+  {key: "attack", label: "공격"},
+  {key: "defense", label: "방어"},
+  {key: "speed", label: "스피드"},
+  {key: "specialAttack", label: "특공"},
+  {key: "specialDefense", label: "특방"},
+];

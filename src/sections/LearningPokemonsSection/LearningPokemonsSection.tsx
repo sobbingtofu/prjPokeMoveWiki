@@ -1,6 +1,10 @@
 import {FilterDropdown} from "@/components/FilterDropdown/FilterDropdown";
 import PokemonCard from "@/components/PokemonCard/PokemonCard";
-import {GEN_OPTIONS, LEARN_METHOD_OPTIONS, METHOD_NAME_MAP} from "@/store/constantStore";
+import {SortOptionDropdown} from "@/components/SortOptionDropdown/SortOptionDropdown";
+import useApplyFiltersChange from "@/hooks/useApplyFiltersChange";
+import useApplySortings from "@/hooks/useApplySortings";
+import useApplySortingsChange from "@/hooks/useApplySortingsChange";
+import {GEN_OPTIONS, LEARN_METHOD_OPTIONS, METHOD_NAME_MAP, SORT_OPTIONS} from "@/store/constantStore";
 import {useZustandStore} from "@/store/zustandStore";
 import React from "react";
 
@@ -11,6 +15,7 @@ interface LearningPokemonsSectionProps {
 function LearningPokemonsSection({className = ""}: LearningPokemonsSectionProps) {
   const {lastSearchMovesArrayStates, detailedLearningPokemons_Filtered} = useZustandStore();
   const {genFilter, setGenFilter, learnMethodFilter, setLearnMethodFilter} = useZustandStore();
+  const {sortOption, setSortOption} = useZustandStore();
 
   const handleGenToggle = (key: string) => {
     const newGenFilter: {[key: string]: boolean} = {};
@@ -27,16 +32,58 @@ function LearningPokemonsSection({className = ""}: LearningPokemonsSectionProps)
     });
   };
 
+  const handleSortOptionToggle = (key: string) => {
+    const newSortOption: {
+      alphabetical: boolean;
+      hp: boolean;
+      attack: boolean;
+      defense: boolean;
+      speed: boolean;
+      specialAttack: boolean;
+      specialDefense: boolean;
+    } = {
+      alphabetical: false,
+      hp: false,
+      attack: false,
+      defense: false,
+      speed: false,
+      specialAttack: false,
+      specialDefense: false,
+    };
+    Object.keys(sortOption).forEach((k) => {
+      newSortOption[k as keyof typeof newSortOption] = k === key;
+    });
+    console.log("새 정렬 옵션 설정:", newSortOption);
+    setSortOption(newSortOption);
+  };
+
   const currentGenText =
     GEN_OPTIONS.find((option) => {
       return option.key === Object.entries(genFilter).find(([key, value]) => value)?.[0];
     })?.label || "모든";
+
+  const currentSortOptionText =
+    SORT_OPTIONS.find((option) => {
+      return option.key === Object.entries(sortOption).find(([key, value]) => value)?.[0];
+    })?.label || "정렬";
+  // const currentSortAscDesc = Object.entries(sortOption).filter(([_, value]) => value !== "deactivated")[0][1];
+  // console.log("현재 정렬 옵션:", currentSortOptionText);
+  // console.log("현재 정렬 방향:", currentSortAscDesc);
+
+  useApplyFiltersChange();
+  useApplySortingsChange();
 
   return (
     <section className={`${className} h-full  px-10 pt-15 flex flex-col items-start gap-4`}>
       <div className="flex justify-between items-end w-full">
         <h3 className="text-white font-bold text-2xl">배우는 포켓몬 ({detailedLearningPokemons_Filtered.length})</h3>
         <div className="flex flex-row gap-4 text-white font-bold text-xs">
+          <SortOptionDropdown
+            title={currentSortOptionText}
+            options={SORT_OPTIONS}
+            selectedOptions={sortOption}
+            onToggle={handleSortOptionToggle}
+          />
           <FilterDropdown
             title={currentGenText}
             options={GEN_OPTIONS}

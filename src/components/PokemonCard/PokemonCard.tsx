@@ -63,7 +63,7 @@ function PokemonCard({pokemon}: {pokemon: detailedPokemInfoType}) {
   return (
     <div
       key={pokemon.name}
-      className="text-sm font-bold px-4 py-2 bg-gray-100 rounded-2xl flex flex-col justify-start items-start gap-4"
+      className="text-sm font-bold px-4 py-2 bg-gray-100 rounded-2xl flex flex-col justify-start items-start gap-5"
     >
       {/* 이미지, 이름, 타입칩 */}
       <div className="w-full flex flex-col items-center gap-1">
@@ -71,7 +71,7 @@ function PokemonCard({pokemon}: {pokemon: detailedPokemInfoType}) {
           <img src={pokemon.spriteUrl} alt={pokemon.koreanName} />
         </div>
         <p className="text-lg">{pokemonMainName}</p>
-        <p className="text-xs">{pokemonRegionSubname}</p>
+        <p className="text-[7pt] h-[14px]">{pokemonRegionSubname}</p>
         <div className="w-full flex flex-row justify-center gap-2 mt-1">
           {pokemon.types.map((type, index) => (
             <TypeChip key={type} type={type} korType={pokemon.koreantypes[index] || ""} textSize="xs" />
@@ -80,7 +80,7 @@ function PokemonCard({pokemon}: {pokemon: detailedPokemInfoType}) {
       </div>
 
       {/* 스탯 표시 */}
-      <div className="text-[7pt] w-full">
+      <div className="text-[7pt] w-full mt-1">
         <div className="grid grid-cols-3 gap-y-2 w-full">
           {STAT_LABELS.map((stat) => {
             const statValue = pokemon.stats.find((s) => s.statName === stat.statName)?.statValue;
