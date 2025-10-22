@@ -91,7 +91,8 @@ function PokemonCard({pokemon}: {pokemon: detailedPokemInfoType}) {
               </div>
             );
           })}
-          <p>
+          {/* 테스트 영역 */}
+          {/* <p>
             {(pokemon.stats.find((s) => s.statName === "hp")?.statValue || 0) +
               (pokemon.stats.find((s) => s.statName === "defense")?.statValue || 0)}
           </p>
@@ -99,7 +100,7 @@ function PokemonCard({pokemon}: {pokemon: detailedPokemInfoType}) {
             {(pokemon.stats.find((s) => s.statName === "hp")?.statValue || 0) +
               (pokemon.stats.find((s) => s.statName === "defense")?.statValue || 0) +
               (pokemon.stats.find((s) => s.statName === "specialDefense")?.statValue || 0)}
-          </p>
+          </p> */}
         </div>
       </div>
 
