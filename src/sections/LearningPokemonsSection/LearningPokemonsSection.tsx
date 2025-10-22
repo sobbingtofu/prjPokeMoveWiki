@@ -1,10 +1,8 @@
-import {FilterDropdown} from "@/components/FilterDropdown/FilterDropdown";
+import {FilterSortDropdown} from "@/components/FilterSortDropdown/FilterSortDropdown";
 import PokemonCard from "@/components/PokemonCard/PokemonCard";
-import {SortOptionDropdown} from "@/components/SortOptionDropdown/SortOptionDropdown";
 import useApplyFiltersChange from "@/hooks/useApplyFiltersChange";
-import useApplySortings from "@/hooks/useApplySortings";
 import useApplySortingsChange from "@/hooks/useApplySortingsChange";
-import {GEN_OPTIONS, LEARN_METHOD_OPTIONS, METHOD_NAME_MAP, SORT_OPTIONS} from "@/store/constantStore";
+import {GEN_OPTIONS, LEARN_METHOD_OPTIONS, SORT_ASC_DESC_OPTIONS, SORT_OPTIONS} from "@/store/constantStore";
 import {useZustandStore} from "@/store/zustandStore";
 import React from "react";
 
@@ -15,7 +13,7 @@ interface LearningPokemonsSectionProps {
 function LearningPokemonsSection({className = ""}: LearningPokemonsSectionProps) {
   const {lastSearchMovesArrayStates, detailedLearningPokemons_Filtered} = useZustandStore();
   const {genFilter, setGenFilter, learnMethodFilter, setLearnMethodFilter} = useZustandStore();
-  const {sortOption, setSortOption} = useZustandStore();
+  const {sortOption, setSortOption, sortAscDescOption, setSortAscDescOption} = useZustandStore();
 
   const handleGenToggle = (key: string) => {
     const newGenFilter: {[key: string]: boolean} = {};
@@ -53,8 +51,15 @@ function LearningPokemonsSection({className = ""}: LearningPokemonsSectionProps)
     Object.keys(sortOption).forEach((k) => {
       newSortOption[k as keyof typeof newSortOption] = k === key;
     });
-    console.log("새 정렬 옵션 설정:", newSortOption);
     setSortOption(newSortOption);
+  };
+
+  const handleSortAscDescOptionToggle = (key: string) => {
+    const newSortAscDescOption: {asc: boolean; desc: boolean} = {asc: false, desc: false};
+    Object.keys(sortAscDescOption).forEach((k) => {
+      newSortAscDescOption[k as keyof typeof newSortAscDescOption] = k === key;
+    });
+    setSortAscDescOption(newSortAscDescOption);
   };
 
   const currentGenText =
@@ -66,9 +71,11 @@ function LearningPokemonsSection({className = ""}: LearningPokemonsSectionProps)
     SORT_OPTIONS.find((option) => {
       return option.key === Object.entries(sortOption).find(([key, value]) => value)?.[0];
     })?.label || "정렬";
-  // const currentSortAscDesc = Object.entries(sortOption).filter(([_, value]) => value !== "deactivated")[0][1];
-  // console.log("현재 정렬 옵션:", currentSortOptionText);
-  // console.log("현재 정렬 방향:", currentSortAscDesc);
+
+  const currentSortAscDescOption =
+    SORT_ASC_DESC_OPTIONS.find((option) => {
+      return option.key === Object.entries(sortAscDescOption).find(([key, value]) => value)?.[0];
+    })?.label || "";
 
   useApplyFiltersChange();
   useApplySortingsChange();
@@ -78,19 +85,25 @@ function LearningPokemonsSection({className = ""}: LearningPokemonsSectionProps)
       <div className="flex justify-between items-end w-full">
         <h3 className="text-white font-bold text-2xl">배우는 포켓몬 ({detailedLearningPokemons_Filtered.length})</h3>
         <div className="flex flex-row gap-4 text-white font-bold text-xs">
-          <SortOptionDropdown
+          <FilterSortDropdown
+            title={currentSortAscDescOption}
+            options={SORT_ASC_DESC_OPTIONS}
+            selectedOptions={sortAscDescOption}
+            onToggle={handleSortAscDescOptionToggle}
+          />
+          <FilterSortDropdown
             title={currentSortOptionText}
             options={SORT_OPTIONS}
             selectedOptions={sortOption}
             onToggle={handleSortOptionToggle}
           />
-          <FilterDropdown
+          <FilterSortDropdown
             title={currentGenText}
             options={GEN_OPTIONS}
             selectedOptions={genFilter}
             onToggle={handleGenToggle}
           />
-          <FilterDropdown
+          <FilterSortDropdown
             title="배우는 방법"
             options={LEARN_METHOD_OPTIONS}
             selectedOptions={learnMethodFilter}

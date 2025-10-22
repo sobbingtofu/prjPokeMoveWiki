@@ -49,8 +49,6 @@ export interface detailedPokemInfoType {
   moveDetails?: moveDetailType[];
 }
 
-export type sortAscDescType = "asc" | "desc" | "deactivated";
-
 export interface zustandStoreType {
   isFirstAccessToApp: boolean;
   setIsFirstAccessToApp: (update: boolean) => void;
@@ -126,6 +124,16 @@ export interface zustandStoreType {
   };
   setSortOption: (
     update: zustandStoreType["sortOption"] | ((prev: zustandStoreType["sortOption"]) => zustandStoreType["sortOption"])
+  ) => void;
+
+  sortAscDescOption: {
+    asc: boolean;
+    desc: boolean;
+  };
+  setSortAscDescOption: (
+    update:
+      | Partial<zustandStoreType["sortAscDescOption"]>
+      | ((prev: zustandStoreType["sortAscDescOption"]) => zustandStoreType["sortAscDescOption"])
   ) => void;
 
   isToastMessageVisible: boolean;

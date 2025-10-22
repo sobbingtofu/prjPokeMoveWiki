@@ -5,14 +5,14 @@ interface FilterOption {
   label: string;
 }
 
-interface SortOptionDropdownProps {
+interface FilterDropdownProps {
   title: string;
   options: FilterOption[];
   selectedOptions: {[key: string]: boolean};
   onToggle: (key: string) => void;
 }
 
-export const SortOptionDropdown = ({title, options, selectedOptions, onToggle}: SortOptionDropdownProps) => {
+export const FilterSortDropdown = ({title, options, selectedOptions, onToggle}: FilterDropdownProps) => {
   const [isOpen, setIsOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
 

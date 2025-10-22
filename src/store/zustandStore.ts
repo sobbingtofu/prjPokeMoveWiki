@@ -104,6 +104,14 @@ export const useZustandStore = create<zustandStoreType>((set) => ({
       return {sortOption: next};
     }),
 
+  sortAscDescOption: {asc: true, desc: false},
+  setSortAscDescOption: (update) =>
+    set((state) => {
+      const prev = state.sortAscDescOption;
+      const next = typeof update === "function" ? update(prev) : {...prev, ...update};
+      return {sortAscDescOption: next};
+    }),
+
   isToastMessageVisible: false,
   setIsToastMessageVisible: (update) => set(() => ({isToastMessageVisible: update})),
 

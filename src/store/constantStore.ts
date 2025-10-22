@@ -562,3 +562,8 @@ export const SORT_OPTIONS = [
   {key: "specialAttack", label: "특공"},
   {key: "specialDefense", label: "특방"},
 ];
+
+export const SORT_ASC_DESC_OPTIONS = [
+  {key: "asc", label: "오름차순"},
+  {key: "desc", label: "내림차순"},
+];
