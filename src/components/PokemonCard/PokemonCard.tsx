@@ -66,13 +66,13 @@ function PokemonCard({pokemon}: {pokemon: detailedPokemInfoType}) {
       className="text-sm font-bold px-4 py-2 bg-gray-100 rounded-2xl flex flex-col justify-start items-start gap-4 h-min"
     >
       {/* 이미지, 이름, 타입칩 */}
-      <div className="w-full flex flex-col items-center">
+      <div className="w-full flex flex-col items-center gap-1">
         <div className="flex justify-center items-center w-[100px] h-[100px]">
           <img src={pokemon.spriteUrl} alt={pokemon.koreanName} />
         </div>
         <p className="text-lg">{pokemonMainName}</p>
-        <p className="text-lg">{pokemonRegionSubname}</p>
-        <div className="w-full flex flex-row justify-center gap-2">
+        <p className="text-xs">{pokemonRegionSubname}</p>
+        <div className="w-full flex flex-row justify-center gap-2 mt-1">
           {pokemon.types.map((type, index) => (
             <TypeChip key={type} type={type} korType={pokemon.koreantypes[index] || ""} textSize="xs" />
           ))}
@@ -95,12 +95,12 @@ function PokemonCard({pokemon}: {pokemon: detailedPokemInfoType}) {
       </div>
 
       {/* 기술 별 배우는 세대 표시 */}
-      <div>
+      <div className="w-full flex flex-col gap-1.5">
         {pokemon.moveDetails &&
           refinedMoveDetails.length > 0 &&
           refinedMoveDetails.map((moveItem) => (
-            <div key={moveItem.moveKorName} className="mb-2">
-              <p className="font-bold text-xs">{moveItem.moveKorName}</p>
+            <div key={moveItem.moveKorName} className="mb-2 flex flex-col gap-0.5">
+              <p className="font-bold text-xs">{moveItem.moveKorName} </p>
               <div className="flex flex-col ">
                 {moveItem.uniqueVersionDetails.map((versionDetail, idx) => {
                   const activatedGenNumber = Object.entries(genFilter).find(([key, value]) => value)?.[0];
@@ -110,7 +110,7 @@ function PokemonCard({pokemon}: {pokemon: detailedPokemInfoType}) {
                   return (
                     <div key={idx}>
                       {versionDetail.genNumber === trimmedActivatedGenNumber && (
-                        <div className="flex gap-3.5 text-[8pt] ml-2">
+                        <div className="flex gap-3.5 text-[8pt]">
                           <div className="flex gap-1.5 items-center">
                             {versionDetail.learnMethod.map((method, methodIdx) => {
                               const methodNameMap: {[key: string]: string} = {
@@ -131,7 +131,7 @@ function PokemonCard({pokemon}: {pokemon: detailedPokemInfoType}) {
                               return (
                                 <div key={methodIdx}>
                                   {activatedLearnMethods.includes(method.methodName) && (
-                                    <div className="flex max-w-[53px]">
+                                    <div className="flex max-w-[56px] text-gray-600">
                                       <p>{korMethodName}</p>
                                       {korMethodName == "레벨업" && <p>({method.learnedLevel})</p>}
                                     </div>
@@ -139,7 +139,7 @@ function PokemonCard({pokemon}: {pokemon: detailedPokemInfoType}) {
                                 </div>
                               );
                             })}
-                            <p className="text-gray-600  italic">({versionDetail.genNumber}세대)</p>
+                            {/* <p className="text-gray-600  italic">({versionDetail.genNumber}세대)</p> */}
                           </div>
                         </div>
                       )}
