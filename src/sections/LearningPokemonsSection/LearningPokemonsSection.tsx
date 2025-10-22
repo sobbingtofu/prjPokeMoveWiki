@@ -131,8 +131,11 @@ function LearningPokemonsSection({className = ""}: LearningPokemonsSectionProps)
           no-scrollbar-buttons
           "
         >
-          {detailedLearningPokemons_Filtered.map((pokemon) => (
-            <PokemonCard key={pokemon.name} pokemon={pokemon} />
+          {detailedLearningPokemons_Filtered.map((pokemon, index) => (
+            <PokemonCard
+              key={`${pokemon.name}-${index}`} // 포켓몬 이름과 인덱스 조합
+              pokemon={pokemon}
+            />
           ))}
         </div>
       )}

@@ -1,12 +1,18 @@
 import {detailedPokemInfoType} from "@/store/type";
 import {useZustandStore} from "@/store/zustandStore";
+import useApplySortings from "./useApplySortings";
 
 function useApplyFilters() {
-  const {setDetailedLearningPokemons_Filtered, genFilter, learnMethodFilter} = useZustandStore();
+  const {detailedLearningPokemons_Filtered, setDetailedLearningPokemons_Filtered, genFilter, learnMethodFilter} =
+    useZustandStore();
+
+  const applySortings = useApplySortings();
 
   // 필터 적용 함수
-  const applyFilters = (detailedLearningPokemons_PreFilter: detailedPokemInfoType[]) => {
-    const filtered = detailedLearningPokemons_PreFilter.filter((pokemon) => {
+  const applyFilters = (detailedLearningPokemons_Filtered: detailedPokemInfoType[]) => {
+    console.log("Applying filters:", {genFilter, learnMethodFilter});
+    console.log("Initial Pokemons:", detailedLearningPokemons_Filtered);
+    const filtered = detailedLearningPokemons_Filtered.filter((pokemon) => {
       // 각 포켓몬의 moveDetails를 순회
       const hasMatchingMove = pokemon.moveDetails?.every((moveDetail) => {
         // 해당 기술의 versionDetails를 순회
@@ -37,8 +43,8 @@ function useApplyFilters() {
 
       return hasMatchingMove;
     });
-
-    setDetailedLearningPokemons_Filtered(filtered);
+    console.log("Filtered Pokemons:", filtered);
+    applySortings(filtered);
     return filtered;
   };
 

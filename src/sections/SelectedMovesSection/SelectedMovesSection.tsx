@@ -1,8 +1,6 @@
 import {MoveCard} from "@/components/MoveCard/MoveCard";
 import ScrollContainer from "@/components/ScrollContainer/ScrollContainer";
 import SelectedMovesDeleteButtons from "@/components/SelectedMovesDeleteButtons/SelectedMovesDeleteButtons";
-import useApplyFiltersChange from "@/hooks/useApplyFiltersChange";
-import useApplySortings from "@/hooks/useApplySortings";
 import useHandleSearchBtnClick from "@/hooks/useHandleSearchBtnClick";
 
 import {useZustandStore} from "@/store/zustandStore";
