@@ -91,36 +91,46 @@ function LearningPokemonsSection({className = ""}: LearningPokemonsSectionProps)
   useApplySortingsChange();
 
   return (
-    <section className={`${className} h-full  px-10 pt-15 flex flex-col items-start gap-4`}>
-      <div className="w-full flex flex-col gap-4 h-[10dvh]">
+    <section className={`${className} h-full  px-10 pt-12 flex flex-col items-start gap-4`}>
+      <div className="w-full flex flex-col gap-4 h-[15dvh]">
         <div className="flex justify-between items-end w-full">
           <h3 className="text-white font-bold text-2xl">배우는 포켓몬 ({detailedLearningPokemons_Filtered.length})</h3>
-          <div className="flex flex-row gap-4 text-white font-bold text-xs">
-            <FilterSortDropdown
-              title={currentSortAscDescOption}
-              options={SORT_ASC_DESC_OPTIONS}
-              selectedOptions={sortAscDescOption}
-              onToggle={handleSortAscDescOptionToggle}
-            />
-            <FilterSortDropdown
-              title={currentSortOptionText}
-              options={SORT_OPTIONS}
-              selectedOptions={sortOption}
-              onToggle={handleSortOptionToggle}
-              width={120}
-            />
-            <FilterSortDropdown
-              title={currentGenText}
-              options={GEN_OPTIONS}
-              selectedOptions={genFilter}
-              onToggle={handleGenToggle}
-            />
-            <FilterSortDropdown
-              title="배우는 방법"
-              options={LEARN_METHOD_OPTIONS}
-              selectedOptions={learnMethodFilter}
-              onToggle={handleLearnMethodToggle}
-            />
+          <div className="flex flex-row gap-6 text-white font-bold text-xs">
+            <div className="flex flex-col gap-1">
+              <p className="text-xs text-gray-300">정렬</p>
+              <div className="flex flex-row gap-2">
+                <FilterSortDropdown
+                  title={currentSortAscDescOption}
+                  options={SORT_ASC_DESC_OPTIONS}
+                  selectedOptions={sortAscDescOption}
+                  onToggle={handleSortAscDescOptionToggle}
+                />
+                <FilterSortDropdown
+                  title={currentSortOptionText}
+                  options={SORT_OPTIONS}
+                  selectedOptions={sortOption}
+                  onToggle={handleSortOptionToggle}
+                  width={120}
+                />
+              </div>
+            </div>
+            <div className="flex flex-col gap-1">
+              <p className="text-xs text-gray-300">필터</p>
+              <div className="flex flex-row gap-2">
+                <FilterSortDropdown
+                  title={currentGenText}
+                  options={GEN_OPTIONS}
+                  selectedOptions={genFilter}
+                  onToggle={handleGenToggle}
+                />
+                <FilterSortDropdown
+                  title="배우는 방법"
+                  options={LEARN_METHOD_OPTIONS}
+                  selectedOptions={learnMethodFilter}
+                  onToggle={handleLearnMethodToggle}
+                />
+              </div>
+            </div>
           </div>
         </div>
         {(lastSearchMovesArrayStates.length === 0 || detailedLearningPokemons_Filtered.length === 0) && (
@@ -139,7 +149,7 @@ function LearningPokemonsSection({className = ""}: LearningPokemonsSectionProps)
       </div>
       {detailedLearningPokemons_Filtered.length > 0 && (
         <div
-          className="grid grid-cols-4 w-full gap-x-3 gap-y-2 h-[78dvh] auto-rows-max
+          className="grid grid-cols-4 w-full gap-x-3 gap-y-2 h-[74dvh] auto-rows-max
           pr-2 overflow-y-scroll scrollbar-thin scrollbar-track-gray-700 scrollbar-thumb-gray-500
           no-scrollbar-buttons
           "
