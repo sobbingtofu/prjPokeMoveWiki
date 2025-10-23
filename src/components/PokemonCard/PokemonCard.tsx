@@ -86,8 +86,12 @@ function PokemonCard({pokemon}: {pokemon: detailedPokemInfoType}) {
             const statValue = pokemon.stats.find((s) => s.statName === stat.statName)?.statValue;
             return (
               <div key={stat.statName} className="flex flex-col items-center">
-                <p className="text-center">{stat.label}</p>
-                <p className="text-center">{statValue}</p>
+                <p className={`text-center ${statValue && statValue >= 130 ? "text-red-600" : "text-black"}`}>
+                  {stat.label}
+                </p>
+                <p className={`text-center ${statValue && statValue >= 130 ? "text-red-600" : "text-black"}`}>
+                  {statValue}
+                </p>
               </div>
             );
           })}

@@ -8,6 +8,7 @@ import {Loader} from "../../components/Loader/Loader";
 import {Toast} from "@/components/Toast/Toast";
 import {selectedMoveType} from "@/store/type";
 import MoveSearchDropdown from "@/components/MoveSearchDropdown/MoveSearchDropdown";
+import useHandleSearchBtnClick from "@/hooks/useHandleSearchBtnClick";
 
 interface SearchSectionProps {
   className?: string;
@@ -33,7 +34,11 @@ export const SearchSection = ({className = "", smDropDownHeight, dropDownHeight}
 
   const searchContainerRef = useRef<HTMLDivElement>(null);
   const debounceRef = useRef<NodeJS.Timeout | null>(null);
-  const inputValueRef = useRef<string>(""); // 실시간 입력값을 관리하는 ref
+  const inputValueRef = useRef<string>(""); // 실시간 입력값 관리 ref
+  const accentedMoveIndexRef = useRef<number>(-1);
+
+  const lastArrowKeyTime = useRef<number>(0); // 마지막 방향키 처리 시간
+  const arrowKeyThrottleDelay = 80; // 스로틀링 딜레이
 
   // searchValue 변경 시 검색 결과 필터링
   useEffect(() => {
@@ -50,6 +55,8 @@ export const SearchSection = ({className = "", smDropDownHeight, dropDownHeight}
     setFilteredMoves(filtered);
     setIsDropdownOpen(filtered.length > 0);
   }, [searchValue, koreanMovesArrayStates, setFilteredMoves, setIsDropdownOpen]);
+
+  const handleSearchButtonClick = useHandleSearchBtnClick();
 
   // 외부 클릭시 드롭다운 닫기
   useEffect(() => {
@@ -68,22 +75,79 @@ export const SearchSection = ({className = "", smDropDownHeight, dropDownHeight}
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setIsToastMessageVisible(false);
+
     inputValueRef.current = e.target.value; // ref에 실시간 값 저장
   };
 
-  const handleKeyDown = () => {
-    setIsDebouncing(true);
-
-    // 기존 타이머 클리어
-    if (debounceRef.current) {
-      clearTimeout(debounceRef.current);
+  const handleEnterKeyDown = () => {
+    setIsDebouncing(false);
+    if (filteredMoves.length > 0 && accentedMoveIndexRef.current === -1) {
+      accentedMoveIndexRef.current = 0;
+    } else if (filteredMoves.length > 0 && accentedMoveIndexRef.current >= 0) {
+      const accentedMove = filteredMoves[accentedMoveIndexRef.current];
+      if (accentedMove) {
+        handleDropdownItemClick_searchLearningPokemon(accentedMove);
+        // 초기화
+        // enterKeyPressedCounRef.current = 0;
+      }
     }
+  };
 
-    // 0.2초 후 searchValue 업데이트
-    debounceRef.current = setTimeout(() => {
-      setSearchValue(inputValueRef.current);
-      setIsDebouncing(false);
-    }, 200);
+  const handleArrowKeyDown = (arrow: "ArrowDown" | "ArrowUp") => {
+    setIsDebouncing(false);
+    if (filteredMoves.length > 0) {
+      const currentTime = Date.now();
+      if (currentTime - lastArrowKeyTime.current > arrowKeyThrottleDelay) {
+        if (arrow === "ArrowDown") {
+          if (accentedMoveIndexRef.current < filteredMoves.length - 1) {
+            accentedMoveIndexRef.current += 1;
+          } else {
+            accentedMoveIndexRef.current = 0;
+          }
+        } else if (arrow === "ArrowUp") {
+          if (accentedMoveIndexRef.current > 0) {
+            accentedMoveIndexRef.current -= 1;
+          } else {
+            accentedMoveIndexRef.current = filteredMoves.length - 1;
+          }
+        }
+
+        lastArrowKeyTime.current = currentTime;
+      }
+    }
+  };
+
+  const handleControlEnterKeyDown = () => {
+    handleSearchButtonClick();
+  };
+
+  const handleKeyDownInMoveSearchInput = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === "Enter") {
+      if (e.ctrlKey) {
+        accentedMoveIndexRef.current = -1;
+        setIsDropdownOpen(false);
+        handleControlEnterKeyDown();
+      } else {
+        handleEnterKeyDown();
+      }
+    } else if (e.key === "ArrowDown" || e.key === "ArrowUp") {
+      e.preventDefault();
+      handleArrowKeyDown(e.key);
+    } else {
+      setIsDebouncing(true);
+      accentedMoveIndexRef.current = -1;
+
+      // 기존 타이머 클리어
+      if (debounceRef.current) {
+        clearTimeout(debounceRef.current);
+      }
+
+      // 0.2초 후 searchValue 업데이트
+      debounceRef.current = setTimeout(() => {
+        setSearchValue(inputValueRef.current);
+        setIsDebouncing(false);
+      }, 200);
+    }
   };
 
   const handleInputFocus = () => {
@@ -135,7 +199,7 @@ export const SearchSection = ({className = "", smDropDownHeight, dropDownHeight}
             <input
               type="text"
               onChange={handleInputChange}
-              onKeyDown={handleKeyDown}
+              onKeyDown={handleKeyDownInMoveSearchInput}
               onFocus={handleInputFocus}
               placeholder="추가할 기술 이름을 입력하세요"
               className=" w-full focus:outline-none bg-transparent"
@@ -154,6 +218,7 @@ export const SearchSection = ({className = "", smDropDownHeight, dropDownHeight}
               smDropDownHeight={smDropDownHeight}
               move={filteredMoves}
               dropDownOnClick={handleDropdownItemClick_searchLearningPokemon}
+              accentedMoveIndex={accentedMoveIndexRef.current}
             />
           )}
 
