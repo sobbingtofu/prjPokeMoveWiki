@@ -49,6 +49,21 @@ export interface detailedPokemInfoType {
   moveDetails?: moveDetailType[];
 }
 
+export type sortOptionType = {
+  alphabetical: boolean;
+  hp: boolean;
+  attack: boolean;
+  defense: boolean;
+  speed: boolean;
+  specialAttack: boolean;
+  specialDefense: boolean;
+  hp_defense: boolean;
+  hp_specialDefense: boolean;
+  hp_defense_specialDefense: boolean;
+  attack_speed: boolean;
+  specialAttack_speed: boolean;
+};
+
 export interface zustandStoreType {
   isFirstAccessToApp: boolean;
   setIsFirstAccessToApp: (update: boolean) => void;
@@ -113,20 +128,7 @@ export interface zustandStoreType {
       | ((prev: zustandStoreType["learnMethodFilter"]) => zustandStoreType["learnMethodFilter"])
   ) => void;
 
-  sortOption: {
-    alphabetical: boolean;
-    hp: boolean;
-    attack: boolean;
-    defense: boolean;
-    speed: boolean;
-    specialAttack: boolean;
-    specialDefense: boolean;
-    hp_defense: boolean;
-    hp_specialDefense: boolean;
-    hp_defense_specialDefense: boolean;
-    attack_speed: boolean;
-    specialAttack_speed: boolean;
-  };
+  sortOption: sortOptionType;
   setSortOption: (
     update: zustandStoreType["sortOption"] | ((prev: zustandStoreType["sortOption"]) => zustandStoreType["sortOption"])
   ) => void;
@@ -153,6 +155,9 @@ export interface zustandStoreType {
   isDebouncing: boolean;
   setIsDebouncing: (update: boolean) => void;
 
-  isSelectingForDeletionMode: boolean;
-  setIsSelectingForDeletionMode: (update: boolean) => void;
+  isSelectingMoveForDeletionMode: boolean;
+  setIsSelectingMoveForDeletionMode: (update: boolean) => void;
+
+  isPokemonBucketCollectingOn: boolean;
+  setIsPokemonBucketCollectingOn: (update: boolean) => void;
 }

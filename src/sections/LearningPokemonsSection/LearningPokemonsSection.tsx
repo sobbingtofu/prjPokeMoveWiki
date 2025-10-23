@@ -3,6 +3,7 @@ import PokemonCard from "@/components/PokemonCard/PokemonCard";
 import useApplyFiltersChange from "@/hooks/useApplyFiltersChange";
 import useApplySortingsChange from "@/hooks/useApplySortingsChange";
 import {GEN_OPTIONS, LEARN_METHOD_OPTIONS, SORT_ASC_DESC_OPTIONS, SORT_OPTIONS} from "@/store/constantStore";
+import {sortOptionType} from "@/store/type";
 import {useZustandStore} from "@/store/zustandStore";
 import React from "react";
 
@@ -14,6 +15,7 @@ function LearningPokemonsSection({className = ""}: LearningPokemonsSectionProps)
   const {lastSearchMovesArrayStates, detailedLearningPokemons_Filtered} = useZustandStore();
   const {genFilter, setGenFilter, learnMethodFilter, setLearnMethodFilter} = useZustandStore();
   const {sortOption, setSortOption, sortAscDescOption, setSortAscDescOption} = useZustandStore();
+  const {setIsPokemonBucketCollectingOn, isPokemonBucketCollectingOn} = useZustandStore();
 
   const handleGenToggle = (key: string) => {
     const newGenFilter: {[key: string]: boolean} = {};
@@ -31,20 +33,7 @@ function LearningPokemonsSection({className = ""}: LearningPokemonsSectionProps)
   };
 
   const handleSortOptionToggle = (key: string) => {
-    const newSortOption: {
-      alphabetical: boolean;
-      hp: boolean;
-      attack: boolean;
-      defense: boolean;
-      speed: boolean;
-      specialAttack: boolean;
-      specialDefense: boolean;
-      hp_defense: boolean;
-      hp_specialDefense: boolean;
-      hp_defense_specialDefense: boolean;
-      attack_speed: boolean;
-      specialAttack_speed: boolean;
-    } = {
+    const newSortOption: sortOptionType = {
       alphabetical: false,
       hp: false,
       attack: false,
@@ -90,8 +79,12 @@ function LearningPokemonsSection({className = ""}: LearningPokemonsSectionProps)
   useApplyFiltersChange();
   useApplySortingsChange();
 
+  const handleBucketCollectingToggle = (value: boolean) => {
+    setIsPokemonBucketCollectingOn(value);
+  };
+
   return (
-    <section className={`${className} h-full  px-10 pt-12 flex flex-col items-start gap-4`}>
+    <section className={`${className} h-full px-10 pt-7 flex flex-col items-start gap-4`}>
       <div className="w-full flex flex-col gap-4 h-[15dvh]">
         <div className="flex justify-between items-end w-full">
           <h3 className="text-white font-bold text-2xl">배우는 포켓몬 ({detailedLearningPokemons_Filtered.length})</h3>
@@ -136,20 +129,48 @@ function LearningPokemonsSection({className = ""}: LearningPokemonsSectionProps)
         {(lastSearchMovesArrayStates.length === 0 || detailedLearningPokemons_Filtered.length === 0) && (
           <p className="text-gray-500 font-bold text-sm">검색된 포켓몬이 없습니다</p>
         )}
-        <div className="flex flex-row gap-4 w-full flex-wrap">
-          {lastSearchMovesArrayStates.map((move) => (
-            <div
-              key={move.id}
-              className={`text-sm font-bold px-3 py-2 bg-${move.type.toLowerCase()}-shallow rounded-2xl flex justify-center items-center`}
+        <div className="w-full flex justify-between items-center ">
+          <div className="flex flex-row gap-4 w-[60%] flex-wrap ">
+            {lastSearchMovesArrayStates.map((move) => (
+              <div
+                key={move.id}
+                className={`text-sm font-bold px-3 py-2 bg-${move.type.toLowerCase()}-shallow rounded-2xl flex justify-center items-center`}
+              >
+                {move.koreanName}
+              </div>
+            ))}
+          </div>
+          {!isPokemonBucketCollectingOn ? (
+            <button
+              className=" px-6 bg-cyan-100 h-[32px] font-black rounded-lg text-xs cursor-pointer shadow-2xl
+            hover:bg-cyan-200 transition-colors duration-150"
+              onClick={() => handleBucketCollectingToggle(true)}
             >
-              {move.koreanName}
+              포켓몬 담아보기
+            </button>
+          ) : (
+            <div className="flex flex-row gap-2">
+              <button
+                className=" px-4 bg-cyan-100 h-[32px] font-black rounded-lg text-xs cursor-pointer shadow-2xl
+              hover:bg-cyan-200 transition-colors duration-150"
+                // onClick={}
+              >
+                {"선택된 포켓몬\n담기"}
+              </button>
+              <button
+                className=" px-3 bg-red-100 h-[32px] font-black rounded-lg text-xs cursor-pointer shadow-2xl
+              hover:bg-red-200 transition-colors duration-150"
+                onClick={() => handleBucketCollectingToggle(false)}
+              >
+                취소
+              </button>
             </div>
-          ))}
+          )}
         </div>
       </div>
       {detailedLearningPokemons_Filtered.length > 0 && (
         <div
-          className="grid grid-cols-4 w-full gap-x-3 gap-y-2 h-[74dvh] auto-rows-max
+          className="grid grid-cols-4 w-full gap-x-3 gap-y-2 h-[77dvh] auto-rows-max
           pr-2 overflow-y-scroll scrollbar-thin scrollbar-track-gray-700 scrollbar-thumb-gray-500
           no-scrollbar-buttons
           "

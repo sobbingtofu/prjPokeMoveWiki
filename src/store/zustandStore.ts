@@ -132,6 +132,9 @@ export const useZustandStore = create<zustandStoreType>((set) => ({
   isDebouncing: false,
   setIsDebouncing: (update) => set({isDebouncing: update}),
 
-  isSelectingForDeletionMode: false,
-  setIsSelectingForDeletionMode: (update) => set({isSelectingForDeletionMode: update}),
+  isSelectingMoveForDeletionMode: false,
+  setIsSelectingMoveForDeletionMode: (update) => set({isSelectingMoveForDeletionMode: update}),
+
+  isPokemonBucketCollectingOn: false,
+  setIsPokemonBucketCollectingOn: (update) => set({isPokemonBucketCollectingOn: update}),
 }));
