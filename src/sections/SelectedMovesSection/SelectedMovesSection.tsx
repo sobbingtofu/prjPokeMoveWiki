@@ -42,7 +42,7 @@ export const SelectedMovesSection = ({className = ""}: SelectedMovesSectionProps
               shouldAutoScrollOnLengthIncrease={true}
               itemsLength={selectedMovesArrayStates.length}
               className="grid xl:grid-cols-2 grid-cols-1 content-start gap-x-8 gap-y-4
-              xl:min-w-[360px] min-w-[220px] sm:h-[43dvh] h-[43dvh] no-scrollbar"
+              xl:min-w-[360px] min-w-[220px] sm:h-[43dvh] h-[43dvh] no-scrollbar auto-rows-max "
             >
               {selectedMovesArrayStates.map((move) => (
                 <MoveCard key={move.id} move={move} onClick={() => handleMoveCardClick(move.id)} />
