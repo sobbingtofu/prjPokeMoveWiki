@@ -140,7 +140,7 @@ function LearningPokemonsSection({className = ""}: LearningPokemonsSectionProps)
               </div>
             ))}
           </div>
-          {!isPokemonBucketCollectingOn ? (
+          {/* {!isPokemonBucketCollectingOn ? (
             <button
               className=" px-6 bg-cyan-100 h-[32px] font-black rounded-lg text-xs cursor-pointer shadow-2xl
             hover:bg-cyan-200 transition-colors duration-150"
@@ -165,7 +165,7 @@ function LearningPokemonsSection({className = ""}: LearningPokemonsSectionProps)
                 취소
               </button>
             </div>
-          )}
+          )} */}
         </div>
       </div>
       {detailedLearningPokemons_Filtered.length > 0 && (

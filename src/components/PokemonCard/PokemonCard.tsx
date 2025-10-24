@@ -65,9 +65,10 @@ function PokemonCard({pokemon}: {pokemon: detailedPokemInfoType}) {
   return (
     <div
       key={pokemon.name}
-      className="text-sm font-bold pt-0 pb-4 py-2 bg-gray-100 rounded-2xl flex flex-col justify-start items-start"
+      className="text-sm font-bold pt-4 pb-4 py-2 bg-gray-100 rounded-2xl flex flex-col justify-start items-start"
     >
-      <div
+      {/* 담아보기 기능 영역 */}
+      {/* <div
         className={`flex justify-center items-center w-full cursor-pointer h-[36px]
         ${isChecked ? "bg-gray-400 hover:bg-gray-500 " : "bg-cyan-300"} rounded-t-2xl relative`}
         onClick={() => setIsChecked(!isChecked)}
@@ -87,9 +88,9 @@ function PokemonCard({pokemon}: {pokemon: detailedPokemInfoType}) {
             </svg>
           )}
         </div>
-      </div>
+      </div> */}
 
-      <div className="pt-3 w-full bg-gray-100 flex flex-col justify-start items-start gap-5">
+      <div className="w-full bg-gray-100 flex flex-col justify-start items-start gap-5">
         {/* 이미지, 이름, 타입칩 */}
         <div className="w-full flex flex-col items-center gap-1">
           <div className="flex justify-center items-center w-[100px] h-[100px]">
