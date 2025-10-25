@@ -1,41 +1,46 @@
+import {useMutation, useQuery} from "@tanstack/react-query";
 import {getInitialMoveData, generateKoreanMoveData} from "@/logic/pokeapiLogics/pokeapiLogics";
 import {useZustandStore} from "@/store/zustandStore";
 import {useEffect} from "react";
 
 export const usePokemonMoveData = () => {
   const {setLoadingStates, setKoreanMovesArrayStates} = useZustandStore();
+
+  // 초기 기술 데이터 쿼리
+  const {data: initialMoves, isLoading: isInitialMovesLoading} = useQuery({
+    queryKey: ["initialMoves"],
+    queryFn: getInitialMoveData,
+    staleTime: Infinity,
+    gcTime: Infinity, // 가비지 컬렉션 비활성화
+  });
+
+  // 한국어 기술 데이터 뮤테이션
+  const {mutate: generateKoreanMoves, isPending: isKoreanMovesLoading} = useMutation({
+    mutationFn: generateKoreanMoveData,
+    onSuccess: (data) => {
+      setKoreanMovesArrayStates(data);
+      setLoadingStates({isInitialMovesLoading: false, isKoreanMovesLoading: false});
+    },
+    onError: (error) => {
+      console.error("한국어 기술 데이터 생성 실패:", error);
+      setKoreanMovesArrayStates([]);
+      setLoadingStates({isInitialMovesLoading: false, isKoreanMovesLoading: false});
+    },
+  });
+
+  // 초기 데이터 로드 후 한국어 데이터 생성
   useEffect(() => {
-    const getKoreanMoveData = async () => {
-      try {
-        setLoadingStates({isInitialMovesLoading: true, isKoreanMovesLoading: true});
+    if (initialMoves) {
+      setLoadingStates({isInitialMovesLoading: false, isKoreanMovesLoading: true});
+      generateKoreanMoves(initialMoves);
+    }
+  }, [initialMoves, generateKoreanMoves, setLoadingStates]);
 
-        const initialMoves = await getInitialMoveData();
-        setLoadingStates({isInitialMovesLoading: false});
-        if (!initialMoves) throw new Error("Initial moves data is undefined");
-
-        const koreanMoves = await generateKoreanMoveData(initialMoves);
-        setLoadingStates({isKoreanMovesLoading: false});
-        if (!koreanMoves) throw new Error("Korean moves data is undefined");
-        return koreanMoves;
-      } catch (error) {
-        console.error("데이터 로딩 실패:", error);
-      }
-    };
-
-    getKoreanMoveData()
-      .then((koreanMoves) => {
-        if (koreanMoves) {
-          // console.log("데이터 로딩 성공:", koreanMoves);
-          setKoreanMovesArrayStates(koreanMoves);
-        } else {
-          setKoreanMovesArrayStates([]);
-          console.error("데이터 로딩 실패 - 빈 배열이 호출됨");
-        }
-      })
-      .catch((error) => {
-        setKoreanMovesArrayStates([]);
-        console.error("데이터 로딩 실패:", error);
-      })
-      .finally(() => {});
-  }, [setKoreanMovesArrayStates, setLoadingStates]);
+  // 로딩 상태 업데이트
+  useEffect(() => {
+    setLoadingStates({
+      isInitialMovesLoading,
+      isKoreanMovesLoading,
+    });
+  }, [isInitialMovesLoading, isKoreanMovesLoading, setLoadingStates]);
 };
