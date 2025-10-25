@@ -85,7 +85,7 @@ function LearningPokemonsSection({className = ""}: LearningPokemonsSectionProps)
 
   return (
     <section className={`${className} h-full px-10 pt-7 flex flex-col items-start gap-4`}>
-      <div className="w-full flex flex-col gap-4 h-[15dvh]">
+      <div className="w-full flex flex-col gap-4 h-[13dvh]">
         <div className="flex justify-between items-end w-full">
           <h3 className="text-white font-bold text-2xl">배우는 포켓몬 ({detailedLearningPokemons_Filtered.length})</h3>
           <div className="flex flex-row gap-6 text-white font-bold text-xs">
@@ -170,7 +170,7 @@ function LearningPokemonsSection({className = ""}: LearningPokemonsSectionProps)
       </div>
       {detailedLearningPokemons_Filtered.length > 0 && (
         <div
-          className="grid grid-cols-4 w-full gap-x-3 gap-y-2 h-[77dvh] auto-rows-max
+          className="grid grid-cols-4 w-full gap-x-3 gap-y-2 h-[74dvh] auto-rows-max
           pr-2 overflow-y-scroll scrollbar-thin scrollbar-track-gray-700 scrollbar-thumb-gray-500
           no-scrollbar-buttons
           "

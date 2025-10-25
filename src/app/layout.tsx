@@ -1,8 +1,7 @@
-"use client";
 import {Geist, Geist_Mono} from "next/font/google";
 import "./globals.css";
-import Link from "next/link";
-import {QueryClient, QueryClientProvider} from "@tanstack/react-query";
+import {Metadata} from "next";
+import RootLayoutClient from "./layout-client";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -14,38 +13,20 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
-function RootLayout({
-  children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
-  const queryClient = new QueryClient();
+export const metadata: Metadata = {
+  title: "EEVEE WIKI",
+  description: "포켓몬 및 기술 정보 위키",
+  icons: {
+    icon: "/ui/icon/eevee01.png",
+  },
+};
 
+export default function RootLayout({children}: {children: React.ReactNode}) {
   return (
-    <html lang="en">
-      <QueryClientProvider client={queryClient}>
-        <body className={`${geistSans.variable} ${geistMono.variable}`}>
-          <div className="flex flex-col w-screen h-screen overflow-hidden">
-            <aside className="w-full bg-gray-800 text-white px-10 py-5 flex flex-row justify-between ">
-              <div></div>
-              <div className="flex flex-row gap-6 text-md font-bold">
-                <Link href="/search-learning-pokemon" className="block  hover:bg-gray-700 rounded">
-                  기술을 배우는 포켓몬 찾기
-                </Link>
-                <Link href="/search/pokemons" className="block  hover:bg-gray-700 rounded">
-                  메뉴 2
-                </Link>
-                <Link href="/search/favorites" className="block  hover:bg-gray-700 rounded">
-                  메뉴 3
-                </Link>
-              </div>
-            </aside>
-            <main className="">{children}</main>
-          </div>
-        </body>
-      </QueryClientProvider>
+    <html lang="ko">
+      <body className={`${geistSans.variable} ${geistMono.variable}`}>
+        <RootLayoutClient>{children}</RootLayoutClient>
+      </body>
     </html>
   );
 }
-
-export default RootLayout;

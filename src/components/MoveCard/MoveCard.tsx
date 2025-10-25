@@ -11,7 +11,8 @@ interface MoveCardProps {
 export const MoveCard = ({move, onClick, ...props}: PropsWithChildren<MoveCardProps>) => {
   const {selectedMovesArrayStates, setSelectedMovesArrayStates} = useZustandStore();
 
-  const handleCheckboxChange = () => {
+  const handleCheckboxChange = (e: React.MouseEvent<HTMLDivElement>) => {
+    e.stopPropagation();
     setSelectedMovesArrayStates((prev) =>
       prev.map((selectedMove) =>
         selectedMove.id === move.id
@@ -24,22 +25,44 @@ export const MoveCard = ({move, onClick, ...props}: PropsWithChildren<MoveCardPr
     <div
       onClick={onClick}
       className={`bg-${move.type.toLowerCase()}-shallow
-      xl:min-w-[200px] select-none cursor-pointer flex flex-row
-      gap-2 px-4 py-3 rounded-lg bg-gray-100 shadow-md`}
+      xl:min-w-[200px] select-none flex flex-row
+      gap-2 pr-4  rounded-lg bg-gray-100 shadow-md`}
       {...props}
     >
       <div className="flex-1 flex justify-center items-start">
-        <input
-          type="checkbox"
-          className="mt-1 w-5 h-5 accent-blue-500 border-blue-950"
-          checked={
-            selectedMovesArrayStates.find((selectedMove) => selectedMove.id === move.id)?.isSelectedForDeletion || false
-          }
-          onChange={handleCheckboxChange}
-          onClick={(e) => e.stopPropagation()} // 부모의 onClick 이벤트 전파를 막습니다.
-        />{" "}
+        <div
+          className="h-full rounded-l-lg bg-gray-300 w-min px-3 flex justify-center items-center cursor-pointer"
+          onClick={(e) => handleCheckboxChange(e)}
+        >
+          {/* <input
+            type="checkbox"
+            className="mt-1 w-5 h-5 accent-blue-500 border-blue-950 cursor-pointer"
+            checked={
+              selectedMovesArrayStates.find((selectedMove) => selectedMove.id === move.id)?.isSelectedForDeletion ||
+              false
+            }
+            readOnly
+          /> */}
+          <div
+            className={`w-5 h-5 border-2 border-white rounded-full flex items-center justify-center transition-colors ${
+              selectedMovesArrayStates.find((selectedMove) => selectedMove.id === move.id)?.isSelectedForDeletion
+                ? "bg-white"
+                : "bg-transparent"
+            }`}
+          >
+            {selectedMovesArrayStates.find((selectedMove) => selectedMove.id === move.id)?.isSelectedForDeletion && (
+              <svg className="w-4 h-4 text-gray-800" viewBox="0 0 20 20" fill="currentColor">
+                <path
+                  fillRule="evenodd"
+                  d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                  clipRule="evenodd"
+                />
+              </svg>
+            )}
+          </div>
+        </div>
       </div>
-      <div className="flex flex-col flex-20 gap-y-2">
+      <div className="flex flex-col flex-20 gap-y-2 py-3">
         <p className="mt-0.5 text-sm font-bold">{move.koreanName}</p>
         <div className="flex flex-row  items-baseline justify-between">
           <p className="text-xs font-bold ">

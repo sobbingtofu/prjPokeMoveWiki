@@ -201,7 +201,7 @@ export const SearchSection = ({className = "", smDropDownHeight, dropDownHeight}
               onChange={handleInputChange}
               onKeyDown={handleKeyDownInMoveSearchInput}
               onFocus={handleInputFocus}
-              placeholder="추가할 기술 이름을 입력하세요"
+              placeholder="기술 이름을 입력"
               className=" w-full focus:outline-none bg-transparent"
               onBlur={(e) => {
                 e.preventDefault();
