@@ -1,4 +1,4 @@
-import {useMutation, useQuery} from "@tanstack/react-query";
+import {useQuery} from "@tanstack/react-query";
 import {getInitialMoveData, generateKoreanMoveData} from "@/logic/pokeapiLogics/pokeapiLogics";
 import {useZustandStore} from "@/store/zustandStore";
 import {useEffect} from "react";
@@ -11,30 +11,24 @@ export const usePokemonMoveData = () => {
     queryKey: ["initialMoves"],
     queryFn: getInitialMoveData,
     staleTime: Infinity,
-    gcTime: Infinity, // 가비지 컬렉션 비활성화
+    gcTime: Infinity,
   });
 
-  // 한국어 기술 데이터 뮤테이션
-  const {mutate: generateKoreanMoves, isPending: isKoreanMovesLoading} = useMutation({
-    mutationFn: generateKoreanMoveData,
-    onSuccess: (data) => {
-      setKoreanMovesArrayStates(data);
-      setLoadingStates({isInitialMovesLoading: false, isKoreanMovesLoading: false});
-    },
-    onError: (error) => {
-      console.error("한국어 기술 데이터 생성 실패:", error);
-      setKoreanMovesArrayStates([]);
-      setLoadingStates({isInitialMovesLoading: false, isKoreanMovesLoading: false});
-    },
+  // 한국어 기술 데이터 쿼리 (initialMoves에 의존)
+  const {data: koreanMoves, isLoading: isKoreanMovesLoading} = useQuery({
+    queryKey: ["koreanMoves", initialMoves?.length], // initialMoves가 준비되면 실행
+    queryFn: () => generateKoreanMoveData(initialMoves!),
+    enabled: !!initialMoves, // initialMoves가 있을 때만 실행
+    staleTime: Infinity,
+    gcTime: Infinity,
   });
 
-  // 초기 데이터 로드 후 한국어 데이터 생성
+  // Zustand 스토어에 데이터 동기화
   useEffect(() => {
-    if (initialMoves) {
-      setLoadingStates({isInitialMovesLoading: false, isKoreanMovesLoading: true});
-      generateKoreanMoves(initialMoves);
+    if (koreanMoves) {
+      setKoreanMovesArrayStates(koreanMoves);
     }
-  }, [initialMoves, generateKoreanMoves, setLoadingStates]);
+  }, [koreanMoves, setKoreanMovesArrayStates]);
 
   // 로딩 상태 업데이트
   useEffect(() => {

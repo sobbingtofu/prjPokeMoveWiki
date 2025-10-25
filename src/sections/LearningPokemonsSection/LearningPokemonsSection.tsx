@@ -79,9 +79,9 @@ function LearningPokemonsSection({className = ""}: LearningPokemonsSectionProps)
   useApplyFiltersChange();
   useApplySortingsChange();
 
-  const handleBucketCollectingToggle = (value: boolean) => {
-    setIsPokemonBucketCollectingOn(value);
-  };
+  // const handleBucketCollectingToggle = (value: boolean) => {
+  //   setIsPokemonBucketCollectingOn(value);
+  // };
 
   return (
     <section className={`${className} h-full px-10 pt-7 flex flex-col items-start gap-4`}>

@@ -160,4 +160,6 @@ export interface zustandStoreType {
 
   isPokemonBucketCollectingOn: boolean;
   setIsPokemonBucketCollectingOn: (update: boolean) => void;
+
+  resetSearchState: () => void;
 }
