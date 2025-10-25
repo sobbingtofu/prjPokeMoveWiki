@@ -65,8 +65,8 @@ export type sortOptionType = {
 };
 
 export interface zustandStoreType {
-  isFirstAccessToApp: boolean;
-  setIsFirstAccessToApp: (update: boolean) => void;
+  isFirstAccessToSearchLearningPokemon: boolean;
+  setIsFirstAccessToSearchLearningPokemon: (update: boolean) => void;
 
   loadingStates: loadingStatesType;
   setLoadingStates: (update: Partial<loadingStatesType> | ((prev: loadingStatesType) => loadingStatesType)) => void;

@@ -26,7 +26,7 @@ export const getInitialMoveData = async () => {
           url: item.url,
         };
       });
-
+      console.log("01 - 기술 초기 정보 호출 완료:", initialMovesArr);
       return initialMovesArr;
     } else {
       throw new Error(`Invalid data format: ${typeof rawData.results}`);

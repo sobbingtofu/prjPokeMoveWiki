@@ -2,8 +2,8 @@ import {create} from "zustand";
 import {zustandStoreType} from "./type";
 
 export const useZustandStore = create<zustandStoreType>((set) => ({
-  isFirstAccessToApp: true,
-  setIsFirstAccessToApp: (update) => set(() => ({isFirstAccessToApp: update})),
+  isFirstAccessToSearchLearningPokemon: true,
+  setIsFirstAccessToSearchLearningPokemon: (update) => set(() => ({isFirstAccessToSearchLearningPokemon: update})),
 
   loadingStates: {
     isInitialMovesLoading: false,

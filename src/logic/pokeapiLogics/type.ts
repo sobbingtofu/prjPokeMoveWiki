@@ -58,6 +58,7 @@ export type pokemonTypeEnNames =
   | "dark"
   | "fairy"
   | "unknown"
+  | "shadow"
   | "stellar";
 
 export type pokemonTypeKorNames =
