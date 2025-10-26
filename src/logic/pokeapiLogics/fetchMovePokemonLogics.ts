@@ -146,7 +146,7 @@ export const addLearningMethodsAndGens = async (koreanMovesArray: koreanMoveType
 // 03. 포켓몬의 상세정보 추가
 export const generateDetailedPokemon = async (
   commonPokemons: initialPokemonType[],
-  generateFocusType: "moves" | "pokemons" = "moves"
+  generateFocusType: "moves" | "pokemons" | "EV" = "EV"
 ) => {
   const promises = commonPokemons.map(async (pokemonInfo) => {
     const {data: basicData} = await axios.get(pokemonInfo.url);
@@ -189,18 +189,42 @@ export const generateDetailedPokemon = async (
         .map(
           (typeName: string) => TYPE_NAME_EN_TO_KO.find((type) => type.typeName === typeName)?.korTypeName || typeName
         ),
-      captureRate: speciesData.capture_rate,
+
       spriteUrl: basicData.sprites.front_default,
-      stats: basicData.stats.map((statInfo: any) => ({
-        statName: newStatNamesMap[statInfo.stat.name] || statInfo.stat.name,
-        statValue: statInfo.base_stat,
-      })),
     };
 
-    if (generateFocusType === "moves") {
-      return returnDataBasics;
-    } else {
+    if (generateFocusType === "EV") {
       const additionalReturnData = {
+        evStats: basicData.stats
+          .filter((statInfo: any) => statInfo.effort > 0)
+          .map((statInfo: any) => ({
+            statName: newStatNamesMap[statInfo.stat.name] || statInfo.stat.name,
+            evValue: statInfo.effort,
+          })),
+      };
+      return {...returnDataBasics, ...additionalReturnData};
+    } else if (generateFocusType === "moves") {
+      const additionalReturnData = {
+        stats: basicData.stats.map((statInfo: any) => ({
+          statName: newStatNamesMap[statInfo.stat.name] || statInfo.stat.name,
+          statValue: statInfo.base_stat,
+        })),
+        evStats: basicData.stats
+          .filter((statInfo: any) => statInfo.effort > 0)
+          .map((statInfo: any) => ({
+            statName: newStatNamesMap[statInfo.stat.name] || statInfo.stat.name,
+            evValue: statInfo.effort,
+          })),
+      };
+      return {...returnDataBasics, ...additionalReturnData};
+    }
+    // else if (generateFocusType === "pokemons")와 동일
+    else {
+      const additionalReturnData = {
+        stats: basicData.stats.map((statInfo: any) => ({
+          statName: newStatNamesMap[statInfo.stat.name] || statInfo.stat.name,
+          statValue: statInfo.base_stat,
+        })),
         abilities: basicData.abilities.map((abilityInfo: any) => ({
           abilityName: abilityInfo.ability.name,
           abilityUrl: abilityInfo.ability.url,

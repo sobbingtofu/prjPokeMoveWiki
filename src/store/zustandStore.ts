@@ -129,11 +129,14 @@ export const useZustandStore = create<zustandStoreType>((set) => ({
   filteredMoves: [],
   setFilteredMoves: (update) => set({filteredMoves: update}),
 
-  isDropdownOpen: false,
-  setIsDropdownOpen: (update) => set({isDropdownOpen: update}),
+  isDropdownOpen01: false,
+  setIsDropdownOpen01: (update) => set({isDropdownOpen01: update}),
 
-  isDebouncing: false,
-  setIsDebouncing: (update) => set({isDebouncing: update}),
+  isPokemonDropdownOpen: false,
+  setIsPokemonDropdownOpen: (update) => set({isPokemonDropdownOpen: update}),
+
+  isMoveSearchDebouncing: false,
+  setIsMoveSearchDebouncing: (update) => set({isMoveSearchDebouncing: update}),
 
   isSelectingMoveForDeletionMode: false,
   setIsSelectingMoveForDeletionMode: (update) => set({isSelectingMoveForDeletionMode: update}),
@@ -178,8 +181,8 @@ export const useZustandStore = create<zustandStoreType>((set) => ({
       sortAscDescOption: {asc: true, desc: false},
       isToastMessageVisible: false,
       searchValue: "",
-      isDropdownOpen: false,
-      isDebouncing: false,
+      isDropdownOpen01: false,
+      isMoveSearchDebouncing: false,
     }),
 
   detailedPokemons: [],

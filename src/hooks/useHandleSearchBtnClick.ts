@@ -42,7 +42,7 @@ function useHandleSearchBtnClick() {
 
       setPokemonsLearningAllLastSearchMoves(commonPokemons);
 
-      const learningPokemons = await generateDetailedPokemon(commonPokemons);
+      const learningPokemons = await generateDetailedPokemon(commonPokemons, "moves");
 
       if (!learningPokemons) throw new Error("learningPokemons Error");
 

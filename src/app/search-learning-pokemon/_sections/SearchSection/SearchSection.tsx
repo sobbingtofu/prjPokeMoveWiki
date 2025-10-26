@@ -22,10 +22,10 @@ export const SearchSection = ({className = "", smDropDownHeight, dropDownHeight}
     setSearchValue,
     filteredMoves,
     setFilteredMoves,
-    isDropdownOpen,
-    setIsDropdownOpen,
-    isDebouncing,
-    setIsDebouncing,
+    isDropdownOpen01: isDropdownOpen,
+    setIsDropdownOpen01: setIsDropdownOpen,
+    isMoveSearchDebouncing: isDebouncing,
+    setIsMoveSearchDebouncing: setIsDebouncing,
     koreanMovesArrayStates,
     selectedMovesArrayStates,
     setSelectedMovesArrayStates,
@@ -197,6 +197,7 @@ export const SearchSection = ({className = "", smDropDownHeight, dropDownHeight}
           {/* 검색창 */}
           <div className="bg-white px-6 py-4 flex justify-between items-center shadow-sm  focus-within:border-blue-500 focus-within:ring-1 focus-within:ring-blue-500 w-full text-lg border-2 border-gray-300 rounded-lg focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all duration-200">
             <input
+              autoFocus
               type="text"
               onChange={handleInputChange}
               onKeyDown={handleKeyDownInMoveSearchInput}

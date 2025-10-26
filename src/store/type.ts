@@ -38,11 +38,13 @@ export interface detailedPokemInfoType {
   types: pokemonTypeEnNames[];
   koreantypes: pokemonTypeKorNames[];
 
-  captureRate: number;
-
   spriteUrl: string;
 
-  stats: {statName: string; statValue: number}[];
+  captureRate?: number;
+
+  stats?: {statName: string; statValue: number}[];
+
+  evStats?: {statName: string; statValue: number}[];
 
   moveDetails?: moveDetailType[];
 }
@@ -148,10 +150,15 @@ export interface zustandStoreType {
   setSearchValue: (update: string) => void;
   filteredMoves: koreanMoveType[];
   setFilteredMoves: (update: koreanMoveType[]) => void;
-  isDropdownOpen: boolean;
-  setIsDropdownOpen: (update: boolean) => void;
-  isDebouncing: boolean;
-  setIsDebouncing: (update: boolean) => void;
+
+  isDropdownOpen01: boolean;
+  setIsDropdownOpen01: (update: boolean) => void;
+
+  isPokemonDropdownOpen: boolean;
+  setIsPokemonDropdownOpen: (update: boolean) => void;
+
+  isMoveSearchDebouncing: boolean;
+  setIsMoveSearchDebouncing: (update: boolean) => void;
 
   isSelectingMoveForDeletionMode: boolean;
   setIsSelectingMoveForDeletionMode: (update: boolean) => void;
