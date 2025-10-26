@@ -1,6 +1,6 @@
 import {detailedPokemInfoType} from "@/store/type";
 import React, {useState} from "react";
-import TypeChip from "../TypeChip/TypeChip";
+import TypeChip from "../../../../components/TypeChip/TypeChip";
 import {STAT_LABELS} from "@/store/constantStore";
 import {useZustandStore} from "@/store/zustandStore";
 

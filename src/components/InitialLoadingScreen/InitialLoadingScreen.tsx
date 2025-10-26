@@ -12,16 +12,7 @@ export const InitialLoadingScreen = () => {
           <Loader />
 
           <p className="text-lg font-semibold text-gray-100 text-center">
-            {loadingStates.isInitialMovesLoading
-              ? // ? "초기 기술 로딩 중..."
-                "필요 데이터 구성 중..."
-              : loadingStates.isKoreanMovesLoading
-              ? // ? "기술 국문 로딩 중..."
-                "필요 데이터 구성 중..."
-              : loadingStates.isMovesLearningPokemonSearchLoading
-              ? // ? "기술을 배우는 포켓몬 검색 중..."
-                "배우는 포켓몬 검색 중..."
-              : "모든 로딩 완료"}
+            {"데이터를 불러오는 중입니다. 잠시만 기다려주세요..."}
           </p>
         </div>
       )}

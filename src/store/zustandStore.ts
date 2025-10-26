@@ -9,6 +9,9 @@ export const useZustandStore = create<zustandStoreType>((set) => ({
     isInitialMovesLoading: false,
     isKoreanMovesLoading: false,
     isMovesLearningPokemonSearchLoading: false,
+
+    isInitialPokemonsLoading: false,
+    isDetailedPokemonsLoading: false,
   },
   setLoadingStates: (update) =>
     set((state) => {
@@ -178,4 +181,10 @@ export const useZustandStore = create<zustandStoreType>((set) => ({
       isDropdownOpen: false,
       isDebouncing: false,
     }),
+
+  detailedPokemons: [],
+  setDetailedPokemons: (update) =>
+    set((state) => ({
+      detailedPokemons: Array.isArray(update) ? update : state.detailedPokemons,
+    })),
 }));

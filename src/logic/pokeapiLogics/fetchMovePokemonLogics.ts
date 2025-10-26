@@ -1,9 +1,4 @@
-import {
-  initialMovesType,
-  koreanMoveType,
-  pokemonBasicInfoType,
-  versionGroupDetailType,
-} from "@/logic/pokeapiLogics/type";
+import {initialMovesType, koreanMoveType, initialPokemonType, versionGroupDetailType} from "@/logic/pokeapiLogics/type";
 import {
   MOVE_SUPPLEMENTARY_INFO,
   REGION_NAME_EN_TO_KO,
@@ -13,7 +8,7 @@ import {
 import {detailedPokemInfoType, moveDetailType, selectedMoveType} from "@/store/type";
 import axios from "axios";
 
-// 01. 기술 raw data 배열 가져오기
+// 01-1. 기술 raw data 배열 가져오기
 export const getInitialMoveData = async () => {
   const {data: rawData} = await axios.get("https://pokeapi.co/api/v2/move?offset=0&limit=1000");
   if (!Array.isArray(rawData.results)) {
@@ -27,6 +22,21 @@ export const getInitialMoveData = async () => {
   }));
 
   return initialMovesArr;
+};
+
+// 01-2. 푸키먼 raw data 배열 가져오기
+export const getInitialPokemons = async () => {
+  const {data} = await axios.get("https://pokeapi.co/api/v2/pokemon?&limit=1500");
+  if (!Array.isArray(data.results)) {
+    throw new Error(`Invalid data format: ${typeof data.results}`);
+  }
+
+  const initialPokemons: initialPokemonType[] = data.results.map((item: any, index: number) => ({
+    name: item.name,
+    url: item.url,
+  }));
+
+  return initialPokemons;
 };
 
 // 02. 기술 국문명 추가 및 어떻게든 배우는 포켓몬 (영어이름 + url) 객체 배열 가져와
@@ -134,7 +144,10 @@ export const addLearningMethodsAndGens = async (koreanMovesArray: koreanMoveType
 };
 
 // 03. 포켓몬의 상세정보 추가
-export const getLearningPokemonsDetail = async (commonPokemons: pokemonBasicInfoType[]) => {
+export const generateDetailedPokemon = async (
+  commonPokemons: initialPokemonType[],
+  generateFocusType: "moves" | "pokemons" = "moves"
+) => {
   const promises = commonPokemons.map(async (pokemonInfo) => {
     const {data: basicData} = await axios.get(pokemonInfo.url);
     const speciesUrl = basicData.species.url;
@@ -161,7 +174,7 @@ export const getLearningPokemonsDetail = async (commonPokemons: pokemonBasicInfo
       speed: "speed",
     };
 
-    return {
+    const returnDataBasics: detailedPokemInfoType = {
       pokemonId: basicData.id,
       speciesId: speciesData.id,
       basicUrl: pokemonInfo.url,
@@ -183,13 +196,33 @@ export const getLearningPokemonsDetail = async (commonPokemons: pokemonBasicInfo
         statValue: statInfo.base_stat,
       })),
     };
+
+    if (generateFocusType === "moves") {
+      return returnDataBasics;
+    } else {
+      const additionalReturnData = {
+        abilities: basicData.abilities.map((abilityInfo: any) => ({
+          abilityName: abilityInfo.ability.name,
+          abilityUrl: abilityInfo.ability.url,
+          hidden: abilityInfo.is_hidden,
+        })),
+        moves: basicData.moves,
+        captureRate: speciesData.capture_rate,
+        evolutionChainUrl: speciesData.evolution_chain.url,
+      };
+
+      return {...returnDataBasics, ...additionalReturnData};
+    }
   });
 
   const learningPokemonsRaw = await Promise.all(promises);
 
-  return learningPokemonsRaw.filter(
-    (pokemon, index, self) => index === self.findIndex((p) => p.koreanName === pokemon.koreanName)
-  );
+  const seen = new Set<string>();
+  return learningPokemonsRaw.filter((pokemon) => {
+    if (seen.has(pokemon.koreanName)) return false;
+    seen.add(pokemon.koreanName);
+    return true;
+  });
 };
 
 // 유틸리티 함수: 버전 그룹명으로 세대 번호 조회

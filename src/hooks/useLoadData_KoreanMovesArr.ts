@@ -1,9 +1,9 @@
 import {useQuery} from "@tanstack/react-query";
-import {getInitialMoveData, generateKoreanMoveData} from "@/logic/pokeapiLogics/pokeapiLogics";
+import {getInitialMoveData, generateKoreanMoveData} from "@/logic/pokeapiLogics/fetchMovePokemonLogics";
 import {useZustandStore} from "@/store/zustandStore";
 import {useEffect} from "react";
 
-export const usePokemonMoveData = () => {
+export const useLoadData_KoreanMovesArr = () => {
   const {setLoadingStates, setKoreanMovesArrayStates} = useZustandStore();
 
   // 초기 기술 데이터 쿼리

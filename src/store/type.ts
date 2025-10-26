@@ -1,14 +1,12 @@
-import {
-  koreanMoveType,
-  pokemonBasicInfoType,
-  pokemonTypeEnNames,
-  pokemonTypeKorNames,
-} from "@/logic/pokeapiLogics/type";
+import {koreanMoveType, initialPokemonType, pokemonTypeEnNames, pokemonTypeKorNames} from "@/logic/pokeapiLogics/type";
 
 export interface loadingStatesType {
   isInitialMovesLoading: boolean;
   isKoreanMovesLoading: boolean;
   isMovesLearningPokemonSearchLoading: boolean;
+
+  isInitialPokemonsLoading: boolean;
+  isDetailedPokemonsLoading: boolean;
 }
 export interface selectedMoveType extends koreanMoveType {
   isSelectedForDeletion: boolean;
@@ -84,9 +82,9 @@ export interface zustandStoreType {
     update: selectedMoveType[] | ((prev: selectedMoveType[]) => selectedMoveType[])
   ) => void;
 
-  pokemonsLearningAllLastSearchMoves: pokemonBasicInfoType[];
+  pokemonsLearningAllLastSearchMoves: initialPokemonType[];
   setPokemonsLearningAllLastSearchMoves: (
-    update: pokemonBasicInfoType[] | ((prev: pokemonBasicInfoType[]) => pokemonBasicInfoType[])
+    update: initialPokemonType[] | ((prev: initialPokemonType[]) => initialPokemonType[])
   ) => void;
 
   detailedLearningPokemons_PreFilter: detailedPokemInfoType[];
@@ -162,4 +160,7 @@ export interface zustandStoreType {
   setIsPokemonBucketCollectingOn: (update: boolean) => void;
 
   resetSearchState: () => void;
+
+  detailedPokemons: detailedPokemInfoType[];
+  setDetailedPokemons: (update: detailedPokemInfoType[]) => void;
 }

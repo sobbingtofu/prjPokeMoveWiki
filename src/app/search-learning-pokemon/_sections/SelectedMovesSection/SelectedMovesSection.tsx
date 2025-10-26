@@ -1,6 +1,6 @@
-import {MoveCard} from "@/components/MoveCard/MoveCard";
+import {MoveCard} from "@/app/search-learning-pokemon/_components/MoveCard/MoveCard";
 import ScrollContainer from "@/components/ScrollContainer/ScrollContainer";
-import SelectedMovesDeleteButtons from "@/components/SelectedMovesDeleteButtons/SelectedMovesDeleteButtons";
+import SelectedMovesDeleteButtons from "@/app/search-learning-pokemon/_components/SelectedMovesDeleteButtons/SelectedMovesDeleteButtons";
 import useHandleSearchBtnClick from "@/hooks/useHandleSearchBtnClick";
 
 import {useZustandStore} from "@/store/zustandStore";

@@ -10,7 +10,7 @@ export interface versionGroupDetailType {
   learnMethod: string;
 }
 
-export interface pokemonBasicInfoType {
+export interface initialPokemonType {
   name: string;
   url: string;
   version_group_details?: versionGroupDetailType[];
@@ -24,7 +24,7 @@ export interface koreanMoveType {
   koreanName: string;
   type: pokemonTypeEnNames;
   korType: string;
-  learningPokemonEn: pokemonBasicInfoType[];
+  learningPokemonEn: initialPokemonType[];
   damageClass: damageClassType;
   url: string;
   hasKoreanName?: boolean;

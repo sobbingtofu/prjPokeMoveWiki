@@ -1,4 +1,7 @@
-import {addLearningMethodsAndGensToPokemons, getLearningPokemonsDetail} from "@/logic/pokeapiLogics/pokeapiLogics";
+import {
+  addLearningMethodsAndGensToPokemons,
+  generateDetailedPokemon,
+} from "@/logic/pokeapiLogics/fetchMovePokemonLogics";
 import {useZustandStore} from "@/store/zustandStore";
 import useApplyFilters from "./useApplyFilters";
 import useApplySortings from "./useApplySortings";
@@ -39,7 +42,7 @@ function useHandleSearchBtnClick() {
 
       setPokemonsLearningAllLastSearchMoves(commonPokemons);
 
-      const learningPokemons = await getLearningPokemonsDetail(commonPokemons);
+      const learningPokemons = await generateDetailedPokemon(commonPokemons);
 
       if (!learningPokemons) throw new Error("learningPokemons Error");
 
