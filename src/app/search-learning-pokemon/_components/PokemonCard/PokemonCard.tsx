@@ -11,7 +11,8 @@ interface LearnMethodDetail {
 }
 
 function PokemonCard({pokemon}: {pokemon: detailedPokemInfoType}) {
-  const {genFilter, learnMethodFilter} = useZustandStore();
+  const genFilter = useZustandStore((state) => state.genFilter);
+  const learnMethodFilter = useZustandStore((state) => state.learnMethodFilter);
 
   const pokemonMainName =
     pokemon.koreanName.indexOf("(") > -1
@@ -95,7 +96,7 @@ function PokemonCard({pokemon}: {pokemon: detailedPokemInfoType}) {
         {/* 이미지, 이름, 타입칩 */}
         <div className="w-full flex flex-col items-center gap-1">
           <div className="relative w-24 h-24">
-            <Image src={pokemon.spriteUrl} alt={pokemon.koreanName} fill className="object-contain" priority={false} />
+            <Image src={pokemon.spriteUrl} alt={pokemon.koreanName} fill className="fit" priority={false} />
           </div>
 
           <p className="text-lg">{pokemonMainName}</p>

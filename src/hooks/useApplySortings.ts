@@ -2,9 +2,11 @@ import {detailedPokemInfoType} from "@/store/type";
 import {useZustandStore} from "@/store/zustandStore";
 
 function useApplySortings() {
-  const singleSortingValues = ["hp", "attack", "defense", "specialAttack", "specialDefense", "speed"];
+  const SINGLE_SORTING_VALUES = ["hp", "attack", "defense", "specialAttack", "specialDefense", "speed"];
 
-  const {sortOption, setDetailedLearningPokemons_Filtered, sortAscDescOption} = useZustandStore();
+  const sortOption = useZustandStore((state) => state.sortOption);
+  const setDetailedLearningPokemons_Filtered = useZustandStore((state) => state.setDetailedLearningPokemons_Filtered);
+  const sortAscDescOption = useZustandStore((state) => state.sortAscDescOption);
 
   const applySortings = (detailedLearningPokemons_PreSorted: detailedPokemInfoType[]) => {
     const activatedSortOption = Object.entries(sortOption).filter(([, value]) => value !== false)[0][0];
@@ -20,7 +22,7 @@ function useApplySortings() {
         setDetailedLearningPokemons_Filtered(sorted);
         return sorted;
       }
-    } else if (singleSortingValues.includes(activatedSortOption)) {
+    } else if (SINGLE_SORTING_VALUES.includes(activatedSortOption)) {
       if (sortAscDesc === "asc") {
         const sorted = [...detailedLearningPokemons_PreSorted].sort((a, b) => {
           const aStat = a.stats.find((stat) => stat.statName === activatedSortOption)?.statValue || 0;

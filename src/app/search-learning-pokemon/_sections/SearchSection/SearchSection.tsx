@@ -22,10 +22,10 @@ export const SearchSection = ({className = "", smDropDownHeight, dropDownHeight}
     setSearchValue,
     filteredMoves,
     setFilteredMoves,
-    isDropdownOpen01: isDropdownOpen,
-    setIsDropdownOpen01: setIsDropdownOpen,
-    isMoveSearchDebouncing: isDebouncing,
-    setIsMoveSearchDebouncing: setIsDebouncing,
+    isDropdownOpen01,
+    setIsDropdownOpen01,
+    isMoveSearchDebouncing,
+    setIsMoveSearchDebouncing,
     koreanMovesArrayStates,
     selectedMovesArrayStates,
     setSelectedMovesArrayStates,
@@ -44,7 +44,7 @@ export const SearchSection = ({className = "", smDropDownHeight, dropDownHeight}
   useEffect(() => {
     if (searchValue.trim() === "") {
       setFilteredMoves([]);
-      setIsDropdownOpen(false);
+      setIsDropdownOpen01(false);
       return;
     }
 
@@ -53,8 +53,8 @@ export const SearchSection = ({className = "", smDropDownHeight, dropDownHeight}
     );
     // setFilteredMoves(filtered.slice(0, 60));
     setFilteredMoves(filtered);
-    setIsDropdownOpen(filtered.length > 0);
-  }, [searchValue, koreanMovesArrayStates, setFilteredMoves, setIsDropdownOpen]);
+    setIsDropdownOpen01(filtered.length > 0);
+  }, [searchValue, koreanMovesArrayStates, setFilteredMoves, setIsDropdownOpen01]);
 
   const handleSearchButtonClick = useHandleSearchBtnClick();
 
@@ -62,7 +62,7 @@ export const SearchSection = ({className = "", smDropDownHeight, dropDownHeight}
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (searchContainerRef.current && !searchContainerRef.current.contains(event.target as Node)) {
-        setIsDropdownOpen(false);
+        setIsDropdownOpen01(false);
         setIsToastMessageVisible(false);
       }
     };
@@ -71,7 +71,7 @@ export const SearchSection = ({className = "", smDropDownHeight, dropDownHeight}
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
-  }, [setIsToastMessageVisible, setIsDropdownOpen]);
+  }, [setIsToastMessageVisible, setIsDropdownOpen01]);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setIsToastMessageVisible(false);
@@ -80,7 +80,7 @@ export const SearchSection = ({className = "", smDropDownHeight, dropDownHeight}
   };
 
   const handleEnterKeyDown = () => {
-    setIsDebouncing(false);
+    setIsMoveSearchDebouncing(false);
     if (filteredMoves.length > 0 && accentedMoveIndexRef.current === -1) {
       accentedMoveIndexRef.current = 0;
     } else if (filteredMoves.length > 0 && accentedMoveIndexRef.current >= 0) {
@@ -94,7 +94,7 @@ export const SearchSection = ({className = "", smDropDownHeight, dropDownHeight}
   };
 
   const handleArrowKeyDown = (arrow: "ArrowDown" | "ArrowUp") => {
-    setIsDebouncing(false);
+    setIsMoveSearchDebouncing(false);
     if (filteredMoves.length > 0) {
       const currentTime = Date.now();
       if (currentTime - lastArrowKeyTime.current > arrowKeyThrottleDelay) {
@@ -125,7 +125,7 @@ export const SearchSection = ({className = "", smDropDownHeight, dropDownHeight}
     if (e.key === "Enter") {
       if (e.ctrlKey) {
         accentedMoveIndexRef.current = -1;
-        setIsDropdownOpen(false);
+        setIsDropdownOpen01(false);
         handleControlEnterKeyDown();
       } else {
         handleEnterKeyDown();
@@ -134,7 +134,7 @@ export const SearchSection = ({className = "", smDropDownHeight, dropDownHeight}
       e.preventDefault();
       handleArrowKeyDown(e.key);
     } else {
-      setIsDebouncing(true);
+      setIsMoveSearchDebouncing(true);
       accentedMoveIndexRef.current = -1;
 
       // 기존 타이머 클리어
@@ -145,7 +145,7 @@ export const SearchSection = ({className = "", smDropDownHeight, dropDownHeight}
       // 0.2초 후 searchValue 업데이트
       debounceRef.current = setTimeout(() => {
         setSearchValue(inputValueRef.current);
-        setIsDebouncing(false);
+        setIsMoveSearchDebouncing(false);
       }, 200);
     }
   };
@@ -153,7 +153,7 @@ export const SearchSection = ({className = "", smDropDownHeight, dropDownHeight}
   const handleInputFocus = () => {
     if (searchValue.trim() !== "" && filteredMoves.length > 0) {
       setIsToastMessageVisible(false);
-      setIsDropdownOpen(true);
+      setIsDropdownOpen01(true);
     }
   };
 
@@ -211,12 +211,12 @@ export const SearchSection = ({className = "", smDropDownHeight, dropDownHeight}
                 e.preventDefault();
               }}
             />
-            {isDebouncing && <Loader />}
-            {!isDebouncing && searchValue.trim() !== "" && <CloseIcon onClick={handleClickCloseIcon} />}
+            {isMoveSearchDebouncing && <Loader />}
+            {!isMoveSearchDebouncing && searchValue.trim() !== "" && <CloseIcon onClick={handleClickCloseIcon} />}
           </div>
 
           {/* 드롭다운 결과 */}
-          {isDropdownOpen && (
+          {isDropdownOpen01 && (
             <MoveSearchDropdown
               dropDownHeight={dropDownHeight}
               smDropDownHeight={smDropDownHeight}
@@ -227,7 +227,7 @@ export const SearchSection = ({className = "", smDropDownHeight, dropDownHeight}
           )}
 
           {/* 검색 결과 없을 시 메시지 */}
-          {filteredMoves.length === 0 && searchValue.trim() !== "" && !isDebouncing && (
+          {filteredMoves.length === 0 && searchValue.trim() !== "" && !isMoveSearchDebouncing && (
             <div className="absolute top-full left-0 right-0 mt-1 bg-white border border-gray-300 rounded-lg shadow-lg p-4 z-5">
               <p className="text-gray-500 text-center select-none">검색 결과가 없습니다.</p>
             </div>

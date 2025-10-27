@@ -14,7 +14,8 @@ const ToastContainer = ({className}: PropsWithChildren<ToastProps>) => {
 };
 
 const ToastItem = ({}: PropsWithChildren<{}>) => {
-  const {isToastMessageVisible, selectedMovesArrayStates} = useZustandStore();
+  const isToastMessageVisible = useZustandStore((state) => state.isToastMessageVisible);
+  const selectedMovesArrayStates = useZustandStore((state) => state.selectedMovesArrayStates);
   return (
     <>
       {isToastMessageVisible && (

@@ -1,7 +1,9 @@
 import {useZustandStore} from "@/store/zustandStore";
 
 function SelectedMovesDeleteButtons() {
-  const {selectedMovesArrayStates, setSelectedMovesArrayStates} = useZustandStore();
+  const selectedMovesArrayStates = useZustandStore((state) => state.selectedMovesArrayStates);
+  const setSelectedMovesArrayStates = useZustandStore((state) => state.setSelectedMovesArrayStates);
+
   const handleClickDeleteButton = () => {
     // confirm(
     //   `선택된 기술 ${

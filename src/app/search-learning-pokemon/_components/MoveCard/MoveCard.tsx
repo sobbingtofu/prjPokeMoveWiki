@@ -9,7 +9,8 @@ interface MoveCardProps {
 }
 
 export const MoveCard = ({move, onClick, ...props}: PropsWithChildren<MoveCardProps>) => {
-  const {selectedMovesArrayStates, setSelectedMovesArrayStates} = useZustandStore();
+  const selectedMovesArrayStates = useZustandStore((state) => state.selectedMovesArrayStates);
+  const setSelectedMovesArrayStates = useZustandStore((state) => state.setSelectedMovesArrayStates);
 
   const handleCheckboxChange = (e: React.MouseEvent<HTMLDivElement>) => {
     e.stopPropagation();

@@ -4,7 +4,7 @@ import {useZustandStore} from "@/store/zustandStore";
 import {Loader} from "../Loader/Loader";
 
 export const InitialLoadingScreen = () => {
-  const {loadingStates} = useZustandStore();
+  const loadingStates = useZustandStore((state) => state.loadingStates);
   return (
     <>
       {Object.values(loadingStates).some((isLoading) => isLoading) && (

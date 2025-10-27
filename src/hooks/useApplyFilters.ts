@@ -4,7 +4,8 @@ import useApplySortings from "./useApplySortings";
 import {useCallback} from "react";
 
 function useApplyFilters() {
-  const {genFilter, learnMethodFilter} = useZustandStore();
+  const genFilter = useZustandStore((state) => state.genFilter);
+  const learnMethodFilter = useZustandStore((state) => state.learnMethodFilter);
 
   const applySortings = useApplySortings();
 

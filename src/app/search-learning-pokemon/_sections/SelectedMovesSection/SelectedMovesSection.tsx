@@ -10,7 +10,7 @@ interface SelectedMovesSectionProps {
 }
 
 export const SelectedMovesSection = ({className = ""}: SelectedMovesSectionProps) => {
-  const {selectedMovesArrayStates} = useZustandStore();
+  const selectedMovesArrayStates = useZustandStore((state) => state.selectedMovesArrayStates);
 
   const handleMoveCardClick = (moveId: number) => {
     console.log("해당 기술 상세보기 넘어갈 예정:", moveId);

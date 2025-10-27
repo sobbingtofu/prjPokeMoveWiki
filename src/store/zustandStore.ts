@@ -123,6 +123,9 @@ export const useZustandStore = create<zustandStoreType>((set) => ({
   isToastMessageVisible: false,
   setIsToastMessageVisible: (update) => set(() => ({isToastMessageVisible: update})),
 
+  isLearningPokemonBottomSheetOpen: false,
+  setIsLearningPokemonBottomSheetOpen: (update) => set(() => ({isLearningPokemonBottomSheetOpen: update})),
+
   searchValue: "",
   setSearchValue: (update) => set({searchValue: update}),
 

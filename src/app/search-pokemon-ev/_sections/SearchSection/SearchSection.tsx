@@ -9,7 +9,9 @@ import React, {useEffect, useRef, useState} from "react";
 import PokemonSearchDropdown from "../../_components/PokemonSearchDropdown/PokemonSearchDropdown";
 
 function SearchSection() {
-  const {isPokemonDropdownOpen, setIsPokemonDropdownOpen, detailedPokemons, setDetailedPokemons} = useZustandStore();
+  const isPokemonDropdownOpen = useZustandStore((state) => state.isPokemonDropdownOpen);
+  const setIsPokemonDropdownOpen = useZustandStore((state) => state.setIsPokemonDropdownOpen);
+  const detailedPokemons = useZustandStore((state) => state.detailedPokemons);
 
   const [isDebouncing, setIsDebouncing] = useState(false);
 

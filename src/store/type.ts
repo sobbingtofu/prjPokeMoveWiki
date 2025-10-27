@@ -170,4 +170,7 @@ export interface zustandStoreType {
 
   detailedPokemons: detailedPokemInfoType[];
   setDetailedPokemons: (update: detailedPokemInfoType[]) => void;
+
+  isLearningPokemonBottomSheetOpen: boolean;
+  setIsLearningPokemonBottomSheetOpen: (update: boolean) => void;
 }

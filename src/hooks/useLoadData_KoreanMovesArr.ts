@@ -4,7 +4,8 @@ import {useZustandStore} from "@/store/zustandStore";
 import {useEffect} from "react";
 
 export const useLoadData_KoreanMovesArr = () => {
-  const {setLoadingStates, setKoreanMovesArrayStates} = useZustandStore();
+  const setLoadingStates = useZustandStore((state) => state.setLoadingStates);
+  const setKoreanMovesArrayStates = useZustandStore((state) => state.setKoreanMovesArrayStates);
 
   // 초기 기술 데이터 쿼리
   const {data: initialMoves, isLoading: isInitialMovesLoading} = useQuery({

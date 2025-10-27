@@ -7,7 +7,8 @@ import {useEffect} from "react";
 import {generateDetailedPokemon, getInitialPokemons} from "@/logic/pokeapiLogics/fetchMovePokemonLogics";
 
 export const useLoadData_PokemonsEV = () => {
-  const {setLoadingStates, setDetailedPokemons} = useZustandStore();
+  const setLoadingStates = useZustandStore((state) => state.setLoadingStates);
+  const setDetailedPokemons = useZustandStore((state) => state.setDetailedPokemons);
 
   // 초기 푸키먼 데이터 쿼리
   const {data: initialPokemons, isLoading: isInitialPokemonsLoading} = useQuery({
