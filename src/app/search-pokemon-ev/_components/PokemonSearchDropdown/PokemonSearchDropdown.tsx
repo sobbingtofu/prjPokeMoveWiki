@@ -7,11 +7,8 @@ function PokemonSearchDropdown({pokemons}: {pokemons: detailedPokemInfoType[]}) 
   return (
     <div
       onMouseDown={(e) => e.preventDefault()}
-      className="absolute top-full left-0 right-0 mt-1 bg-white border border-gray-300 rounded-lg shadow-lg  overflow-y-auto z-50 scrollbar-thin h-[100px] w-full"
-      // style={{
-      //   maxHeight: `${dropDownHeight}px`,
-      //   ...(window.innerWidth < 640 && {maxHeight: `${smDropDownHeight}px`}),
-      // }}
+      className="absolute top-full left-0 right-0 mt-1 bg-white border border-gray-300 rounded-lg shadow-lg 
+      overflow-y-auto z-50 scrollbar-thin w-full max-h-[300px]"
     >
       {pokemons.map((pokemon, index) => (
         <div
@@ -25,7 +22,7 @@ function PokemonSearchDropdown({pokemons}: {pokemons: detailedPokemInfoType[]}) 
 
             <div className="w-1/12 flex justify-center items-center min-w-[40px]">
               <p className="text-gray-500 text-sm font-bold ">
-                {pokemon.evStats?.map((evStat) => `${evStat.statName} +${evStat.statValue}`).join(", ")}
+                {pokemon.evStats?.map((evStat) => `${evStat.statName} + ${evStat.evValue}`).join(", ")}
               </p>
             </div>
             {pokemon.types.map((type) => (

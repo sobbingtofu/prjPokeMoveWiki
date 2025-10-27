@@ -191,6 +191,7 @@ export const generateDetailedPokemon = async (
         ),
 
       spriteUrl: basicData.sprites.front_default,
+      stats: [],
     };
 
     if (generateFocusType === "EV") {
@@ -242,11 +243,15 @@ export const generateDetailedPokemon = async (
   const learningPokemonsRaw = await Promise.all(promises);
 
   const seen = new Set<string>();
-  return learningPokemonsRaw.filter((pokemon) => {
+  const finalData = learningPokemonsRaw.filter((pokemon) => {
     if (seen.has(pokemon.koreanName)) return false;
     seen.add(pokemon.koreanName);
     return true;
   });
+
+  console.log("generateFocusType: ", generateFocusType);
+  console.log("최종 데이터:", finalData);
+  return finalData;
 };
 
 // 유틸리티 함수: 버전 그룹명으로 세대 번호 조회

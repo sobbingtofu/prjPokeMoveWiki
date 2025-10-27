@@ -3,6 +3,7 @@ import React, {useState} from "react";
 import TypeChip from "../../../../components/TypeChip/TypeChip";
 import {STAT_LABELS} from "@/store/constantStore";
 import {useZustandStore} from "@/store/zustandStore";
+import Image from "next/image";
 
 interface LearnMethodDetail {
   methodName: string;
@@ -93,9 +94,10 @@ function PokemonCard({pokemon}: {pokemon: detailedPokemInfoType}) {
       <div className="w-full bg-gray-100 flex flex-col justify-start items-start gap-5">
         {/* 이미지, 이름, 타입칩 */}
         <div className="w-full flex flex-col items-center gap-1">
-          <div className="flex justify-center items-center w-[100px] h-[100px]">
-            <img src={pokemon.spriteUrl} alt={pokemon.koreanName} />
+          <div className="relative w-24 h-24">
+            <Image src={pokemon.spriteUrl} alt={pokemon.koreanName} fill className="object-contain" priority={false} />
           </div>
+
           <p className="text-lg">{pokemonMainName}</p>
           <p className="text-[8pt] h-[14px]">{pokemonRegionSubname}</p>
           <div className="w-full flex flex-row justify-center gap-2 mt-1">

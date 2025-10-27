@@ -30,8 +30,6 @@ export const useLoadData_PokemonsEV = () => {
   useEffect(() => {
     if (detailedPokemons) {
       setDetailedPokemons(detailedPokemons);
-      console.log("Detailed Pokemons Loaded:", detailedPokemons.length);
-      console.log(detailedPokemons);
     }
   }, [detailedPokemons, setDetailedPokemons]);
 

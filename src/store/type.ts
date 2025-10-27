@@ -42,9 +42,9 @@ export interface detailedPokemInfoType {
 
   captureRate?: number;
 
-  stats?: {statName: string; statValue: number}[];
+  stats: {statName: string; statValue: number}[];
 
-  evStats?: {statName: string; statValue: number}[];
+  evStats?: {statName: string; evValue: number}[];
 
   moveDetails?: moveDetailType[];
 }
