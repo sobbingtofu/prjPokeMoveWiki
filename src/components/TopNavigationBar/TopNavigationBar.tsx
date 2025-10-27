@@ -12,13 +12,16 @@ function TopNavigationBar() {
 
   const navigateWithReset = useNavigateWithReset();
 
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+
+  const menuOpenRef = React.useRef<HTMLDivElement>(null);
+
   useEffect(() => {
     setMounted(true);
   }, []);
 
   const isActive = (href: string) => {
     if (!mounted) return false;
-    // 서버/클라이언트 초기 HTML 동일하도록 마운트 전엔 항상 false로 처리
     return path === href || path?.startsWith(href);
   };
 
@@ -27,55 +30,86 @@ function TopNavigationBar() {
       isActive(href) ? "font-bold text-white" : "text-gray-300"
     }`;
 
+  const menuLinkClass = (href: string) =>
+    `text-right py-2 border-b border-gray-600 text-sm  cursor-pointer ${
+      isActive(href) ? "font-bold text-white-400" : "text-gray-300"
+    }`;
+
+  const onClickOpenMenu = () => {
+    setIsMenuOpen((prev) => !prev);
+  };
+
+  const menuItems = [
+    {href: "/search-learning-pokemon", label: "기술을 배우는 포켓몬", reset: true},
+    {href: "/search-pokemon-ev", label: "포켓몬이 주는 노력치", reset: false},
+    {href: "/search-pokemons", label: "포켓몬", reset: false},
+    {href: "/search-moves", label: "기술", reset: false},
+  ];
+
+  // 외부 클릭시 드롭다운 닫기
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (menuOpenRef.current && !menuOpenRef.current.contains(event.target as Node)) {
+        setIsMenuOpen(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [setIsMenuOpen]);
+
   return (
-    <aside className="w-full bg-gray-800 text-white px-10 flex flex-row justify-between items-center h-[7dvh]">
-      <Link href="/" className="flex flex-row items-center gap-4 py-2 cursor-pointer">
-        <Image src="/ui/icon/eevee01.png" alt="Eevee Wiki Logo" width={48} height={42} />
-        <h1 className="text-2xl font-bold">이브이 위키</h1>
-      </Link>
-      <div className="flex flex-row gap-10 text-sm py-5">
-        <Link
-          href="/search-learning-pokemon"
-          onClick={(e) => {
-            e.preventDefault();
-            navigateWithReset("/search-learning-pokemon", true);
-          }}
-          className={linkClass("/search-learning-pokemon")}
-        >
-          기술을 배우는 포켓몬
+    <div className={`${isMenuOpen ? "h-auto" : "h-[7dvh]"} transition-all duration-300`}>
+      <aside className="w-full bg-gray-800 text-white px-10 flex flex-row justify-between items-center h-[7dvh] relative">
+        <Link href="/" className="flex flex-row items-center gap-4 py-2 cursor-pointer">
+          <Image src="/ui/icon/eevee01.png" alt="Eevee Wiki Logo" width={48} height={42} />
+          <h1 className="text-2xl font-bold">이브이 위키</h1>
         </Link>
-        <Link
-          href="/search-pokemon-ev"
-          onClick={(e) => {
-            e.preventDefault();
-            navigateWithReset("/search-pokemon-ev", false);
-          }}
-          className={linkClass("/search-pokemon-ev")}
+        <div className="flex-row gap-10 text-sm py-5 hidden sm:flex">
+          {menuItems.map((item) => (
+            <Link
+              key={item.href}
+              href={item.href}
+              onClick={(e) => {
+                e.preventDefault();
+                navigateWithReset(item.href, item.reset);
+              }}
+              className={linkClass(item.href)}
+            >
+              {item.label}
+            </Link>
+          ))}
+        </div>
+        <div
+          className="sm:hidden block font-bold text-gray-200 text-sm cursor-pointer"
+          onClick={onClickOpenMenu}
+          ref={menuOpenRef}
         >
-          포켓몬이 주는 노력치
-        </Link>
-        <Link
-          href="/search-pokemons"
-          onClick={(e) => {
-            e.preventDefault();
-            navigateWithReset("/search-pokemons", false);
-          }}
-          className={linkClass("/search-pokemons")}
-        >
-          포켓몬
-        </Link>
-        <Link
-          href="/search-moves"
-          onClick={(e) => {
-            e.preventDefault();
-            navigateWithReset("/search-moves", false);
-          }}
-          className={linkClass("/search-moves")}
-        >
-          기술
-        </Link>
-      </div>
-    </aside>
+          {isMenuOpen ? "메뉴닫기" : "메뉴열기"}
+        </div>
+      </aside>
+
+      {isMenuOpen && (
+        <div className="sm:hidden w-[240px] bg-gray-700 text-white flex flex-col gap-4 px-10 py-2 absolute z-10  right-0">
+          {menuItems.map((item) => (
+            <Link
+              key={item.href}
+              href={item.href}
+              onClick={(e) => {
+                e.preventDefault();
+                navigateWithReset(item.href, item.reset);
+                setIsMenuOpen(false);
+              }}
+              className={menuLinkClass(item.href)}
+            >
+              {item.label}
+            </Link>
+          ))}
+        </div>
+      )}
+    </div>
   );
 }
 

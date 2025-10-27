@@ -228,7 +228,7 @@ export const SearchSection = ({className = "", smDropDownHeight, dropDownHeight}
 
           {/* 검색 결과 없을 시 메시지 */}
           {filteredMoves.length === 0 && searchValue.trim() !== "" && !isDebouncing && (
-            <div className="absolute top-full left-0 right-0 mt-1 bg-white border border-gray-300 rounded-lg shadow-lg p-4 z-50">
+            <div className="absolute top-full left-0 right-0 mt-1 bg-white border border-gray-300 rounded-lg shadow-lg p-4 z-5">
               <p className="text-gray-500 text-center select-none">검색 결과가 없습니다.</p>
             </div>
           )}
