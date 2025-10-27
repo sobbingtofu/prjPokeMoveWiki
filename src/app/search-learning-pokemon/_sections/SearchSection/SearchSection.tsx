@@ -189,13 +189,16 @@ export const SearchSection = ({className = "", smDropDownHeight, dropDownHeight}
 
   return (
     <section className={`${className} bg-gray-300 w-full flex flex-col gap-2 items-center justify-start font-bold `}>
-      <div className="sm:min-w-[280px] min-w-[280px] w-[80%] sm:mb-0 mb-24">
+      <div className="min-w-[240px] w-[80%] sm:mb-0 mb-24">
         <Toast className="sm:mt-4 mt-2" />
         <p className="mt-2 w-full text-xs italic text-gray-600">배우는 포켓몬을 찾아볼 기술을 검색해 클릭</p>
         {/* Search Container = 검색창 + 드롭다운 + 검색결과없음 메시지 */}
         <div ref={searchContainerRef} className="relative mt-2">
           {/* 검색창 */}
-          <div className="bg-white px-6 py-4 flex justify-between items-center shadow-sm  focus-within:border-blue-500 focus-within:ring-1 focus-within:ring-blue-500 w-full text-lg border-2 border-gray-300 rounded-lg focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all duration-200">
+          <div
+            className="bg-white px-6 py-4 flex justify-between items-center shadow-sm
+           focus-within:border-blue-500 focus-within:ring-1 focus-within:ring-blue-500 w-full text-lg border-2 border-gray-300 rounded-lg focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all duration-200"
+          >
             <input
               autoFocus
               type="text"

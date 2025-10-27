@@ -1,6 +1,4 @@
-import {koreanMoveType} from "@/logic/pokeapiLogics/type";
 import TypeChip from "../../../../components/TypeChip/TypeChip";
-import {useEffect, useRef} from "react";
 import {detailedPokemInfoType} from "@/store/type";
 
 function PokemonSearchDropdown({pokemons}: {pokemons: detailedPokemInfoType[]}) {

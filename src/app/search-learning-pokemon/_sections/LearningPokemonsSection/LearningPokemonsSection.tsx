@@ -85,11 +85,11 @@ function LearningPokemonsSection({className = ""}: LearningPokemonsSectionProps)
 
   return (
     <section className={`${className} h-full px-10 pt-7 flex flex-col items-start gap-4`}>
-      <div className="w-full flex flex-col gap-4 h-[15dvh]">
-        <div className="flex justify-between items-end w-full">
+      <div className="w-full flex flex-col gap-4 md:h-[15dvh] h-min">
+        <div className="flex flex-col xl:flex-row justify-between xl:items-end items-start w-full md:gap-0 gap-3">
           <h3 className="text-white font-bold text-2xl">배우는 포켓몬 ({detailedLearningPokemons_Filtered.length})</h3>
-          <div className="flex flex-row gap-6 text-white font-bold text-xs">
-            <div className="flex flex-col gap-1">
+          <div className="flex md:flex-row flex-col md:gap-6 gap-3 text-white font-bold text-xs">
+            <div className="flex md:flex-col flex-row md:gap-1 gap-x-6 items-center md:items-start">
               <p className="text-xs text-gray-300">정렬</p>
               <div className="flex flex-row gap-2">
                 <FilterSortDropdown
@@ -107,7 +107,7 @@ function LearningPokemonsSection({className = ""}: LearningPokemonsSectionProps)
                 />
               </div>
             </div>
-            <div className="flex flex-col gap-1">
+            <div className="flex md:flex-col flex-row md:gap-1 gap-x-6 items-center md:items-start">
               <p className="text-xs text-gray-300">필터</p>
               <div className="flex flex-row gap-2">
                 <FilterSortDropdown
@@ -170,7 +170,7 @@ function LearningPokemonsSection({className = ""}: LearningPokemonsSectionProps)
       </div>
       {detailedLearningPokemons_Filtered.length > 0 && (
         <div
-          className="grid grid-cols-4 w-full gap-x-3 gap-y-2 h-[70dvh] auto-rows-max
+          className="grid lg:grid-cols-4 grid-cols-2 w-full gap-x-3 gap-y-2 md:h-[70dvh] h-[66dvh] auto-rows-max
           pr-2 overflow-y-scroll scrollbar-thin scrollbar-track-gray-700 scrollbar-thumb-gray-500
           no-scrollbar-buttons
           "
