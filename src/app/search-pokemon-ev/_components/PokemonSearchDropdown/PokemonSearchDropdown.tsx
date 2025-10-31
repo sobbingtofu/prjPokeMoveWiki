@@ -28,7 +28,7 @@ function PokemonSearchDropdown({pokemons}: {pokemons: detailedPokemInfoType[]}) 
             <p className="text-gray-900 text-sm ">{pokemon.koreanName}</p>
           </div>
           <div className="w-[60%] flex flex-row justify-end items-center gap-6">
-            <div className="text-black text-sm font-bold flex flex-row items-end gap-6 justify-end w-[128px] min-w-[128px]">
+            <div className="text-black text-sm font-bold flex flex-row items-end gap-6 justify-start w-[128px] min-w-[128px]">
               {pokemon.evStats?.map((evStat) => {
                 return STAT_LABELS.map((stat) => {
                   if (stat.statName === evStat.statName) {
