@@ -71,10 +71,10 @@ function SearchSection() {
   };
   return (
     <>
-      <section className="w-dvw h-dvh overflow-hidden bg-gray-300 ">
-        <div className="w-full h-full px-[400px] py-16 flex flex-col items-center gap-y-2 overflow-hidden ">
+      <section className="w-dvw h-dvh overflow-hidden bg-gray-300 flex flex-col justify-center items-center">
+        <div className="md:w-[60%] w-[80%] h-full py-16 flex flex-col items-center gap-y-2 overflow-hidden ">
           <p className="mt-2 w-full text-sm italic text-gray-600 font-bold">포켓몬이 주는 노력치를 빠르게 검색</p>
-          <div className="relative w-full">
+          <div className="relative w-full font-black">
             {/* 검색창 */}
             <div
               className="bg-white px-6 py-4 flex justify-between items-center shadow-sm
