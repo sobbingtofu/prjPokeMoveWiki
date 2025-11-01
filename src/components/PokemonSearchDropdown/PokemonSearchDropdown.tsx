@@ -2,8 +2,13 @@ import {STAT_LABELS, TYPE_MAP, TYPE_NAME_EN_TO_KO} from "@/store/constantStore";
 import TypeChip from "../TypeChip/TypeChip";
 import {detailedPokemInfoType} from "@/store/type";
 import Image from "next/image";
+import React from "react";
 
-function PokemonSearchDropdown({pokemons}: {pokemons: detailedPokemInfoType[]}) {
+const PokemonSearchDropdown = React.memo(function PokemonSearchDropdown({
+  pokemons,
+}: {
+  pokemons: detailedPokemInfoType[];
+}) {
   return (
     <div
       onMouseDown={(e) => e.preventDefault()}
@@ -53,6 +58,6 @@ function PokemonSearchDropdown({pokemons}: {pokemons: detailedPokemInfoType[]}) 
       ))}
     </div>
   );
-}
+});
 
 export default PokemonSearchDropdown;

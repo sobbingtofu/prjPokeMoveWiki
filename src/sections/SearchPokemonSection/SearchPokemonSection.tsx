@@ -1,28 +1,20 @@
 "use client";
 
-import {CloseIcon} from "@/components/CloseIcon/CloseIcon";
-import {Loader} from "@/components/Loader/Loader";
 import {useLoadData_PokemonsEV} from "@/hooks/useLoadData_PokemonsEV";
 import {useZustandStore} from "@/store/zustandStore";
 
 import React, {useEffect, useRef, useState} from "react";
 import PokemonSearchDropdown from "../../components/PokemonSearchDropdown/PokemonSearchDropdown";
+import PokemonSearchInput from "@/components/PokemonSearchInput/PokemonSearchInput";
 
-function SearchSection() {
+function SearchPokemonSection() {
   const isPokemonDropdownOpen = useZustandStore((state) => state.isPokemonDropdownOpen);
   const setIsPokemonDropdownOpen = useZustandStore((state) => state.setIsPokemonDropdownOpen);
   const detailedPokemons = useZustandStore((state) => state.detailedPokemons);
 
-  const [isDebouncing, setIsDebouncing] = useState(false);
-
   const [searchValue, setSearchValue] = useState("");
 
   const [filteredPokemons, setFilteredPokemons] = useState<typeof detailedPokemons>([]);
-
-  const inputValueRef = useRef<HTMLInputElement>(null); // 실시간 입력값 관리 ref
-
-  const debounceRef = useRef<NodeJS.Timeout | null>(null);
-  const searchContainerRef = useRef<HTMLDivElement>(null);
 
   useLoadData_PokemonsEV();
 
@@ -43,28 +35,6 @@ function SearchSection() {
     console.log("Filtered Pokemons:", filtered);
   }, [searchValue, detailedPokemons]);
 
-  const handleKeyDownSearchInput = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    setIsDebouncing(true);
-    // 기존 타이머 클리어
-    if (debounceRef.current) {
-      clearTimeout(debounceRef.current);
-    }
-
-    // 0.2초 후 searchValue 업데이트
-    debounceRef.current = setTimeout(() => {
-      setSearchValue(inputValueRef.current?.value || "");
-      setIsDebouncing(false);
-    }, 200);
-  };
-
-  const handleClickCloseIcon = () => {
-    if (inputValueRef.current) inputValueRef.current.value = "";
-    setSearchValue("");
-    const inputElement = searchContainerRef.current?.querySelector("input");
-    if (inputElement) {
-      inputElement.value = "";
-    }
-  };
   return (
     <>
       <section className="w-dvw h-dvh overflow-hidden bg-gray-300 flex flex-col justify-center items-center">
@@ -72,28 +42,12 @@ function SearchSection() {
           <p className="mt-2 w-full text-sm italic text-gray-600 font-bold">포켓몬이 주는 노력치를 빠르게 검색</p>
           <div className="relative w-full font-black">
             {/* 검색창 */}
-            <div
-              className="bg-white px-6 py-4 flex justify-between items-center shadow-sm
-               focus-within:border-blue-500 focus-within:ring-1 focus-within:ring-blue-500
-               w-full text-lg border-2 border-gray-300 rounded-lg focus:outline-none focus:border-blue-500
-               focus:ring-2 focus:ring-blue-200 transition-all duration-200
-               overflow-hidden"
-              ref={searchContainerRef}
-            >
-              <input
-                autoFocus
-                type="text"
-                ref={inputValueRef}
-                onKeyDown={handleKeyDownSearchInput}
-                placeholder="포켓몬의 이름을 입력"
-                className=" w-full focus:outline-none bg-transparent"
-                onBlur={(e) => {
-                  e.preventDefault();
-                }}
-              />
-              {isDebouncing && <Loader />}
-              {!isDebouncing && searchValue.trim() !== "" && <CloseIcon onClick={handleClickCloseIcon} />}
-            </div>
+            <PokemonSearchInput
+              filteredPokemons={filteredPokemons}
+              setFilteredPokemons={setFilteredPokemons}
+              searchValue={searchValue}
+              setSearchValue={setSearchValue}
+            />
             {/* 드롭다운 결과 */}
             {isPokemonDropdownOpen && <PokemonSearchDropdown pokemons={filteredPokemons} />}
           </div>
@@ -103,4 +57,4 @@ function SearchSection() {
   );
 }
 
-export default SearchSection;
+export default SearchPokemonSection;
