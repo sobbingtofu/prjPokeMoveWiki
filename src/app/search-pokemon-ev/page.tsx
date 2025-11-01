@@ -2,7 +2,7 @@
 
 import {InitialLoadingScreen} from "@/components/InitialLoadingScreen/InitialLoadingScreen";
 
-import SearchSection from "./_sections/SearchSection/SearchSection";
+import SearchSection from "../../sections/SearchPokemonSection/SearchPokemonSection";
 import {useLoadData_DetailedPokemonsArr} from "@/hooks/useLoadData_DetailedPokemonsArr";
 
 function SearchPokemonEvPage() {

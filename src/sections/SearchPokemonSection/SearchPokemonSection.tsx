@@ -6,7 +6,7 @@ import {useLoadData_PokemonsEV} from "@/hooks/useLoadData_PokemonsEV";
 import {useZustandStore} from "@/store/zustandStore";
 
 import React, {useEffect, useRef, useState} from "react";
-import PokemonSearchDropdown from "../../_components/PokemonSearchDropdown/PokemonSearchDropdown";
+import PokemonSearchDropdown from "../../components/PokemonSearchDropdown/PokemonSearchDropdown";
 
 function SearchSection() {
   const isPokemonDropdownOpen = useZustandStore((state) => state.isPokemonDropdownOpen);
@@ -19,7 +19,7 @@ function SearchSection() {
 
   const [filteredPokemons, setFilteredPokemons] = useState<typeof detailedPokemons>([]);
 
-  const inputValueRef = useRef<string>(""); // 실시간 입력값 관리 ref
+  const inputValueRef = useRef<HTMLInputElement>(null); // 실시간 입력값 관리 ref
 
   const debounceRef = useRef<NodeJS.Timeout | null>(null);
   const searchContainerRef = useRef<HTMLDivElement>(null);
@@ -43,11 +43,7 @@ function SearchSection() {
     console.log("Filtered Pokemons:", filtered);
   }, [searchValue, detailedPokemons]);
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    inputValueRef.current = e.target.value; // ref에 실시간 값 저장
-  };
-
-  const handleKeyDownInMoveSearchInput = (e: React.KeyboardEvent<HTMLInputElement>) => {
+  const handleKeyDownSearchInput = (e: React.KeyboardEvent<HTMLInputElement>) => {
     setIsDebouncing(true);
     // 기존 타이머 클리어
     if (debounceRef.current) {
@@ -56,13 +52,13 @@ function SearchSection() {
 
     // 0.2초 후 searchValue 업데이트
     debounceRef.current = setTimeout(() => {
-      setSearchValue(inputValueRef.current);
+      setSearchValue(inputValueRef.current?.value || "");
       setIsDebouncing(false);
     }, 200);
   };
 
   const handleClickCloseIcon = () => {
-    inputValueRef.current = "";
+    if (inputValueRef.current) inputValueRef.current.value = "";
     setSearchValue("");
     const inputElement = searchContainerRef.current?.querySelector("input");
     if (inputElement) {
@@ -87,8 +83,8 @@ function SearchSection() {
               <input
                 autoFocus
                 type="text"
-                onChange={handleInputChange}
-                onKeyDown={handleKeyDownInMoveSearchInput}
+                ref={inputValueRef}
+                onKeyDown={handleKeyDownSearchInput}
                 placeholder="포켓몬의 이름을 입력"
                 className=" w-full focus:outline-none bg-transparent"
                 onBlur={(e) => {

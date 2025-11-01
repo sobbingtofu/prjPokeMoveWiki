@@ -1,5 +1,5 @@
 import {STAT_LABELS, TYPE_MAP, TYPE_NAME_EN_TO_KO} from "@/store/constantStore";
-import TypeChip from "../../../../components/TypeChip/TypeChip";
+import TypeChip from "../TypeChip/TypeChip";
 import {detailedPokemInfoType} from "@/store/type";
 import Image from "next/image";
 

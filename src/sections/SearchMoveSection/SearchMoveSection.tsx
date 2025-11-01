@@ -3,11 +3,11 @@
 import {useEffect, useRef} from "react";
 import {useZustandStore} from "@/store/zustandStore";
 import {koreanMoveType} from "@/logic/pokeapiLogics/type";
-import {CloseIcon} from "../../../../components/CloseIcon/CloseIcon";
-import {Loader} from "../../../../components/Loader/Loader";
+import {CloseIcon} from "../../components/CloseIcon/CloseIcon";
+import {Loader} from "../../components/Loader/Loader";
 import {Toast} from "@/components/Toast/Toast";
 import {selectedMoveType} from "@/store/type";
-import MoveSearchDropdown from "@/app/search-learning-pokemon/_components/MoveSearchDropdown/MoveSearchDropdown";
+import MoveSearchDropdown from "@/components/MoveSearchDropdown/MoveSearchDropdown";
 import useHandleSearchBtnClick from "@/hooks/useHandleSearchBtnClick";
 
 interface SearchSectionProps {

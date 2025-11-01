@@ -1,7 +1,7 @@
 "use client";
 
 import {InitialLoadingScreen} from "@/components/InitialLoadingScreen/InitialLoadingScreen";
-import {SearchSection} from "@/app/search-learning-pokemon/_sections/SearchSection/SearchSection";
+import {SearchSection} from "@/sections/SearchMoveSection/SearchMoveSection";
 import {useLoadData_KoreanMovesArr} from "@/hooks/useLoadData_KoreanMovesArr";
 import {SelectedMovesSection} from "@/app/search-learning-pokemon/_sections/SelectedMovesSection/SelectedMovesSection";
 import LearningPokemonsSection from "@/app/search-learning-pokemon/_sections/LearningPokemonsSection/LearningPokemonsSection";

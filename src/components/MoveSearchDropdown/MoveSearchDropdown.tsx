@@ -1,5 +1,5 @@
 import {koreanMoveType} from "@/logic/pokeapiLogics/type";
-import TypeChip from "../../../../components/TypeChip/TypeChip";
+import TypeChip from "../TypeChip/TypeChip";
 import {useEffect, useRef} from "react";
 
 function MoveSearchDropdown({
