@@ -157,7 +157,7 @@ export const generateDetailedPokemon = async (
       : "";
 
     const additionalForm =
-      additionalFormTextRaw !== "" && REGION_NAME_EN_TO_KO.some((region) => additionalFormTextRaw.includes(region.eng))
+      additionalFormTextRaw !== "" && REGION_NAME_EN_TO_KO.some((region) => additionalFormTextRaw === region.eng)
         ? " (" +
           (REGION_NAME_EN_TO_KO.find((region) => additionalFormTextRaw.includes(region.eng))?.kor || "") +
           " 리전폼)"

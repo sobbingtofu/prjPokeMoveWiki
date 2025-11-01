@@ -8,7 +8,7 @@ import {Loader} from "../../components/Loader/Loader";
 import {Toast} from "@/components/Toast/Toast";
 import {selectedMoveType} from "@/store/type";
 import MoveSearchDropdown from "@/components/MoveSearchDropdown/MoveSearchDropdown";
-import useHandleSearchBtnClick from "@/hooks/useHandleSearchBtnClick";
+import useHandleMoveSearchBtnClick from "@/hooks/useHandleMoveSearchBtnClick";
 
 interface SearchSectionProps {
   className?: string;
@@ -56,7 +56,7 @@ export const SearchSection = ({className = "", smDropDownHeight, dropDownHeight}
     setIsDropdownOpen01(filtered.length > 0);
   }, [searchValue, koreanMovesArrayStates, setFilteredMoves, setIsDropdownOpen01]);
 
-  const handleSearchButtonClick = useHandleSearchBtnClick();
+  const handleMoveSearchButtonClick = useHandleMoveSearchBtnClick();
 
   // 외부 클릭시 드롭다운 닫기
   useEffect(() => {
@@ -118,7 +118,7 @@ export const SearchSection = ({className = "", smDropDownHeight, dropDownHeight}
   };
 
   const handleControlEnterKeyDown = () => {
-    handleSearchButtonClick();
+    handleMoveSearchButtonClick();
   };
 
   const handleKeyDownInMoveSearchInput = (e: React.KeyboardEvent<HTMLInputElement>) => {

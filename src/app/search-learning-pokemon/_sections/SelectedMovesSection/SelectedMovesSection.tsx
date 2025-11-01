@@ -1,7 +1,7 @@
 import {MoveCard} from "@/app/search-learning-pokemon/_components/MoveCard/MoveCard";
 import ScrollContainer from "@/components/ScrollContainer/ScrollContainer";
 import SelectedMovesDeleteButtons from "@/app/search-learning-pokemon/_components/SelectedMovesDeleteButtons/SelectedMovesDeleteButtons";
-import useHandleSearchBtnClick from "@/hooks/useHandleSearchBtnClick";
+import useHandleMoveSearchBtnClick from "@/hooks/useHandleMoveSearchBtnClick";
 
 import {useZustandStore} from "@/store/zustandStore";
 
@@ -16,7 +16,7 @@ export const SelectedMovesSection = ({className = ""}: SelectedMovesSectionProps
     console.log("해당 기술 상세보기 넘어갈 예정:", moveId);
   };
 
-  const handleSearchButtonClick = useHandleSearchBtnClick();
+  const handleSearchButtonClick = useHandleMoveSearchBtnClick();
 
   return (
     <>

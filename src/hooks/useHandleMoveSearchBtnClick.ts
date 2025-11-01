@@ -6,7 +6,7 @@ import {useZustandStore} from "@/store/zustandStore";
 import useApplyFilters from "./useApplyFilters";
 import useApplySortings from "./useApplySortings";
 
-function useHandleSearchBtnClick() {
+function useHandleMoveSearchBtnClick() {
   const selectedMovesArrayStates = useZustandStore((state) => state.selectedMovesArrayStates);
   const setLastSearchMovesArrayStates = useZustandStore((state) => state.setLastSearchMovesArrayStates);
   const setPokemonsLearningAllLastSearchMoves = useZustandStore((state) => state.setPokemonsLearningAllLastSearchMoves);
@@ -65,4 +65,4 @@ function useHandleSearchBtnClick() {
   return handleSearchButtonClick;
 }
 
-export default useHandleSearchBtnClick;
+export default useHandleMoveSearchBtnClick;

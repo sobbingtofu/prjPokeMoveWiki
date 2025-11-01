@@ -132,6 +132,9 @@ export const useZustandStore = create<zustandStoreType>((set) => ({
   filteredMoves: [],
   setFilteredMoves: (update) => set({filteredMoves: update}),
 
+  filteredPokemons: [],
+  setFilteredPokemons: (update) => set({filteredPokemons: update}),
+
   isDropdownOpen01: false,
   setIsDropdownOpen01: (update) => set({isDropdownOpen01: update}),
 

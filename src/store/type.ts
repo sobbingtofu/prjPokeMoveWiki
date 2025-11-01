@@ -148,8 +148,12 @@ export interface zustandStoreType {
 
   searchValue: string;
   setSearchValue: (update: string) => void;
+
   filteredMoves: koreanMoveType[];
   setFilteredMoves: (update: koreanMoveType[]) => void;
+
+  filteredPokemons: detailedPokemInfoType[];
+  setFilteredPokemons: (update: detailedPokemInfoType[]) => void;
 
   isDropdownOpen01: boolean;
   setIsDropdownOpen01: (update: boolean) => void;
