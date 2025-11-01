@@ -26,7 +26,7 @@ function TopNavigationBar() {
   };
 
   const linkClass = (href: string) =>
-    `block rounded transition-colors hover:bg-gray-700 cursor-pointer ${
+    `block rounded transition-colors hover:bg-gray-700 cursor-pointer max-w-[100px] lg:max-w-[200px] ${
       isActive(href) ? "font-bold text-white" : "text-gray-300"
     }`;
 
@@ -65,7 +65,7 @@ function TopNavigationBar() {
       <aside className="w-full bg-gray-800 text-white px-10 flex flex-row justify-between items-center h-[7dvh] relative">
         <Link href="/" className="flex flex-row items-center gap-4 py-2 cursor-pointer">
           <Image src="/ui/icon/eevee01.png" alt="Eevee Wiki Logo" width={48} height={42} />
-          <h1 className="text-2xl font-bold">이브이 위키</h1>
+          <h1 className="text-2xl font-bold min-w-[130px]">이브이 위키</h1>
         </Link>
         <div className="flex-row gap-10 text-sm py-5 hidden sm:flex">
           {menuItems.map((item) => (
