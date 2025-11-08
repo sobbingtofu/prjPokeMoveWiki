@@ -13,6 +13,7 @@ interface PokemonSearchInputProps {
 
   accentedPokemonIndex: number;
   setAccentedPokemonIndex: React.Dispatch<React.SetStateAction<number>>;
+  handleDropdownItemClick_searchPokemon: (accentedPokemon: detailedPokemInfoType) => void;
 }
 
 function PokemonSearchInput({
@@ -24,6 +25,7 @@ function PokemonSearchInput({
 
   accentedPokemonIndex,
   setAccentedPokemonIndex,
+  handleDropdownItemClick_searchPokemon,
 }: PokemonSearchInputProps) {
   const [isDebouncing, setIsDebouncing] = useState(false);
 
@@ -53,9 +55,6 @@ function PokemonSearchInput({
     console.log("Filtered Pokemons:", filtered);
   }, [searchValue, detailedPokemons]);
 
-  // 작성 필요
-  const handleDropdownItemClick_searchPokemon = (accentedPokemon: detailedPokemInfoType) => {};
-
   const handleEnterKeyDown = () => {
     setIsDebouncing(false);
     if (filteredPokemons.length > 0 && accentedPokemonIndex === -1) {
@@ -68,9 +67,9 @@ function PokemonSearchInput({
     }
   };
 
-  useEffect(() => {
-    console.log("Updated Filtered Pokemons in SearchInput:", filteredPokemons);
-  }, [filteredPokemons]);
+  // useEffect(() => {
+  //   console.log("Updated Filtered Pokemons in SearchInput:", filteredPokemons);
+  // }, [filteredPokemons]);
 
   const handleArrowKeyDown = (arrow: "ArrowDown" | "ArrowUp") => {
     console.log("handleArrowKeyDown called");
@@ -145,6 +144,13 @@ function PokemonSearchInput({
     }
   };
 
+  const handleInputFocus = (e: React.FocusEvent<HTMLInputElement>) => {
+    e.preventDefault();
+    if (filteredPokemons.length > 0) {
+      setIsPokemonDropdownOpen(true);
+    }
+  };
+
   return (
     <div
       className="bg-white px-6 py-4 flex justify-between items-center shadow-sm
@@ -163,6 +169,7 @@ function PokemonSearchInput({
         onBlur={(e) => {
           e.preventDefault();
         }}
+        onFocus={handleInputFocus}
       />
       {isDebouncing && <Loader />}
       {!isDebouncing && searchValue.trim() !== "" && <CloseIcon onClick={handleClickCloseIcon} />}

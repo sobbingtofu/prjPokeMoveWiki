@@ -3,15 +3,18 @@ import TypeChip from "../TypeChip/TypeChip";
 import Image from "next/image";
 import React, {useEffect, useRef} from "react";
 import {useZustandStore} from "@/store/zustandStore";
+import {detailedPokemInfoType} from "@/store/type";
 
 interface PokemonSearchDropdownProps {
   searchType?: "normal" | "ev";
   accentedPokemonIndex?: number;
+  handleDropdownItemClick_searchPokemon: (accentedPokemon: detailedPokemInfoType) => void;
 }
 
 const PokemonSearchDropdown = React.memo(function PokemonSearchDropdown({
   searchType = "ev",
-  accentedPokemonIndex: accentedPokemonIndex,
+  accentedPokemonIndex,
+  handleDropdownItemClick_searchPokemon,
 }: PokemonSearchDropdownProps) {
   const accentedItemRef = useRef<HTMLDivElement | null>(null);
 
@@ -55,6 +58,7 @@ const PokemonSearchDropdown = React.memo(function PokemonSearchDropdown({
                 ? `w-[30%] flex items-center gap-2 min-w-[80px]`
                 : "w-full flex items-center gap-2 min-w-[80px]"
             }
+            onClick={() => handleDropdownItemClick_searchPokemon(pokemon)}
           >
             <Image
               src={pokemon.spriteUrl}

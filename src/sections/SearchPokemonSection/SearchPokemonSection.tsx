@@ -6,6 +6,8 @@ import {useZustandStore} from "@/store/zustandStore";
 import React, {useEffect, useRef, useState} from "react";
 import PokemonSearchDropdown from "../../components/PokemonSearchDropdown/PokemonSearchDropdown";
 import PokemonSearchInput from "@/components/PokemonSearchInput/PokemonSearchInput";
+import {detailedPokemInfoType} from "@/store/type";
+import {useRouter} from "next/navigation";
 
 interface SearchPokemonSectionProps {
   searchType?: "normal" | "ev";
@@ -44,6 +46,15 @@ function SearchPokemonSection({
     }
   }, [setIsPokemonDropdownOpen]);
 
+  const router = useRouter();
+
+  const handleDropdownItemClick_searchPokemon = (accentedPokemon: detailedPokemInfoType) => {
+    if (searchType === "normal") {
+      console.log("Selected Pokemon:", accentedPokemon);
+      router.push(`/pokemons/${accentedPokemon.pokemonId}`);
+    }
+  };
+
   return (
     <>
       <section className="w-dvw h-dvh overflow-hidden bg-gray-300 flex flex-col justify-center items-center">
@@ -54,6 +65,7 @@ function SearchPokemonSection({
           <div className="relative w-full h-min font-black" ref={searchContainerRef}>
             {/* 검색창 */}
             <PokemonSearchInput
+              handleDropdownItemClick_searchPokemon={handleDropdownItemClick_searchPokemon}
               accentedPokemonIndex={accentedPokemonIndex}
               setAccentedPokemonIndex={setAccentedPokemonIndex}
               searchValue={searchValue}
@@ -64,7 +76,11 @@ function SearchPokemonSection({
 
             {/* 드롭다운 결과 */}
             {isPokemonDropdownOpen && (
-              <PokemonSearchDropdown searchType={searchType} accentedPokemonIndex={accentedPokemonIndex} />
+              <PokemonSearchDropdown
+                searchType={searchType}
+                accentedPokemonIndex={accentedPokemonIndex}
+                handleDropdownItemClick_searchPokemon={handleDropdownItemClick_searchPokemon}
+              />
             )}
           </div>
         </div>
