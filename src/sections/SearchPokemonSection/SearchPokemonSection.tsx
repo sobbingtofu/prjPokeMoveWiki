@@ -1,6 +1,5 @@
 "use client";
 
-import {useLoadData_PokemonsEV} from "@/hooks/useLoadData_PokemonsEV";
 import {useZustandStore} from "@/store/zustandStore";
 
 import React, {useEffect, useRef, useState} from "react";
@@ -8,6 +7,7 @@ import PokemonSearchDropdown from "../../components/PokemonSearchDropdown/Pokemo
 import PokemonSearchInput from "@/components/PokemonSearchInput/PokemonSearchInput";
 import {detailedPokemInfoType} from "@/store/type";
 import {useRouter} from "next/navigation";
+import {useLoadData_DetailedPokemonsArr} from "@/hooks/useLoadData_DetailedPokemonsArr";
 
 interface SearchPokemonSectionProps {
   searchType?: "normal" | "ev";
@@ -28,7 +28,7 @@ function SearchPokemonSection({
 
   const [accentedPokemonIndex, setAccentedPokemonIndex] = useState<number>(-1);
 
-  useLoadData_PokemonsEV();
+  useLoadData_DetailedPokemonsArr();
 
   useEffect(() => {
     if (outSideClickDropdownClose) {

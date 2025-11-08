@@ -6,6 +6,8 @@ import {useZustandStore} from "@/store/zustandStore";
 import {useEffect} from "react";
 import {generateDetailedPokemon, getInitialPokemons} from "@/logic/pokeapiLogics/fetchMovePokemonLogics";
 
+// 아마 미사용
+
 export const useLoadData_PokemonsEV = () => {
   const setLoadingStates = useZustandStore((state) => state.setLoadingStates);
   const setDetailedPokemons = useZustandStore((state) => state.setDetailedPokemons);
@@ -21,7 +23,7 @@ export const useLoadData_PokemonsEV = () => {
   // 디테일 추가 데이터 쿼리 (initialPokemons에 의존)
   const {data: detailedPokemons, isLoading: isDetailedPokemonsLoading} = useQuery({
     queryKey: ["PokemonsEV", initialPokemons?.length], // initialMoves가 준비되면 실행
-    queryFn: () => generateDetailedPokemon(initialPokemons!, "EV"),
+    queryFn: () => generateDetailedPokemon(initialPokemons!),
     enabled: !!initialPokemons, // initialMoves가 있을 때만 실행
     staleTime: Infinity,
     gcTime: Infinity,

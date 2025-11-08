@@ -47,6 +47,8 @@ export interface detailedPokemInfoType {
   evStats?: {statName: string; evValue: number}[];
 
   moveDetails?: moveDetailType[];
+
+  abilities: {abilityName: string; abilityUrl: string; hidden: boolean}[];
 }
 
 export type sortOptionType = {

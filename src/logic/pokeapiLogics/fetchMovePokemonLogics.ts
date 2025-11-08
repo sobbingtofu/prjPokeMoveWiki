@@ -39,8 +39,7 @@ export const getInitialPokemons = async () => {
   return initialPokemons;
 };
 
-// 02. 기술 국문명 추가 및 어떻게든 배우는 포켓몬 (영어이름 + url) 객체 배열 가져와
-// learningPokemonEn 속성에 추가 > 얘를 03에서 활용
+// 02. 기술 국문명 추가 및 어떻게든 배우는 포켓몬 (영어이름 + url) 객체 배열 가져와 learningPokemonEn 속성에 추가 > 얘를 03에서 활용
 export const generateKoreanMoveData = async (initialMovesArr: initialMovesType[]) => {
   const promises = initialMovesArr.map(async (initialMoveItem) => {
     try {
@@ -85,6 +84,184 @@ export const generateKoreanMoveData = async (initialMovesArr: initialMovesType[]
 
   return validMoves.filter((move) => move.type !== "shadow" && !move.korDescription.includes("사용할 수 없는 기술"));
 };
+
+// 03. 포켓몬의 상세정보 추가
+export const generateDetailedPokemon = async (
+  commonPokemons: initialPokemonType[],
+  generateFocusType: "moves" | "pokemons" | "EV" = "EV"
+) => {
+  const promises = commonPokemons.map(async (pokemonInfo) => {
+    const {data: basicData} = await axios.get(pokemonInfo.url);
+    const speciesUrl = basicData.species.url;
+
+    const additionalFormTextRaw = pokemonInfo.name.includes("-")
+      ? pokemonInfo.name.slice(pokemonInfo.name.indexOf("-") + 1)
+      : "";
+
+    const additionalForm =
+      additionalFormTextRaw !== "" && REGION_NAME_EN_TO_KO.some((region) => additionalFormTextRaw === region.eng)
+        ? " (" +
+          (REGION_NAME_EN_TO_KO.find((region) => additionalFormTextRaw.includes(region.eng))?.kor || "") +
+          " 리전폼)"
+        : "";
+
+    const {data: speciesData} = await axios.get(speciesUrl);
+
+    const newStatNamesMap: {[key: string]: string} = {
+      hp: "hp",
+      attack: "attack",
+      defense: "defense",
+      "special-attack": "specialAttack",
+      "special-defense": "specialDefense",
+      speed: "speed",
+    };
+
+    const returnDataBasics = {
+      pokemonId: basicData.id,
+      speciesId: speciesData.id,
+      basicUrl: pokemonInfo.url,
+      speciesUrl: speciesUrl,
+      name: pokemonInfo.name,
+      koreanName:
+        (speciesData.names.find((nameItem: any) => nameItem.language.name === "ko")?.name || pokemonInfo.name) +
+        additionalForm,
+      types: basicData.types.map((typeInfo: any) => typeInfo.type.name),
+      koreantypes: basicData.types
+        .map((typeInfo: any) => typeInfo.type.name)
+        .map(
+          (typeName: string) => TYPE_NAME_EN_TO_KO.find((type) => type.typeName === typeName)?.korTypeName || typeName
+        ),
+
+      spriteUrl: basicData.sprites.front_default,
+      stats: basicData.stats.map((statInfo: any) => ({
+        statName: newStatNamesMap[statInfo.stat.name] || statInfo.stat.name,
+        statValue: statInfo.base_stat,
+      })),
+      evStats: basicData.stats
+        .filter((statInfo: any) => statInfo.effort > 0)
+        .map((statInfo: any) => ({
+          statName: newStatNamesMap[statInfo.stat.name] || statInfo.stat.name,
+          evValue: statInfo.effort,
+        })),
+      abilities: basicData.abilities.map((abilityInfo: any) => ({
+        abilityName: abilityInfo.ability.name,
+        abilityUrl: abilityInfo.ability.url,
+        hidden: abilityInfo.is_hidden,
+      })),
+      moves: basicData.moves,
+      captureRate: speciesData.capture_rate,
+      evolutionChainUrl: speciesData.evolution_chain.url,
+    };
+
+    return returnDataBasics;
+
+    // if (generateFocusType === "EV") {
+    //   const additionalReturnData = {
+    //     evStats: basicData.stats
+    //       .filter((statInfo: any) => statInfo.effort > 0)
+    //       .map((statInfo: any) => ({
+    //         statName: newStatNamesMap[statInfo.stat.name] || statInfo.stat.name,
+    //         evValue: statInfo.effort,
+    //       })),
+    //   };
+    //   return {...returnDataBasics, ...additionalReturnData};
+    // } else if (generateFocusType === "moves") {
+    //   const additionalReturnData = {
+    //     stats: basicData.stats.map((statInfo: any) => ({
+    //       statName: newStatNamesMap[statInfo.stat.name] || statInfo.stat.name,
+    //       statValue: statInfo.base_stat,
+    //     })),
+    //     evStats: basicData.stats
+    //       .filter((statInfo: any) => statInfo.effort > 0)
+    //       .map((statInfo: any) => ({
+    //         statName: newStatNamesMap[statInfo.stat.name] || statInfo.stat.name,
+    //         evValue: statInfo.effort,
+    //       })),
+    //   };
+    //   return {...returnDataBasics, ...additionalReturnData};
+    // }
+    // // else if (generateFocusType === "pokemons")와 동일
+    // else {
+    //   const additionalReturnData = {
+    //     stats: basicData.stats.map((statInfo: any) => ({
+    //       statName: newStatNamesMap[statInfo.stat.name] || statInfo.stat.name,
+    //       statValue: statInfo.base_stat,
+    //     })),
+    //     abilities: basicData.abilities.map((abilityInfo: any) => ({
+    //       abilityName: abilityInfo.ability.name,
+    //       abilityUrl: abilityInfo.ability.url,
+    //       hidden: abilityInfo.is_hidden,
+    //     })),
+    //     moves: basicData.moves,
+    //     captureRate: speciesData.capture_rate,
+    //     evolutionChainUrl: speciesData.evolution_chain.url,
+    //   };
+
+    //   return {...returnDataBasics, ...additionalReturnData};
+    // }
+  });
+
+  const learningPokemonsRaw = await Promise.all(promises);
+
+  const seen = new Set<string>();
+  const finalData = learningPokemonsRaw.filter((pokemon) => {
+    if (seen.has(pokemon.koreanName)) return false;
+    seen.add(pokemon.koreanName);
+    return true;
+  });
+
+  // console.log("generateFocusType: ", generateFocusType);
+  console.log("최종 데이터:", finalData);
+  return finalData;
+};
+
+// 유틸리티 함수: 버전 그룹명으로 세대 번호 조회
+const getGenNumberByVersionGroup = (versionGroupName: string): number => {
+  const genInfo = VERSION_GROUP_TO_GEN.find((gen) => gen.versionGroups.includes(versionGroupName));
+  return genInfo?.genNumber || 0;
+};
+
+// 04. 검색된 포켓몬에 대해서 검색 대상 기술 배우는 방법 및 세대 정보 추가
+export const addLearningMethodsAndGensToPokemons = async (
+  pokemons: detailedPokemInfoType[],
+  selectedMoves: selectedMoveType[]
+) => {
+  const updatedPokemonsPromises = pokemons.map(async (pokemon) => {
+    const {data: pokemonData} = await axios.get(pokemon.basicUrl);
+
+    const moveDetails: moveDetailType[] = [];
+
+    selectedMoves.forEach((selectedMoveName) => {
+      const moveObj = pokemonData.moves.find((moveItem: any) => moveItem.move.name === selectedMoveName.name);
+
+      if (moveObj) {
+        const versionDetails = moveObj.version_group_details.map((detail: any) => {
+          const genNumber = getGenNumberByVersionGroup(detail.version_group.name);
+          return {
+            genNumber: genNumber,
+            versionName: detail.version_group.name,
+            learnMethod: detail.move_learn_method.name,
+            learnedLevel: detail.level_learned_at,
+          };
+        });
+
+        moveDetails.push({
+          moveKorName: selectedMoveName.koreanName,
+          versionDetails,
+        });
+      }
+    });
+
+    return {
+      ...pokemon,
+      ...(moveDetails.length > 0 && {moveDetails}),
+    };
+  });
+
+  return await Promise.all(updatedPokemonsPromises);
+};
+
+// ===============================================================================================================
 
 // 02-1. 기술을 배우는 포켓몬 객체 배열에 기술 학습 방법 및 세대 정보 추가
 // 리소스 부족으로 못돌림
@@ -141,161 +318,4 @@ export const addLearningMethodsAndGens = async (koreanMovesArray: koreanMoveType
     console.error("기술 학습 방법 및 세대 정보 호출 실패:", error);
     return [];
   }
-};
-
-// 03. 포켓몬의 상세정보 추가
-export const generateDetailedPokemon = async (
-  commonPokemons: initialPokemonType[],
-  generateFocusType: "moves" | "pokemons" | "EV" = "EV"
-) => {
-  const promises = commonPokemons.map(async (pokemonInfo) => {
-    const {data: basicData} = await axios.get(pokemonInfo.url);
-    const speciesUrl = basicData.species.url;
-
-    const additionalFormTextRaw = pokemonInfo.name.includes("-")
-      ? pokemonInfo.name.slice(pokemonInfo.name.indexOf("-") + 1)
-      : "";
-
-    const additionalForm =
-      additionalFormTextRaw !== "" && REGION_NAME_EN_TO_KO.some((region) => additionalFormTextRaw === region.eng)
-        ? " (" +
-          (REGION_NAME_EN_TO_KO.find((region) => additionalFormTextRaw.includes(region.eng))?.kor || "") +
-          " 리전폼)"
-        : "";
-
-    const {data: speciesData} = await axios.get(speciesUrl);
-
-    const newStatNamesMap: {[key: string]: string} = {
-      hp: "hp",
-      attack: "attack",
-      defense: "defense",
-      "special-attack": "specialAttack",
-      "special-defense": "specialDefense",
-      speed: "speed",
-    };
-
-    const returnDataBasics: detailedPokemInfoType = {
-      pokemonId: basicData.id,
-      speciesId: speciesData.id,
-      basicUrl: pokemonInfo.url,
-      speciesUrl: speciesUrl,
-      name: pokemonInfo.name,
-      koreanName:
-        (speciesData.names.find((nameItem: any) => nameItem.language.name === "ko")?.name || pokemonInfo.name) +
-        additionalForm,
-      types: basicData.types.map((typeInfo: any) => typeInfo.type.name),
-      koreantypes: basicData.types
-        .map((typeInfo: any) => typeInfo.type.name)
-        .map(
-          (typeName: string) => TYPE_NAME_EN_TO_KO.find((type) => type.typeName === typeName)?.korTypeName || typeName
-        ),
-
-      spriteUrl: basicData.sprites.front_default,
-      stats: [],
-    };
-
-    if (generateFocusType === "EV") {
-      const additionalReturnData = {
-        evStats: basicData.stats
-          .filter((statInfo: any) => statInfo.effort > 0)
-          .map((statInfo: any) => ({
-            statName: newStatNamesMap[statInfo.stat.name] || statInfo.stat.name,
-            evValue: statInfo.effort,
-          })),
-      };
-      return {...returnDataBasics, ...additionalReturnData};
-    } else if (generateFocusType === "moves") {
-      const additionalReturnData = {
-        stats: basicData.stats.map((statInfo: any) => ({
-          statName: newStatNamesMap[statInfo.stat.name] || statInfo.stat.name,
-          statValue: statInfo.base_stat,
-        })),
-        evStats: basicData.stats
-          .filter((statInfo: any) => statInfo.effort > 0)
-          .map((statInfo: any) => ({
-            statName: newStatNamesMap[statInfo.stat.name] || statInfo.stat.name,
-            evValue: statInfo.effort,
-          })),
-      };
-      return {...returnDataBasics, ...additionalReturnData};
-    }
-    // else if (generateFocusType === "pokemons")와 동일
-    else {
-      const additionalReturnData = {
-        stats: basicData.stats.map((statInfo: any) => ({
-          statName: newStatNamesMap[statInfo.stat.name] || statInfo.stat.name,
-          statValue: statInfo.base_stat,
-        })),
-        abilities: basicData.abilities.map((abilityInfo: any) => ({
-          abilityName: abilityInfo.ability.name,
-          abilityUrl: abilityInfo.ability.url,
-          hidden: abilityInfo.is_hidden,
-        })),
-        moves: basicData.moves,
-        captureRate: speciesData.capture_rate,
-        evolutionChainUrl: speciesData.evolution_chain.url,
-      };
-
-      return {...returnDataBasics, ...additionalReturnData};
-    }
-  });
-
-  const learningPokemonsRaw = await Promise.all(promises);
-
-  const seen = new Set<string>();
-  const finalData = learningPokemonsRaw.filter((pokemon) => {
-    if (seen.has(pokemon.koreanName)) return false;
-    seen.add(pokemon.koreanName);
-    return true;
-  });
-
-  console.log("generateFocusType: ", generateFocusType);
-  console.log("최종 데이터:", finalData);
-  return finalData;
-};
-
-// 유틸리티 함수: 버전 그룹명으로 세대 번호 조회
-const getGenNumberByVersionGroup = (versionGroupName: string): number => {
-  const genInfo = VERSION_GROUP_TO_GEN.find((gen) => gen.versionGroups.includes(versionGroupName));
-  return genInfo?.genNumber || 0;
-};
-
-// 04. 검색된 포켓몬에 대해서 검색 대상 기술 배우는 방법 및 세대 정보 추가
-export const addLearningMethodsAndGensToPokemons = async (
-  pokemons: detailedPokemInfoType[],
-  selectedMoves: selectedMoveType[]
-) => {
-  const updatedPokemonsPromises = pokemons.map(async (pokemon) => {
-    const {data: pokemonData} = await axios.get(pokemon.basicUrl);
-
-    const moveDetails: moveDetailType[] = [];
-
-    selectedMoves.forEach((selectedMoveName) => {
-      const moveObj = pokemonData.moves.find((moveItem: any) => moveItem.move.name === selectedMoveName.name);
-
-      if (moveObj) {
-        const versionDetails = moveObj.version_group_details.map((detail: any) => {
-          const genNumber = getGenNumberByVersionGroup(detail.version_group.name);
-          return {
-            genNumber: genNumber,
-            versionName: detail.version_group.name,
-            learnMethod: detail.move_learn_method.name,
-            learnedLevel: detail.level_learned_at,
-          };
-        });
-
-        moveDetails.push({
-          moveKorName: selectedMoveName.koreanName,
-          versionDetails,
-        });
-      }
-    });
-
-    return {
-      ...pokemon,
-      ...(moveDetails.length > 0 && {moveDetails}),
-    };
-  });
-
-  return await Promise.all(updatedPokemonsPromises);
 };

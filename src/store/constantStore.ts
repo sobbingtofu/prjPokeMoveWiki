@@ -596,3 +596,12 @@ export const SORT_ASC_DESC_OPTIONS = [
   {key: "asc", label: "오름차순"},
   {key: "desc", label: "내림차순"},
 ];
+
+export const DB_NAME_DETAILED_POKEMONS = "detailedPokemonsDB";
+export const STORE_NAME_DETAILED_POKEMONS = "detailedPokemons";
+export const META_STORE = "meta";
+export const DB_VERSION = 1;
+export const EXPIRE_MS = 24 * 60 * 60 * 1000; // 24시간
+
+export const DB_NAME_KOREAN_MOVES = "koreanMovesDB";
+export const STORE_NAME_KOREAN_MOVES = "koreanMoves";
