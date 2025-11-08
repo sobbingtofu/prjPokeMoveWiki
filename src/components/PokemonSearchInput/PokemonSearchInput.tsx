@@ -7,23 +7,23 @@ import {useZustandStore} from "@/store/zustandStore";
 interface PokemonSearchInputProps {
   searchValue: string;
   setSearchValue: React.Dispatch<React.SetStateAction<string>>;
-  searchContainerRef: React.RefObject<HTMLDivElement | null>;
+
   setIsPokemonDropdownOpen: (update: boolean) => void;
   enableEnterArrowKeyHandling?: boolean;
 
-  accentedMoveIndex: number;
-  setAccentedMoveIndex: React.Dispatch<React.SetStateAction<number>>;
+  accentedPokemonIndex: number;
+  setAccentedPokemonIndex: React.Dispatch<React.SetStateAction<number>>;
 }
 
 function PokemonSearchInput({
   searchValue,
   setSearchValue,
-  searchContainerRef,
+
   setIsPokemonDropdownOpen,
   enableEnterArrowKeyHandling = false,
 
-  accentedMoveIndex,
-  setAccentedMoveIndex,
+  accentedPokemonIndex,
+  setAccentedPokemonIndex,
 }: PokemonSearchInputProps) {
   const [isDebouncing, setIsDebouncing] = useState(false);
 
@@ -35,9 +35,6 @@ function PokemonSearchInput({
   const filteredPokemons = useZustandStore((state) => state.filteredPokemons);
   const setFilteredPokemons = useZustandStore((state) => state.setFilteredPokemons);
   const detailedPokemons = useZustandStore((state) => state.detailedPokemons);
-
-  // 작성 필요
-  const handlePokemonSearchButtonClick = () => {};
 
   useEffect(() => {
     if (searchValue.trim() === "") {
@@ -57,18 +54,16 @@ function PokemonSearchInput({
   }, [searchValue, detailedPokemons]);
 
   // 작성 필요
-  const handleDropdownItemClick_searchPokemon = (accentedMove: detailedPokemInfoType) => {};
+  const handleDropdownItemClick_searchPokemon = (accentedPokemon: detailedPokemInfoType) => {};
 
   const handleEnterKeyDown = () => {
     setIsDebouncing(false);
-    if (filteredPokemons.length > 0 && accentedMoveIndex === -1) {
-      setAccentedMoveIndex(0);
-    } else if (filteredPokemons.length > 0 && accentedMoveIndex >= 0) {
-      const accentedMove = filteredPokemons[accentedMoveIndex];
-      if (accentedMove) {
-        handleDropdownItemClick_searchPokemon(accentedMove);
-        // 초기화
-        // enterKeyPressedCounRef.current = 0;
+    if (filteredPokemons.length > 0 && accentedPokemonIndex === -1) {
+      setAccentedPokemonIndex(0);
+    } else if (filteredPokemons.length > 0 && accentedPokemonIndex >= 0) {
+      const accentedPokemon = filteredPokemons[accentedPokemonIndex];
+      if (accentedPokemon && accentedPokemonIndex >= 0) {
+        handleDropdownItemClick_searchPokemon(accentedPokemon);
       }
     }
   };
@@ -79,7 +74,7 @@ function PokemonSearchInput({
 
   const handleArrowKeyDown = (arrow: "ArrowDown" | "ArrowUp") => {
     console.log("handleArrowKeyDown called");
-    console.log("Current accentedMoveIndex:", accentedMoveIndex);
+    console.log("Current accentedMoveIndex:", accentedPokemonIndex);
     console.log("Filtered Pokemons:", filteredPokemons);
 
     setIsDebouncing(false);
@@ -87,41 +82,37 @@ function PokemonSearchInput({
       const currentTime = Date.now();
       if (currentTime - lastArrowKeyTime.current > arrowKeyThrottleDelay) {
         if (arrow === "ArrowDown") {
-          if (accentedMoveIndex < filteredPokemons.length - 1) {
-            setAccentedMoveIndex((prev) => prev + 1);
+          if (accentedPokemonIndex < filteredPokemons.length - 1) {
+            setAccentedPokemonIndex((prev) => prev + 1);
           } else {
-            setAccentedMoveIndex(0);
+            setAccentedPokemonIndex(0);
           }
         } else if (arrow === "ArrowUp") {
-          if (accentedMoveIndex > 0) {
-            setAccentedMoveIndex((prev) => prev - 1);
+          if (accentedPokemonIndex > 0) {
+            setAccentedPokemonIndex((prev) => prev - 1);
           } else {
-            setAccentedMoveIndex(filteredPokemons.length - 1);
+            setAccentedPokemonIndex(filteredPokemons.length - 1);
           }
         }
 
         lastArrowKeyTime.current = currentTime;
       }
-      console.log("accentedMoveIndexRef.current:", accentedMoveIndex);
+      console.log("accentedMoveIndexRef.current:", accentedPokemonIndex);
     }
   };
 
   const handleKeyDownSearchInput = (e: React.KeyboardEvent<HTMLInputElement>) => {
     console.log("Key pressed:", e.key);
+
     if (enableEnterArrowKeyHandling) {
       if (e.key === "Enter") {
-        if (e.ctrlKey) {
-          setAccentedMoveIndex(-1);
-          setIsPokemonDropdownOpen(false);
-          handlePokemonSearchButtonClick();
-        } else {
-          handleEnterKeyDown();
-        }
+        handleEnterKeyDown();
       } else if (e.key === "ArrowDown" || e.key === "ArrowUp") {
         e.preventDefault();
         handleArrowKeyDown(e.key);
       } else {
         setIsDebouncing(true);
+        setAccentedPokemonIndex(-1);
 
         if (inputDebounceRef.current) {
           clearTimeout(inputDebounceRef.current);
@@ -149,11 +140,8 @@ function PokemonSearchInput({
   const handleClickCloseIcon = () => {
     if (inputValueRef.current) inputValueRef.current.value = "";
     setSearchValue("");
-    if (searchContainerRef) {
-      const inputElement = searchContainerRef.current?.querySelector("input");
-      if (inputElement) {
-        inputElement.value = "";
-      }
+    if (inputValueRef.current) {
+      inputValueRef.current.value = "";
     }
   };
 
@@ -164,7 +152,6 @@ function PokemonSearchInput({
                w-full text-lg border-2 border-gray-300 rounded-lg focus:outline-none focus:border-blue-500
                focus:ring-2 focus:ring-blue-200 transition-all duration-200
                overflow-hidden"
-      ref={searchContainerRef}
     >
       <input
         autoFocus

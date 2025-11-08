@@ -7,7 +7,7 @@ function SearchPokemonsPage() {
   return (
     <div className="w-dvw h-dvh overflow-hidden">
       <InitialLoadingScreen />
-      <SearchPokemonSection searchType="normal" enableEnterArrowKeyHandling={true} />
+      <SearchPokemonSection searchType="normal" enableEnterArrowKeyHandling={true} outSideClickDropdownClose={true} />
     </div>
   );
 }

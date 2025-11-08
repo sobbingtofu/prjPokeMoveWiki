@@ -24,7 +24,7 @@ function SearchPokemonSection({
   const [searchValue, setSearchValue] = useState("");
   const searchContainerRef = useRef<HTMLDivElement>(null);
 
-  const [accentedMoveIndex, setAccentedMoveIndex] = useState<number>(-1);
+  const [accentedPokemonIndex, setAccentedPokemonIndex] = useState<number>(-1);
 
   useLoadData_PokemonsEV();
 
@@ -33,6 +33,7 @@ function SearchPokemonSection({
       const handleClickOutside = (event: MouseEvent) => {
         if (searchContainerRef.current && !searchContainerRef.current.contains(event.target as Node)) {
           setIsPokemonDropdownOpen(false);
+          setAccentedPokemonIndex(-1);
         }
       };
 
@@ -50,21 +51,20 @@ function SearchPokemonSection({
           <p className="mt-2 w-full text-sm italic text-gray-600 font-bold">
             {searchType === "ev" ? "포켓몬이 주는 노력치를 빠르게 검색" : "포켓몬을 빠르게 검색"}
           </p>
-          <div className="relative w-full font-black">
+          <div className="relative w-full h-min font-black" ref={searchContainerRef}>
             {/* 검색창 */}
             <PokemonSearchInput
-              accentedMoveIndex={accentedMoveIndex}
-              setAccentedMoveIndex={setAccentedMoveIndex}
+              accentedPokemonIndex={accentedPokemonIndex}
+              setAccentedPokemonIndex={setAccentedPokemonIndex}
               searchValue={searchValue}
               setSearchValue={setSearchValue}
-              searchContainerRef={searchContainerRef}
               setIsPokemonDropdownOpen={setIsPokemonDropdownOpen}
               enableEnterArrowKeyHandling={enableEnterArrowKeyHandling}
             />
 
             {/* 드롭다운 결과 */}
             {isPokemonDropdownOpen && (
-              <PokemonSearchDropdown searchType={searchType} accentedMoveIndex={accentedMoveIndex} />
+              <PokemonSearchDropdown searchType={searchType} accentedPokemonIndex={accentedPokemonIndex} />
             )}
           </div>
         </div>

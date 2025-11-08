@@ -6,12 +6,12 @@ import {useZustandStore} from "@/store/zustandStore";
 
 interface PokemonSearchDropdownProps {
   searchType?: "normal" | "ev";
-  accentedMoveIndex?: number;
+  accentedPokemonIndex?: number;
 }
 
 const PokemonSearchDropdown = React.memo(function PokemonSearchDropdown({
   searchType = "ev",
-  accentedMoveIndex,
+  accentedPokemonIndex: accentedPokemonIndex,
 }: PokemonSearchDropdownProps) {
   const accentedItemRef = useRef<HTMLDivElement | null>(null);
 
@@ -19,7 +19,7 @@ const PokemonSearchDropdown = React.memo(function PokemonSearchDropdown({
 
   useEffect(() => {
     if (accentedItemRef.current) {
-      if (accentedMoveIndex === 0 || accentedMoveIndex === filteredPokemons.length - 1) {
+      if (accentedPokemonIndex === 0 || accentedPokemonIndex === filteredPokemons.length - 1) {
         accentedItemRef.current.scrollIntoView({
           behavior: "instant",
           block: "nearest",
@@ -31,7 +31,7 @@ const PokemonSearchDropdown = React.memo(function PokemonSearchDropdown({
         });
       }
     }
-  }, [accentedMoveIndex]);
+  }, [accentedPokemonIndex]);
 
   return (
     <div
@@ -44,24 +44,31 @@ const PokemonSearchDropdown = React.memo(function PokemonSearchDropdown({
           key={pokemon.pokemonId}
           className={`px-4 py-3 hover:bg-gray-100 border-b border-gray-100 last:border-b-0 transition-colors duration-150 h-[120px]
           flex items-center justify-between gap-5
-          ${index === accentedMoveIndex ? "bg-cyan-100" : ""}
+          ${index === accentedPokemonIndex ? "bg-cyan-100" : ""}
+          ${searchType === "normal" ? "cursor-pointer" : ""}
             `}
-          ref={index === accentedMoveIndex ? accentedItemRef : null}
+          ref={index === accentedPokemonIndex ? accentedItemRef : null}
         >
-          <div className="w-[30%] flex items-center gap-2 min-w-[80px]">
+          <div
+            className={
+              searchType === "ev"
+                ? `w-[30%] flex items-center gap-2 min-w-[80px]`
+                : "w-full flex items-center gap-2 min-w-[80px]"
+            }
+          >
             <Image
               src={pokemon.spriteUrl}
               alt={"이미지 로딩중"}
               width={80}
               height={80}
-              className="rounded-full hidden md:block"
+              className={searchType === "ev" ? "rounded-full hidden md:block" : "rounded-full block"}
             />
             <p className="text-gray-900 text-sm ">{pokemon.koreanName}</p>
           </div>
 
           {searchType === "ev" && (
-            <div className="w-[60%] flex flex-row justify-end items-center gap-6">
-              <div className="text-black text-sm font-bold flex flex-row items-end gap-2 justify-start w-[140px] min-w-[140px]">
+            <div className="w-[60%] flex flex-row justify-end items-center gap-3">
+              <div className="text-black text-sm font-bold flex flex-row items-end gap-1 justify-start w-[140px] min-w-[140px]">
                 {pokemon.evStats?.map((evStat) => {
                   return STAT_LABELS.map((stat) => {
                     if (stat.statName === evStat.statName) {
