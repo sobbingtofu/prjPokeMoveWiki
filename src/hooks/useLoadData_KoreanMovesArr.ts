@@ -10,6 +10,7 @@ import {DB_NAME_KOREAN_MOVES, DB_VERSION, EXPIRE_MS, META_STORE, STORE_NAME_KORE
 export const useLoadData_KoreanMovesArr = () => {
   const setLoadingStates = useZustandStore((state) => state.setLoadingStates);
   const setKoreanMovesArrayStates = useZustandStore((state) => state.setKoreanMovesArrayStates);
+  const koreanMovesArrayStates = useZustandStore((state) => state.koreanMovesArrayStates);
 
   // 초기 기술 데이터 쿼리
   const {data: initialMoves, isLoading: isInitialMovesLoading} = useQuery({
@@ -39,30 +40,36 @@ export const useLoadData_KoreanMovesArr = () => {
     didRunRef.current = true;
 
     (async () => {
-      const db = await openDB(DB_NAME_KOREAN_MOVES, DB_VERSION, STORE_NAME_KOREAN_MOVES, META_STORE);
-      const meta = await getDBMeta(db, META_STORE);
-
-      if (!meta) {
-        // 1. DB가 없으면 쿼리 실행 후 저장
-        const {data: moves} = await refetchKoreanMoves();
-        if (moves) {
-          await saveToDB(db, moves, STORE_NAME_KOREAN_MOVES, META_STORE);
-          setKoreanMovesArrayStates(moves);
-        }
+      if (koreanMovesArrayStates.length > 0) {
+        // 0. 상태가 있으면 상태 사용
+        // setKoreanMovesArrayStates(koreanMovesArrayStates);
       } else {
-        // 3, 4. DB가 있으면 시간 확인
-        const now = Date.now();
-        if (now - meta.addedAt > EXPIRE_MS) {
-          // 3. 24시간 지났으면 쿼리 실행 후 덮어쓰기
+        const db = await openDB(DB_NAME_KOREAN_MOVES, DB_VERSION, STORE_NAME_KOREAN_MOVES, META_STORE);
+        const meta = await getDBMeta(db, META_STORE);
+        if (!meta) {
+          // 1. DB가 없으면 쿼리 실행 후 저장
           const {data: moves} = await refetchKoreanMoves();
           if (moves) {
             await saveToDB(db, moves, STORE_NAME_KOREAN_MOVES, META_STORE);
             setKoreanMovesArrayStates(moves);
           }
         } else {
-          // 4. 24시간 안 지났으면 DB에서 가져오기
-          const moves = await getFromDB(db, STORE_NAME_KOREAN_MOVES);
-          setKoreanMovesArrayStates(moves);
+          // 2. DB가 있으면 시간 확인
+          const now = Date.now();
+          if (now - meta.addedAt > EXPIRE_MS) {
+            // 3. 24시간 지났으면 쿼리 실행 후 덮어쓰기
+            const {data: moves} = await refetchKoreanMoves();
+            if (moves) {
+              await saveToDB(db, moves, STORE_NAME_KOREAN_MOVES, META_STORE);
+              setKoreanMovesArrayStates(moves);
+            }
+          } else {
+            // 4. 24시간 안 지났으면 DB에서 가져오기
+            setLoadingStates((prev) => ({...prev, isLoadingIndexedDB: true}));
+            const moves = await getFromDB(db, STORE_NAME_KOREAN_MOVES);
+            setKoreanMovesArrayStates(moves);
+            setLoadingStates((prev) => ({...prev, isLoadingIndexedDB: false}));
+          }
         }
       }
     })();

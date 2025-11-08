@@ -12,6 +12,8 @@ export const useZustandStore = create<zustandStoreType>((set) => ({
 
     isInitialPokemonsLoading: false,
     isDetailedPokemonsLoading: false,
+
+    isLoadingIndexedDB: false,
   },
   setLoadingStates: (update) =>
     set((state) => {

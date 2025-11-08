@@ -63,7 +63,14 @@ function TopNavigationBar() {
   return (
     <div className={`${isMenuOpen ? "h-auto" : "h-[7dvh]"} transition-all duration-300`}>
       <aside className="w-full bg-gray-800 text-white px-10 flex flex-row justify-between items-center h-[7dvh] relative">
-        <Link href="/" className="flex flex-row items-center gap-4 py-2 cursor-pointer">
+        <Link
+          href="/"
+          onClick={(e) => {
+            e.preventDefault();
+            navigateWithReset("/", true);
+          }}
+          className="flex flex-row items-center gap-4 py-2 cursor-pointer"
+        >
           <Image src="/ui/icon/eevee01.png" alt="Eevee Wiki Logo" width={48} height={42} />
           <h1 className="text-2xl font-bold min-w-[130px]">이브이 위키</h1>
         </Link>

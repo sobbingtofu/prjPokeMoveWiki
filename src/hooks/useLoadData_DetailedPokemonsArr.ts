@@ -16,6 +16,7 @@ import {
 export const useLoadData_DetailedPokemonsArr = () => {
   const setLoadingStates = useZustandStore((state) => state.setLoadingStates);
   const setDetailedPokemons = useZustandStore((state) => state.setDetailedPokemons);
+  const detailedPokemonState = useZustandStore((state) => state.detailedPokemons);
 
   // 쿼리 준비
   const {data: initialPokemons, isLoading: isInitialPokemonsLoading} = useQuery({
@@ -44,30 +45,36 @@ export const useLoadData_DetailedPokemonsArr = () => {
     didRunRef.current = true;
 
     (async () => {
-      const db = await openDB(DB_NAME_DETAILED_POKEMONS, DB_VERSION, STORE_NAME_DETAILED_POKEMONS, META_STORE);
-      const meta = await getDBMeta(db, META_STORE);
-
-      if (!meta) {
-        // 1. DB가 없으면 쿼리 실행 후 저장
-        const {data: pokemons} = await refetchDetailedPokemons();
-        if (pokemons) {
-          await saveToDB(db, pokemons, STORE_NAME_DETAILED_POKEMONS, META_STORE);
-          setDetailedPokemons(pokemons);
-        }
+      if (detailedPokemonState.length > 0) {
+        // 0. 상태가 있으면 상태 사용
+        // setDetailedPokemons(detailedPokemonState);
       } else {
-        // 3, 4. DB가 있으면 시간 확인
-        const now = Date.now();
-        if (now - meta.addedAt > EXPIRE_MS) {
-          // 3. 24시간 지났으면 쿼리 실행 후 덮어쓰기
+        const db = await openDB(DB_NAME_DETAILED_POKEMONS, DB_VERSION, STORE_NAME_DETAILED_POKEMONS, META_STORE);
+        const meta = await getDBMeta(db, META_STORE);
+        if (!meta) {
+          // 1. DB가 없으면 쿼리 실행 후 저장
           const {data: pokemons} = await refetchDetailedPokemons();
           if (pokemons) {
             await saveToDB(db, pokemons, STORE_NAME_DETAILED_POKEMONS, META_STORE);
             setDetailedPokemons(pokemons);
           }
         } else {
-          // 4. 24시간 안 지났으면 DB에서 가져오기
-          const pokemons = await getFromDB(db, STORE_NAME_DETAILED_POKEMONS);
-          setDetailedPokemons(pokemons);
+          // 2. DB가 있으면 시간 확인
+          const now = Date.now();
+          if (now - meta.addedAt > EXPIRE_MS) {
+            // 3. 24시간 지났으면 쿼리 실행 후 덮어쓰기
+            const {data: pokemons} = await refetchDetailedPokemons();
+            if (pokemons) {
+              await saveToDB(db, pokemons, STORE_NAME_DETAILED_POKEMONS, META_STORE);
+              setDetailedPokemons(pokemons);
+            }
+          } else {
+            // 4. 24시간 안 지났으면 DB에서 가져오기
+            setLoadingStates((prev) => ({...prev, isLoadingIndexedDB: true}));
+            const pokemons = await getFromDB(db, STORE_NAME_DETAILED_POKEMONS);
+            setDetailedPokemons(pokemons);
+            setLoadingStates((prev) => ({...prev, isLoadingIndexedDB: false}));
+          }
         }
       }
     })();

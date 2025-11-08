@@ -7,6 +7,8 @@ export interface loadingStatesType {
 
   isInitialPokemonsLoading: boolean;
   isDetailedPokemonsLoading: boolean;
+
+  isLoadingIndexedDB: boolean;
 }
 export interface selectedMoveType extends koreanMoveType {
   isSelectedForDeletion: boolean;
