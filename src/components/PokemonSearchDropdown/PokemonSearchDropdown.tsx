@@ -53,26 +53,22 @@ const PokemonSearchDropdown = React.memo(function PokemonSearchDropdown({
           ref={index === accentedPokemonIndex ? accentedItemRef : null}
         >
           <div
-            className={
-              searchType === "ev"
-                ? `w-[30%] flex items-center gap-2 min-w-[80px]`
-                : "w-full flex items-center gap-2 min-w-[80px]"
-            }
+            className={`w-[30%] flex items-center gap-2 min-w-[80px]`}
             onClick={() => handleDropdownItemClick_searchPokemon(pokemon)}
           >
             <Image
               src={pokemon.spriteUrl}
               alt={"이미지 로딩중"}
-              width={80}
-              height={80}
-              className={searchType === "ev" ? "rounded-full hidden md:block" : "rounded-full block"}
+              width={60}
+              height={60}
+              className={"rounded-full hidden md:block"}
             />
             <p className="text-gray-900 text-sm ">{pokemon.koreanName}</p>
           </div>
 
           {
-            <div className="w-[60%] flex flex-row justify-end items-center gap-3">
-              <div className="text-black text-sm font-bold flex flex-row items-end gap-1 justify-start w-[140px] min-w-[140px]">
+            <div className="w-[60%] flex flex-row justify-end items-center gap-10">
+              <div className="text-gray-800 text-xs font-bold flex flex-col items-end gap-1 justify-start w-[70px] min-w-[70px]">
                 {pokemon.evStats?.map((evStat) => {
                   return STAT_LABELS.map((stat) => {
                     if (stat.statName === evStat.statName) {
