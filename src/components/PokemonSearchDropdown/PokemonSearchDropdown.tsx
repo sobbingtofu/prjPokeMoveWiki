@@ -70,7 +70,7 @@ const PokemonSearchDropdown = React.memo(function PokemonSearchDropdown({
             <p className="text-gray-900 text-sm ">{pokemon.koreanName}</p>
           </div>
 
-          {searchType === "ev" && (
+          {
             <div className="w-[60%] flex flex-row justify-end items-center gap-3">
               <div className="text-black text-sm font-bold flex flex-row items-end gap-1 justify-start w-[140px] min-w-[140px]">
                 {pokemon.evStats?.map((evStat) => {
@@ -93,7 +93,7 @@ const PokemonSearchDropdown = React.memo(function PokemonSearchDropdown({
                 ))}
               </div>
             </div>
-          )}
+          }
         </div>
       ))}
     </div>
