@@ -41,7 +41,7 @@ function TopNavigationBar() {
 
   const menuItems = [
     {href: "/search-learning-pokemon", label: "기술을 배우는 포켓몬", reset: true},
-    // {href: "/search-pokemon-ev", label: "포켓몬이 주는 노력치", reset: false},
+
     {href: "/search-pokemons", label: "포켓몬", reset: false},
     {href: "/search-moves", label: "기술", reset: false},
   ];

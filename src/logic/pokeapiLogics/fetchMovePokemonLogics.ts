@@ -119,12 +119,15 @@ export const generateDetailedPokemon = async (
     const returnDataBasics = {
       pokemonId: basicData.id,
       speciesId: speciesData.id,
-      basicUrl: pokemonInfo.url,
-      speciesUrl: speciesUrl,
+
       name: pokemonInfo.name,
       koreanName:
         (speciesData.names.find((nameItem: any) => nameItem.language.name === "ko")?.name || pokemonInfo.name) +
         additionalForm,
+
+      basicUrl: pokemonInfo.url,
+      speciesUrl: speciesUrl,
+
       types: basicData.types.map((typeInfo: any) => typeInfo.type.name),
       koreantypes: basicData.types
         .map((typeInfo: any) => typeInfo.type.name)
@@ -133,6 +136,8 @@ export const generateDetailedPokemon = async (
         ),
 
       spriteUrl: basicData.sprites.front_default,
+      officialArtworkUrl: basicData.sprites.other["official-artwork"].front_default || null,
+
       stats: basicData.stats.map((statInfo: any) => ({
         statName: newStatNamesMap[statInfo.stat.name] || statInfo.stat.name,
         statValue: statInfo.base_stat,
@@ -143,14 +148,18 @@ export const generateDetailedPokemon = async (
           statName: newStatNamesMap[statInfo.stat.name] || statInfo.stat.name,
           evValue: statInfo.effort,
         })),
+
       abilities: basicData.abilities.map((abilityInfo: any) => ({
         abilityName: abilityInfo.ability.name,
         abilityUrl: abilityInfo.ability.url,
         hidden: abilityInfo.is_hidden,
       })),
-      moves: basicData.moves,
+
       captureRate: speciesData.capture_rate,
+
       evolutionChainUrl: speciesData.evolution_chain.url,
+
+      moves: basicData.moves,
     };
 
     return returnDataBasics;

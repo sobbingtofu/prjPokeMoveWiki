@@ -95,8 +95,15 @@ function PokemonCard({pokemon}: {pokemon: detailedPokemInfoType}) {
       <div className="w-full bg-gray-100 flex flex-col justify-start items-start gap-5">
         {/* 이미지, 이름, 타입칩 */}
         <div className="w-full flex flex-col items-center gap-1">
-          <div className="relative w-24 h-24">
-            <Image src={pokemon.spriteUrl} alt={pokemon.koreanName} fill className="fit" priority={false} />
+          <div className="relative">
+            <Image
+              src={pokemon.spriteUrl}
+              alt={pokemon.koreanName}
+              className="fit"
+              width={90}
+              height={90}
+              priority={false}
+            />
           </div>
 
           <p className="text-lg">{pokemonMainName}</p>

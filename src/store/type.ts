@@ -31,26 +31,27 @@ export interface detailedPokemInfoType {
   speciesId: string;
 
   name: string;
+  koreanName: string;
 
   basicUrl: string;
   speciesUrl: string;
-
-  koreanName: string;
 
   types: pokemonTypeEnNames[];
   koreantypes: pokemonTypeKorNames[];
 
   spriteUrl: string;
-
-  captureRate?: number;
+  officialArtworkUrl: string | null;
 
   stats: {statName: string; statValue: number}[];
-
   evStats?: {statName: string; evValue: number}[];
 
-  moveDetails?: moveDetailType[];
-
   abilities: {abilityName: string; abilityUrl: string; hidden: boolean}[];
+
+  captureRate: number;
+
+  evolutionChainUrl: string;
+
+  moveDetails?: moveDetailType[];
 }
 
 export type sortOptionType = {

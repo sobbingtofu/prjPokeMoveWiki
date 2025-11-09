@@ -9,12 +9,17 @@ function DetailedPokemonSection({pokemonId}: DetailedPokemonSectionProps) {
   const detailedPokemons = useZustandStore((state) => state.detailedPokemons);
 
   const currentPokemon02 = detailedPokemons.find((p) => p.pokemonId == pokemonId);
+
+  console.log(currentPokemon02);
   return (
-    <div>
-      <p>현재 포켓몬 리스트: {detailedPokemons.length}</p>
-      <p>포켓몬 ID: {pokemonId}</p>
-      <p>현재 포켓몬: {currentPokemon02?.koreanName}</p>
-    </div>
+    <>
+      <section className="w-dvw h-dvh overflow-hidden bg-gray-300 flex flex-col justify-center items-center">
+        <div className="md:w-[60%] w-[80%] py-16 flex flex-col items-center gap-y-2 overflow-hidden ">
+          {/* 이미지, 이름, 타입칩, 특성 영역 */}
+          <div></div>
+        </div>
+      </section>
+    </>
   );
 }
 
