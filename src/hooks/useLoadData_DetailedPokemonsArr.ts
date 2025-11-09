@@ -49,7 +49,13 @@ export const useLoadData_DetailedPokemonsArr = () => {
         // 0. 상태가 있으면 상태 사용
         // setDetailedPokemons(detailedPokemonState);
       } else {
-        const db = await openDB(DB_NAME_DETAILED_POKEMONS, DB_VERSION, STORE_NAME_DETAILED_POKEMONS, META_STORE);
+        const db = await openDB(
+          DB_NAME_DETAILED_POKEMONS,
+          DB_VERSION,
+          STORE_NAME_DETAILED_POKEMONS,
+          META_STORE,
+          "pokemonId"
+        );
         const meta = await getDBMeta(db, META_STORE);
         if (!meta) {
           // 1. DB가 없으면 쿼리 실행 후 저장
