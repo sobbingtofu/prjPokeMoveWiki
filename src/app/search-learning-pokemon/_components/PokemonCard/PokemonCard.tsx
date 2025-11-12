@@ -5,6 +5,7 @@ import {STAT_LABELS} from "@/store/constantStore";
 import {useZustandStore} from "@/store/zustandStore";
 import Image from "next/image";
 import TypeChipContainer from "@/components/TypeChip/TypeChipContainer";
+import StatGrid from "@/components/StatGrid/StatGrid";
 
 interface LearnMethodDetail {
   methodName: string;
@@ -70,29 +71,6 @@ function PokemonCard({pokemon}: {pokemon: detailedPokemInfoType}) {
       key={pokemon.name}
       className="text-sm font-bold pt-4 pb-4 py-2 bg-gray-100 rounded-2xl flex flex-col justify-start items-start"
     >
-      {/* 담아보기 기능 영역 */}
-      {/* <div
-        className={`flex justify-center items-center w-full cursor-pointer h-[36px]
-        ${isChecked ? "bg-gray-400 hover:bg-gray-500 " : "bg-cyan-300"} rounded-t-2xl relative`}
-        onClick={() => setIsChecked(!isChecked)}
-      >
-        <div
-          className={`w-5 h-5 border-2 border-white rounded-full flex items-center justify-center transition-colors ${
-            isChecked ? "bg-white" : "bg-transparent"
-          }`}
-        >
-          {isChecked && (
-            <svg className="w-4 h-4 text-gray-800" viewBox="0 0 20 20" fill="currentColor">
-              <path
-                fillRule="evenodd"
-                d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
-                clipRule="evenodd"
-              />
-            </svg>
-          )}
-        </div>
-      </div> */}
-
       <div className="w-full bg-gray-100 flex flex-col justify-start items-start gap-5">
         {/* 이미지, 이름, 타입칩 */}
         <div className="w-full flex flex-col items-center gap-1">
@@ -113,33 +91,7 @@ function PokemonCard({pokemon}: {pokemon: detailedPokemInfoType}) {
         </div>
 
         {/* 스탯 표시 */}
-        <div className="text-[9pt] w-full mt-1">
-          <div className="grid grid-cols-3 gap-y-2 w-full">
-            {STAT_LABELS.map((stat) => {
-              const statValue = pokemon.stats.find((s) => s.statName === stat.statName)?.statValue;
-              return (
-                <div key={stat.statName} className="flex flex-col items-center">
-                  <p className={`text-center ${statValue && statValue >= 130 ? "text-red-600" : "text-black"}`}>
-                    {stat.label}
-                  </p>
-                  <p className={`text-center ${statValue && statValue >= 130 ? "text-red-600" : "text-black"}`}>
-                    {statValue}
-                  </p>
-                </div>
-              );
-            })}
-            {/* 테스트 영역 */}
-            {/* <p>
-            {(pokemon.stats.find((s) => s.statName === "hp")?.statValue || 0) +
-              (pokemon.stats.find((s) => s.statName === "defense")?.statValue || 0)}
-          </p>
-          <p>
-            {(pokemon.stats.find((s) => s.statName === "hp")?.statValue || 0) +
-              (pokemon.stats.find((s) => s.statName === "defense")?.statValue || 0) +
-              (pokemon.stats.find((s) => s.statName === "specialDefense")?.statValue || 0)}
-          </p> */}
-          </div>
-        </div>
+        <StatGrid pokemonStats={pokemon.stats} gridType="pokemonCard" />
 
         {/* 기술 별 배우는 세대 표시 */}
         <div className="w-full flex flex-col gap-1.5 px-4">

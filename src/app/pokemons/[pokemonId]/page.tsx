@@ -15,10 +15,14 @@ function page({params}: pageProps) {
   useLoadData_DetailedPokemonsArr();
   const {pokemonId} = React.use(params);
 
+  const detailedPokemons = useZustandStore((state) => state.detailedPokemons);
+
+  const currentPokemon = detailedPokemons.find((p) => p.pokemonId == pokemonId);
+
   return (
     <>
       <InitialLoadingScreen />
-      <DetailedPokemonSection pokemonId={pokemonId} />
+      {currentPokemon && <DetailedPokemonSection currentPokemon={currentPokemon} />}
     </>
   );
 }

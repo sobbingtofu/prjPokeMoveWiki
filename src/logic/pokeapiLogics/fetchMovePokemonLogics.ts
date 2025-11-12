@@ -163,51 +163,6 @@ export const generateDetailedPokemon = async (
     };
 
     return returnDataBasics;
-
-    // if (generateFocusType === "EV") {
-    //   const additionalReturnData = {
-    //     evStats: basicData.stats
-    //       .filter((statInfo: any) => statInfo.effort > 0)
-    //       .map((statInfo: any) => ({
-    //         statName: newStatNamesMap[statInfo.stat.name] || statInfo.stat.name,
-    //         evValue: statInfo.effort,
-    //       })),
-    //   };
-    //   return {...returnDataBasics, ...additionalReturnData};
-    // } else if (generateFocusType === "moves") {
-    //   const additionalReturnData = {
-    //     stats: basicData.stats.map((statInfo: any) => ({
-    //       statName: newStatNamesMap[statInfo.stat.name] || statInfo.stat.name,
-    //       statValue: statInfo.base_stat,
-    //     })),
-    //     evStats: basicData.stats
-    //       .filter((statInfo: any) => statInfo.effort > 0)
-    //       .map((statInfo: any) => ({
-    //         statName: newStatNamesMap[statInfo.stat.name] || statInfo.stat.name,
-    //         evValue: statInfo.effort,
-    //       })),
-    //   };
-    //   return {...returnDataBasics, ...additionalReturnData};
-    // }
-    // // else if (generateFocusType === "pokemons")와 동일
-    // else {
-    //   const additionalReturnData = {
-    //     stats: basicData.stats.map((statInfo: any) => ({
-    //       statName: newStatNamesMap[statInfo.stat.name] || statInfo.stat.name,
-    //       statValue: statInfo.base_stat,
-    //     })),
-    //     abilities: basicData.abilities.map((abilityInfo: any) => ({
-    //       abilityName: abilityInfo.ability.name,
-    //       abilityUrl: abilityInfo.ability.url,
-    //       hidden: abilityInfo.is_hidden,
-    //     })),
-    //     moves: basicData.moves,
-    //     captureRate: speciesData.capture_rate,
-    //     evolutionChainUrl: speciesData.evolution_chain.url,
-    //   };
-
-    //   return {...returnDataBasics, ...additionalReturnData};
-    // }
   });
 
   const learningPokemonsRaw = await Promise.all(promises);
@@ -268,6 +223,44 @@ export const addLearningMethodsAndGensToPokemons = async (
   });
 
   return await Promise.all(updatedPokemonsPromises);
+};
+
+export const fetchPokemonAbilityData = async (abilities: detailedPokemInfoType["abilities"]) => {
+  const abilityDetailsPromises = abilities.map(async (ability) => {
+    try {
+      const {data: abilityData} = await axios.get(ability.abilityUrl);
+
+      console.log("abilityData.flavor_text_entries:", abilityData.flavor_text_entries);
+
+      const abilityNameKo =
+        abilityData.names.find((nameItem: any) => nameItem.language.name === "ko")?.name || ability.abilityName;
+
+      const abilityDescriptionEnArray =
+        (abilityData.flavor_text_entries.filter((entry: any) => entry.language.name === "en") || []).map(
+          (entry: any) => entry.flavor_text
+        ) || [];
+
+      const abilityDescriptionKoArray =
+        (abilityData.flavor_text_entries.filter((entry: any) => entry.language.name === "ko") || []).map(
+          (entry: any) => entry.flavor_text
+        ) || [];
+
+      return {
+        hidden: ability.hidden,
+
+        abilityNameEn: ability.abilityName,
+        abilityNameKo: abilityNameKo,
+
+        descriptionEn: abilityDescriptionEnArray.pop() || "",
+        descriptionKo: abilityDescriptionKoArray.pop() || "",
+      };
+    } catch (abilityError) {
+      console.error(`포켓몬 특성 ${ability.abilityName} 데이터 조회 실패:`, abilityError);
+      return null;
+    }
+  });
+  const abilityDetails = await Promise.all(abilityDetailsPromises);
+  return abilityDetails;
 };
 
 // ===============================================================================================================
