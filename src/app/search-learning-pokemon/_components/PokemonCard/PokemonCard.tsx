@@ -4,6 +4,7 @@ import TypeChip from "../../../../components/TypeChip/TypeChip";
 import {STAT_LABELS} from "@/store/constantStore";
 import {useZustandStore} from "@/store/zustandStore";
 import Image from "next/image";
+import TypeChipContainer from "@/components/TypeChip/TypeChipContainer";
 
 interface LearnMethodDetail {
   methodName: string;
@@ -108,11 +109,7 @@ function PokemonCard({pokemon}: {pokemon: detailedPokemInfoType}) {
 
           <p className="text-lg">{pokemonMainName}</p>
           <p className="text-[8pt] h-[14px]">{pokemonRegionSubname}</p>
-          <div className="w-full flex flex-row justify-center gap-2 mt-1">
-            {pokemon.types.map((type, index) => (
-              <TypeChip key={type} type={type} korType={pokemon.koreantypes[index] || ""} textSize="xs" />
-            ))}
-          </div>
+          <TypeChipContainer types={pokemon.types} koreantypes={pokemon.koreantypes} />
         </div>
 
         {/* 스탯 표시 */}

@@ -4,6 +4,7 @@ import Image from "next/image";
 import React, {useEffect, useRef} from "react";
 import {useZustandStore} from "@/store/zustandStore";
 import {detailedPokemInfoType} from "@/store/type";
+import TypeChipContainer from "../TypeChip/TypeChipContainer";
 
 interface PokemonSearchDropdownProps {
   searchType?: "normal" | "ev";
@@ -77,17 +78,13 @@ const PokemonSearchDropdown = React.memo(function PokemonSearchDropdown({
                   });
                 })}
               </div>
+              <TypeChipContainer types={pokemon.types} koreantypes={pokemon.koreantypes} justifyContent="end" />
 
-              <div className="flex w-[138px] min-w-[138px] gap-2 justify-end">
-                {pokemon.types.map((type) => (
-                  <TypeChip
-                    key={type}
-                    type={type}
-                    // korType={TYPE_NAME_EN_TO_KO.find((item) => item.typeName === type)?.korTypeName || type}
-                    korType={TYPE_MAP[type] || type}
-                  />
+              {/* <div className="flex w-[138px] min-w-[138px] gap-2 justify-end">
+                {pokemon.types.map((type, index) => (
+                  <TypeChip key={type} type={type} korType={pokemon.koreantypes[index] || TYPE_MAP[type] || type} />
                 ))}
-              </div>
+              </div> */}
             </div>
           }
         </div>
