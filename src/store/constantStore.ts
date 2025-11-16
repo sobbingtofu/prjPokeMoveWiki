@@ -597,6 +597,15 @@ export const SORT_ASC_DESC_OPTIONS = [
   {key: "desc", label: "내림차순"},
 ];
 
+export const API_CALLED_STAT_NAMES_MAP: {[key: string]: string} = {
+  hp: "hp",
+  attack: "attack",
+  defense: "defense",
+  "special-attack": "specialAttack",
+  "special-defense": "specialDefense",
+  speed: "speed",
+};
+
 export const DB_NAME_DETAILED_POKEMONS = "detailedPokemonsDB";
 export const STORE_NAME_DETAILED_POKEMONS = "detailedPokemons";
 export const META_STORE = "meta";

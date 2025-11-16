@@ -1,11 +1,13 @@
 import {initialMovesType, koreanMoveType, initialPokemonType, versionGroupDetailType} from "@/logic/pokeapiLogics/type";
 import {
+  API_CALLED_STAT_NAMES_MAP,
   MOVE_SUPPLEMENTARY_INFO,
   REGION_NAME_EN_TO_KO,
   TYPE_NAME_EN_TO_KO,
   VERSION_GROUP_TO_GEN,
 } from "@/store/constantStore";
 import {detailedPokemInfoType, moveDetailType, selectedMoveType} from "@/store/type";
+import {extractNumberBySplitting, getGenNumberByVersionGroup} from "@/utils/pokeApiUtils";
 import axios from "axios";
 
 // 01-1. 기술 raw data 배열 가져오기
@@ -32,6 +34,7 @@ export const getInitialPokemons = async () => {
   }
 
   const initialPokemons: initialPokemonType[] = data.results.map((item: any, index: number) => ({
+    id: extractNumberBySplitting(item.url) ? parseInt(extractNumberBySplitting(item.url)!) : index + 1,
     name: item.name,
     url: item.url,
   }));
@@ -86,103 +89,126 @@ export const generateKoreanMoveData = async (initialMovesArr: initialMovesType[]
 };
 
 // 03. 포켓몬의 상세정보 추가
-export const generateDetailedPokemon = async (
-  commonPokemons: initialPokemonType[],
-  generateFocusType: "moves" | "pokemons" | "EV" = "EV"
-) => {
-  const promises = commonPokemons.map(async (pokemonInfo) => {
-    const {data: basicData} = await axios.get(pokemonInfo.url);
-    const speciesUrl = basicData.species.url;
+export const generateDetailedPokemon = async (commonPokemons: initialPokemonType[]) => {
+  console.log(`총 ${commonPokemons.length}개 포켓몬 처리 시작`);
 
-    const additionalFormTextRaw = pokemonInfo.name.includes("-")
-      ? pokemonInfo.name.slice(pokemonInfo.name.indexOf("-") + 1)
-      : "";
+  const BATCH_SIZE = 200; // 한 번에 200개씩 처리
+  const results = [];
 
-    const additionalForm =
-      additionalFormTextRaw !== "" && REGION_NAME_EN_TO_KO.some((region) => additionalFormTextRaw === region.eng)
-        ? " (" +
-          (REGION_NAME_EN_TO_KO.find((region) => additionalFormTextRaw.includes(region.eng))?.kor || "") +
-          " 리전폼)"
-        : "";
+  for (let i = 0; i < commonPokemons.length; i += BATCH_SIZE) {
+    const batch = commonPokemons.slice(i, i + BATCH_SIZE);
+    console.log(`배치 ${i / BATCH_SIZE + 1} 처리 중 (${i + 1}~${Math.min(i + BATCH_SIZE, commonPokemons.length)})`);
 
-    const {data: speciesData} = await axios.get(speciesUrl);
+    const promises = batch.map(async (pokemonInfo) => {
+      try {
+        const {data: basicData} = await axios.get(pokemonInfo.url, {timeout: 5000});
 
-    const newStatNamesMap: {[key: string]: string} = {
-      hp: "hp",
-      attack: "attack",
-      defense: "defense",
-      "special-attack": "specialAttack",
-      "special-defense": "specialDefense",
-      speed: "speed",
-    };
+        const speciesUrl = basicData.species.url;
+        const alternateSpeciesUrl = `https://pokeapi.co/api/v2/pokemon-species/${basicData.name}/`;
 
-    const returnDataBasics = {
-      pokemonId: basicData.id,
-      speciesId: speciesData.id,
+        const additionalFormTextRaw = pokemonInfo.name.includes("-")
+          ? pokemonInfo.name.slice(pokemonInfo.name.indexOf("-") + 1)
+          : "";
 
-      name: pokemonInfo.name,
-      koreanName:
-        (speciesData.names.find((nameItem: any) => nameItem.language.name === "ko")?.name || pokemonInfo.name) +
-        additionalForm,
+        const additionalForm =
+          additionalFormTextRaw !== "" && REGION_NAME_EN_TO_KO.some((region) => additionalFormTextRaw === region.eng)
+            ? " (" +
+              (REGION_NAME_EN_TO_KO.find((region) => additionalFormTextRaw.includes(region.eng))?.kor || "") +
+              " 리전폼)"
+            : "";
 
-      basicUrl: pokemonInfo.url,
-      speciesUrl: speciesUrl,
+        let {data: speciesData} = await axios.get(speciesUrl, {timeout: 5000});
 
-      types: basicData.types.map((typeInfo: any) => typeInfo.type.name),
-      koreantypes: basicData.types
-        .map((typeInfo: any) => typeInfo.type.name)
-        .map(
-          (typeName: string) => TYPE_NAME_EN_TO_KO.find((type) => type.typeName === typeName)?.korTypeName || typeName
-        ),
+        if (!speciesData || !speciesData.name || !speciesData.names || !Array.isArray(speciesData.names)) {
+          console.warn(`포켓몬 ${pokemonInfo.name}의 speciesUrl이 유효하지 않아 alternateSpeciesUrl로 재시도`);
 
-      spriteUrl: basicData.sprites.front_default,
-      officialArtworkUrl: basicData.sprites.other["official-artwork"].front_default || null,
+          try {
+            const alternateResponse = await axios.get(alternateSpeciesUrl, {timeout: 5000});
+            speciesData = alternateResponse.data;
 
-      stats: basicData.stats.map((statInfo: any) => ({
-        statName: newStatNamesMap[statInfo.stat.name] || statInfo.stat.name,
-        statValue: statInfo.base_stat,
-      })),
-      evStats: basicData.stats
-        .filter((statInfo: any) => statInfo.effort > 0)
-        .map((statInfo: any) => ({
-          statName: newStatNamesMap[statInfo.stat.name] || statInfo.stat.name,
-          evValue: statInfo.effort,
-        })),
+            // alternateSpeciesUrl로도 실패하면 null 반환
+            if (!speciesData || !speciesData.name || !speciesData.names || !Array.isArray(speciesData.names)) {
+              console.error(`포켓몬 ${pokemonInfo.name}의 alternateSpeciesUrl도 유효하지 않음`);
+              return null;
+            }
+          } catch (alternateError) {
+            console.error(`포켓몬 ${pokemonInfo.name}의 alternateSpeciesUrl 호출 실패:`, alternateError);
+            return null;
+          }
+        }
 
-      abilities: basicData.abilities.map((abilityInfo: any) => ({
-        abilityName: abilityInfo.ability.name,
-        abilityUrl: abilityInfo.ability.url,
-        hidden: abilityInfo.is_hidden,
-      })),
+        const koreanNameFromSpecies = speciesData?.names?.find?.(
+          (nameItem: any) => nameItem.language.name === "ko"
+        )?.name;
 
-      captureRate: speciesData.capture_rate,
+        return {
+          pokemonId: basicData.id,
+          speciesId: speciesData.id,
 
-      evolutionChainUrl: speciesData.evolution_chain.url,
+          name: pokemonInfo.name,
+          koreanName: (koreanNameFromSpecies || pokemonInfo.name) + additionalForm,
 
-      moves: basicData.moves,
-    };
+          basicUrl: pokemonInfo.url,
+          speciesUrl: speciesUrl,
 
-    return returnDataBasics;
-  });
+          types: basicData.types.map((typeInfo: any) => typeInfo.type.name),
+          koreantypes: basicData.types
+            .map((typeInfo: any) => typeInfo.type.name)
+            .map(
+              (typeName: string) =>
+                TYPE_NAME_EN_TO_KO.find((type) => type.typeName === typeName)?.korTypeName || typeName
+            ),
 
-  const learningPokemonsRaw = await Promise.all(promises);
+          spriteUrl: basicData.sprites.front_default,
+          officialArtworkUrl: basicData.sprites.other["official-artwork"].front_default || null,
+
+          stats: basicData.stats.map((statInfo: any) => ({
+            statName: API_CALLED_STAT_NAMES_MAP[statInfo.stat.name] || statInfo.stat.name,
+            statValue: statInfo.base_stat,
+          })),
+          evStats: basicData.stats
+            .filter((statInfo: any) => statInfo.effort > 0)
+            .map((statInfo: any) => ({
+              statName: API_CALLED_STAT_NAMES_MAP[statInfo.stat.name] || statInfo.stat.name,
+              evValue: statInfo.effort,
+            })),
+
+          abilities: basicData.abilities.map((abilityInfo: any) => ({
+            abilityName: abilityInfo.ability.name,
+            abilityUrl: abilityInfo.ability.url,
+            hidden: abilityInfo.is_hidden,
+          })),
+
+          captureRate: speciesData.capture_rate,
+
+          evolutionChainUrl: speciesData.evolution_chain.url,
+
+          moves: basicData.moves,
+        };
+      } catch (error) {
+        console.error(`포켓몬 ${pokemonInfo.name} 처리 실패:`, error);
+        return null;
+      }
+    });
+
+    const batchResults = await Promise.all(promises);
+    results.push(...batchResults.filter((r) => r !== null));
+
+    // 다음 배치 전 잠시 대기 (rate limit 방지)
+    if (i + BATCH_SIZE < commonPokemons.length) {
+      await new Promise((resolve) => setTimeout(resolve, 200));
+    }
+  }
 
   const seen = new Set<string>();
-  const finalData = learningPokemonsRaw.filter((pokemon) => {
+  const finalData = results.filter((pokemon) => {
     if (seen.has(pokemon.koreanName)) return false;
     seen.add(pokemon.koreanName);
     return true;
   });
 
-  // console.log("generateFocusType: ", generateFocusType);
-  console.log("최종 데이터:", finalData);
+  console.log("최종 데이터:", finalData.length, "개");
   return finalData;
-};
-
-// 유틸리티 함수: 버전 그룹명으로 세대 번호 조회
-const getGenNumberByVersionGroup = (versionGroupName: string): number => {
-  const genInfo = VERSION_GROUP_TO_GEN.find((gen) => gen.versionGroups.includes(versionGroupName));
-  return genInfo?.genNumber || 0;
 };
 
 // 04. 검색된 포켓몬에 대해서 검색 대상 기술 배우는 방법 및 세대 정보 추가
@@ -225,6 +251,7 @@ export const addLearningMethodsAndGensToPokemons = async (
   return await Promise.all(updatedPokemonsPromises);
 };
 
+// 05. 포켓몬 특성 상세 정보 가져오기
 export const fetchPokemonAbilityData = async (abilities: detailedPokemInfoType["abilities"]) => {
   const abilityDetailsPromises = abilities.map(async (ability) => {
     try {
@@ -261,63 +288,4 @@ export const fetchPokemonAbilityData = async (abilities: detailedPokemInfoType["
   });
   const abilityDetails = await Promise.all(abilityDetailsPromises);
   return abilityDetails;
-};
-
-// ===============================================================================================================
-
-// 02-1. 기술을 배우는 포켓몬 객체 배열에 기술 학습 방법 및 세대 정보 추가
-// 리소스 부족으로 못돌림
-export const addLearningMethodsAndGens = async (koreanMovesArray: koreanMoveType[]) => {
-  try {
-    // 각 기술별로 처리
-    const updatedMovesPromises = koreanMovesArray.map(async (move) => {
-      const currentMoveLearningPokemonArr = move.learningPokemonEn;
-
-      // 각 포켓몬별로 version_group_details 추가
-      const updatedPokemonsPromises = currentMoveLearningPokemonArr.map(async (pokemonInfo) => {
-        const {data: currentPokemonDetailData} = await axios.get(pokemonInfo.url);
-
-        // 현재 포켓몬의 moves 배열에서 현재 기술을 찾기
-        const moveData = currentPokemonDetailData.moves.find(
-          (moveItem: {move: {name: string; url: string}; version_group_details: any[]}) =>
-            moveItem.move.name === move.name
-        );
-
-        // version_group_details 추출 및 변환
-        const version_group_details: versionGroupDetailType[] = moveData
-          ? moveData.version_group_details.map(
-              (detail: {
-                level_learned_at: number;
-                move_learn_method: {name: string; url: string};
-                version_group: {name: string; url: string};
-              }) => ({
-                versionName: detail.version_group.name,
-                levelLearned: detail.level_learned_at,
-                learnMethod: detail.move_learn_method.name,
-              })
-            )
-          : [];
-
-        return {
-          ...pokemonInfo,
-          version_group_details,
-        };
-      });
-
-      const updatedPokemons = await Promise.all(updatedPokemonsPromises);
-
-      // 기술 객체 업데이트
-      return {
-        ...move,
-        learningPokemonEn: updatedPokemons,
-      };
-    });
-
-    const updatedMoves = await Promise.all(updatedMovesPromises);
-
-    return updatedMoves;
-  } catch (error) {
-    console.error("기술 학습 방법 및 세대 정보 호출 실패:", error);
-    return [];
-  }
 };

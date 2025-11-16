@@ -11,6 +11,7 @@ export interface versionGroupDetailType {
 }
 
 export interface initialPokemonType {
+  id?: number;
   name: string;
   url: string;
   version_group_details?: versionGroupDetailType[];

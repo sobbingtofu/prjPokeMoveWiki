@@ -16,9 +16,8 @@ import {
 export const useLoadData_DetailedPokemonsArr = () => {
   const setLoadingStates = useZustandStore((state) => state.setLoadingStates);
   const setDetailedPokemons = useZustandStore((state) => state.setDetailedPokemons);
-  const detailedPokemonState = useZustandStore((state) => state.detailedPokemons);
 
-  // 쿼리 준비
+  // 1단계: initialPokemons 가져오기 (TanStack Query only)
   const {data: initialPokemons, isLoading: isInitialPokemonsLoading} = useQuery({
     queryKey: ["initialPokemons"],
     queryFn: getInitialPokemons,
@@ -26,29 +25,15 @@ export const useLoadData_DetailedPokemonsArr = () => {
     gcTime: Infinity,
   });
 
-  const {
-    data: detailedPokemons,
-    isLoading: isDetailedPokemonsLoading,
-    refetch: refetchDetailedPokemons,
-  } = useQuery({
+  // 2단계: detailedPokemons 가져오기 (TanStack Query + IndexedDB)
+  const {data: detailedPokemons, isLoading: isDetailedPokemonsLoading} = useQuery({
     queryKey: ["detailedPokemons", initialPokemons?.length],
-    queryFn: () => generateDetailedPokemon(initialPokemons!),
-    enabled: false, // 직접 실행
-    staleTime: Infinity,
-    gcTime: Infinity,
-  });
+    queryFn: async () => {
+      try {
+        if (!initialPokemons) return [];
 
-  const didRunRef = useRef(false);
+        console.log("API에서 데이터 가져오기");
 
-  useEffect(() => {
-    if (!initialPokemons || didRunRef.current) return;
-    didRunRef.current = true;
-
-    (async () => {
-      if (detailedPokemonState.length > 0) {
-        // 0. 상태가 있으면 상태 사용
-        // setDetailedPokemons(detailedPokemonState);
-      } else {
         const db = await openDB(
           DB_NAME_DETAILED_POKEMONS,
           DB_VERSION,
@@ -56,35 +41,48 @@ export const useLoadData_DetailedPokemonsArr = () => {
           META_STORE,
           "pokemonId"
         );
+
         const meta = await getDBMeta(db, META_STORE);
-        if (!meta) {
-          // 1. DB가 없으면 쿼리 실행 후 저장
-          const {data: pokemons} = await refetchDetailedPokemons();
-          if (pokemons) {
-            await saveToDB(db, pokemons, STORE_NAME_DETAILED_POKEMONS, META_STORE);
-            setDetailedPokemons(pokemons);
-          }
-        } else {
-          // 2. DB가 있으면 시간 확인
-          const now = Date.now();
-          if (now - meta.addedAt > EXPIRE_MS) {
-            // 3. 24시간 지났으면 쿼리 실행 후 덮어쓰기
-            const {data: pokemons} = await refetchDetailedPokemons();
-            if (pokemons) {
-              await saveToDB(db, pokemons, STORE_NAME_DETAILED_POKEMONS, META_STORE);
-              setDetailedPokemons(pokemons);
-            }
-          } else {
-            // 4. 24시간 안 지났으면 DB에서 가져오기
-            setLoadingStates((prev) => ({...prev, isLoadingIndexedDB: true}));
-            const pokemons = await getFromDB(db, STORE_NAME_DETAILED_POKEMONS);
-            setDetailedPokemons(pokemons);
-            setLoadingStates((prev) => ({...prev, isLoadingIndexedDB: false}));
-          }
+        const now = Date.now();
+
+        if (meta && now - meta.addedAt <= EXPIRE_MS) {
+          // console.log("IndexedDB에서 데이터 가져오기");
+          return await getFromDB(db, STORE_NAME_DETAILED_POKEMONS);
         }
+
+        // console.log("generateDetailedPokemon 호출 시작");
+        const pokemons = await generateDetailedPokemon(initialPokemons);
+        // console.log("generateDetailedPokemon 완료, 포켓몬 개수:", pokemons?.length);
+
+        if (!pokemons || pokemons.length === 0) {
+          console.error("포켓몬 데이터를 가져오지 못했습니다");
+          return [];
+        }
+
+        // console.log("DB에 저장 시작");
+        await saveToDB(db, pokemons, STORE_NAME_DETAILED_POKEMONS, META_STORE);
+        // console.log("DB 저장 완료");
+
+        return pokemons;
+      } catch (error) {
+        console.error("detailedPokemons 조회 중 오류:", error);
+        throw error; // TanStack Query가 에러를 처리하도록
       }
-    })();
-  }, [initialPokemons, refetchDetailedPokemons, setDetailedPokemons]);
+    },
+    enabled: !!initialPokemons && initialPokemons.length > 0,
+    staleTime: Infinity,
+    gcTime: Infinity,
+    retry: 0, // 재시도 비활성화 (디버깅용)
+  });
+
+  // 3단계: Zustand 상태 업데이트
+  useEffect(() => {
+    if (detailedPokemons && detailedPokemons.length > 0) {
+      // console.log("Zustand 상태에 detailedPokemons 설정");
+      // console.log(detailedPokemons);
+      setDetailedPokemons(detailedPokemons);
+    }
+  }, [detailedPokemons, setDetailedPokemons]);
 
   useEffect(() => {
     setLoadingStates({
