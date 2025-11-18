@@ -179,9 +179,9 @@ export const generateDetailedPokemon = async (commonPokemons: initialPokemonType
             hidden: abilityInfo.is_hidden,
           })),
 
-          captureRate: speciesData.capture_rate,
+          // captureRate: speciesData.capture_rate,
 
-          evolutionChainUrl: speciesData.evolution_chain.url,
+          // evolutionChainUrl: speciesData.evolution_chain.url,
 
           moves: basicData.moves,
         };

@@ -11,6 +11,8 @@ interface DetailedPokemonSectionProps {
 }
 
 function DetailedPokemonSection({currentPokemon}: DetailedPokemonSectionProps) {
+  console.log("DetailedPokemonSection 렌더링:", currentPokemon);
+
   return (
     <>
       {currentPokemon && (
@@ -54,7 +56,6 @@ function DetailedPokemonSection({currentPokemon}: DetailedPokemonSectionProps) {
                 </div>
               </div>
               {/* 특성 표 - 최하단 */}
-
               <AbilityGrid types={currentPokemon?.types || []} abilities={currentPokemon?.abilities || []} />
             </div>
           </div>
