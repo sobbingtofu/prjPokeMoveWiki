@@ -92,7 +92,7 @@ export const generateKoreanMoveData = async (initialMovesArr: initialMovesType[]
 export const generateDetailedPokemon = async (commonPokemons: initialPokemonType[]) => {
   console.log(`총 ${commonPokemons.length}개 포켓몬 처리 시작`);
 
-  const BATCH_SIZE = 200; // 한 번에 200개씩 처리
+  const BATCH_SIZE = 50; // 한 번에 50개씩 처리
   const results = [];
 
   for (let i = 0; i < commonPokemons.length; i += BATCH_SIZE) {
@@ -101,7 +101,7 @@ export const generateDetailedPokemon = async (commonPokemons: initialPokemonType
 
     const promises = batch.map(async (pokemonInfo) => {
       try {
-        const {data: basicData} = await axios.get(pokemonInfo.url, {timeout: 5000});
+        const {data: basicData} = await axios.get(pokemonInfo.url, {timeout: 10000});
 
         const speciesUrl = basicData.species.url;
         const alternateSpeciesUrl = `https://pokeapi.co/api/v2/pokemon-species/${basicData.name}/`;
@@ -257,7 +257,7 @@ export const fetchPokemonAbilityData = async (abilities: detailedPokemInfoType["
     try {
       const {data: abilityData} = await axios.get(ability.abilityUrl);
 
-      console.log("abilityData.flavor_text_entries:", abilityData.flavor_text_entries);
+      // console.log("abilityData.flavor_text_entries:", abilityData.flavor_text_entries);
 
       const abilityNameKo =
         abilityData.names.find((nameItem: any) => nameItem.language.name === "ko")?.name || ability.abilityName;

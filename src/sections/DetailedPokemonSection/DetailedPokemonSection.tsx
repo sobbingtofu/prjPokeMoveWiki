@@ -57,6 +57,10 @@ function DetailedPokemonSection({currentPokemon}: DetailedPokemonSectionProps) {
               </div>
               {/* 특성 표 - 최하단 */}
               <AbilityGrid types={currentPokemon?.types || []} abilities={currentPokemon?.abilities || []} />
+
+              {/* 상성표 */}
+
+              {/* 배우는 기술 */}
             </div>
           </div>
         </section>

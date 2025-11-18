@@ -139,32 +139,6 @@ const LearningPokemonsContents = React.memo(function LearningPokemonsContents() 
               </div>
             ))}
           </div>
-          {/* {!isPokemonBucketCollectingOn ? (
-            <button
-              className=" px-6 bg-cyan-100 h-[32px] font-black rounded-lg text-xs cursor-pointer shadow-2xl
-            hover:bg-cyan-200 transition-colors duration-150"
-              onClick={() => handleBucketCollectingToggle(true)}
-            >
-              포켓몬 담아보기
-            </button>
-          ) : (
-            <div className="flex flex-row gap-2">
-              <button
-                className=" px-4 bg-cyan-100 h-[32px] font-black rounded-lg text-xs cursor-pointer shadow-2xl
-              hover:bg-cyan-200 transition-colors duration-150"
-                // onClick={}
-              >
-                {"선택된 포켓몬\n담기"}
-              </button>
-              <button
-                className=" px-3 bg-red-100 h-[32px] font-black rounded-lg text-xs cursor-pointer shadow-2xl
-              hover:bg-red-200 transition-colors duration-150"
-                onClick={() => handleBucketCollectingToggle(false)}
-              >
-                취소
-              </button>
-            </div>
-          )} */}
         </div>
       </div>
 
