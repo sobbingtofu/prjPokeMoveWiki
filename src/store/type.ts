@@ -1,4 +1,5 @@
 import {koreanMoveType, initialPokemonType, pokemonTypeEnNames, pokemonTypeKorNames} from "@/logic/pokeapiLogics/type";
+import {generalPokemonTypes} from "@/utils/getTypeDefenseMatchup";
 
 export interface loadingStatesType {
   isInitialMovesLoading: boolean;
@@ -36,7 +37,7 @@ export interface detailedPokemInfoType {
   basicUrl: string;
   speciesUrl: string;
 
-  types: pokemonTypeEnNames[];
+  types: generalPokemonTypes[];
   koreantypes: pokemonTypeKorNames[];
 
   spriteUrl: string;

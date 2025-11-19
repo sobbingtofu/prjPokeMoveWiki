@@ -3,6 +3,7 @@ import StatGrid from "@/components/StatGrid/StatGrid";
 import TypeChipContainer from "@/components/TypeChip/TypeChipContainer";
 import {detailedPokemInfoType} from "@/store/type";
 import {useZustandStore} from "@/store/zustandStore";
+import {getPokemonDefenseMatchup} from "@/utils/getTypeDefenseMatchup";
 import Image from "next/image";
 import React, {useEffect} from "react";
 
@@ -12,6 +13,11 @@ interface DetailedPokemonSectionProps {
 
 function DetailedPokemonSection({currentPokemon}: DetailedPokemonSectionProps) {
   console.log("DetailedPokemonSection 렌더링:", currentPokemon);
+
+  useEffect(() => {
+    const typeDefenseMatchup = getPokemonDefenseMatchup(currentPokemon.types);
+    console.log("typeDefenseMatchup:", typeDefenseMatchup);
+  }, [currentPokemon]);
 
   return (
     <>
