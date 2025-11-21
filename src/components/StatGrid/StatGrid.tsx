@@ -1,5 +1,5 @@
 import {pokemonTypeEnNames} from "@/logic/pokeapiLogics/type";
-import {STAT_LABELS} from "@/store/constantStore";
+import {STAT_LABELS, STAT_LABELS_02} from "@/store/constantStore";
 import {detailedPokemInfoType} from "@/store/type";
 import React from "react";
 
@@ -18,7 +18,7 @@ function StatGrid({pokemonStats, gridType = "pokemonCard", types = []}: StatGrid
           (gridType === "pokemonCard" ? " grid-cols-3 gap-y-2" : " grid-cols-6 border border-gray-700")
         }
       >
-        {STAT_LABELS.map((stat) => {
+        {STAT_LABELS_02.map((stat) => {
           const statValue = pokemonStats.find((s) => s.statName === stat.statName)?.statValue;
 
           if (gridType === "detailedSection") {

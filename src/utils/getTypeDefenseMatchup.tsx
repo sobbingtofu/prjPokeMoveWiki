@@ -27,12 +27,12 @@ type TypeMatchup = Partial<Record<generalPokemonTypes, DamageMultiplier>>;
 
 // 방어 상성 결과 타입
 interface DefenseMatchupResult {
-  400: generalPokemonTypes[];
-  200: generalPokemonTypes[];
-  100: generalPokemonTypes[];
-  50: generalPokemonTypes[];
-  25: generalPokemonTypes[];
-  0: generalPokemonTypes[];
+  "400": generalPokemonTypes[];
+  "200": generalPokemonTypes[];
+  "100": generalPokemonTypes[];
+  "50": generalPokemonTypes[];
+  "25": generalPokemonTypes[];
+  "0": generalPokemonTypes[];
 }
 
 const TYPE_CHART: Record<generalPokemonTypes, TypeMatchup> = {
@@ -109,8 +109,6 @@ export function getPokemonDefenseMatchup(receivedTypes: generalPokemonTypes[]): 
 
     damageMultipliers[attackType] = multiplier;
   });
-
-  console.log("damageMultipliers after calculation:", damageMultipliers);
 
   // 배율별로 분류
   const result: DefenseMatchupResult = {

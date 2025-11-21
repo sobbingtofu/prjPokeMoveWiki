@@ -552,6 +552,15 @@ export const STAT_LABELS = [
   {statName: "specialDefense", label: "특방"},
 ];
 
+export const STAT_LABELS_02 = [
+  {statName: "hp", label: "HP"},
+  {statName: "attack", label: "공격"},
+  {statName: "defense", label: "방어"},
+  {statName: "specialAttack", label: "특공"},
+  {statName: "specialDefense", label: "특방"},
+  {statName: "speed", label: "스피드"},
+];
+
 export const METHOD_NAME_MAP: {[key: string]: string} = {
   "level-up": "레벨업",
   tutor: "기술가르침",

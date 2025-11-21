@@ -7,8 +7,6 @@ interface LearnMethodDetail {
 
 // 포켓몬의 기술 상세 정보를 세대별로 고유한 정보만 남도록 다듬는 함수
 export function refineMoveDetails(pokemonMoveDetails: moveDetailType[]) {
-  console.log("refineMoveDetails 호출:", pokemonMoveDetails);
-
   const refinedMoveDetails = pokemonMoveDetails.map((move) => {
     const versionMap = new Map<number, LearnMethodDetail[]>();
     // genNumber를 키로, LearnMethodDetail 배열을 값으로 하는 Map

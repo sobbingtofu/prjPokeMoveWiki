@@ -1,9 +1,8 @@
 import AbilityGrid from "@/components/AbilityGrid/AbilityGrid";
 import StatGrid from "@/components/StatGrid/StatGrid";
 import TypeChipContainer from "@/components/TypeChip/TypeChipContainer";
+import TypeDefenseGrid from "@/components/TypeDefenseGrid/TypeDefenseGrid";
 import {detailedPokemInfoType} from "@/store/type";
-import {useZustandStore} from "@/store/zustandStore";
-import {getPokemonDefenseMatchup} from "@/utils/getTypeDefenseMatchup";
 import Image from "next/image";
 import React, {useEffect} from "react";
 
@@ -12,13 +11,6 @@ interface DetailedPokemonSectionProps {
 }
 
 function DetailedPokemonSection({currentPokemon}: DetailedPokemonSectionProps) {
-  console.log("DetailedPokemonSection 렌더링:", currentPokemon);
-
-  useEffect(() => {
-    const typeDefenseMatchup = getPokemonDefenseMatchup(currentPokemon.types);
-    console.log("typeDefenseMatchup:", typeDefenseMatchup);
-  }, [currentPokemon]);
-
   return (
     <>
       {currentPokemon && (
@@ -27,7 +19,7 @@ function DetailedPokemonSection({currentPokemon}: DetailedPokemonSectionProps) {
             overflow-y-auto scrollbar-thin scrollbar-track-gray-300 scrollbar-thumb-gray-500 no-scrollbar-buttons"
         >
           <div
-            className="max-w-[1050px] sm:w-[60%] w-[80%] sm:min-w-[700px] min-w-[300px]
+            className="max-w-[1050px] sm:w-[60%] w-[80%] sm:min-w-[700px] min-w-[360px]
                 py-16 flex flex-col items-center sm:gap-y-2 gap-y-6"
           >
             {/* 이미지, 이름, 타입칩, 특성 영역 */}
@@ -65,6 +57,7 @@ function DetailedPokemonSection({currentPokemon}: DetailedPokemonSectionProps) {
               <AbilityGrid types={currentPokemon?.types || []} abilities={currentPokemon?.abilities || []} />
 
               {/* 상성표 */}
+              <TypeDefenseGrid types={currentPokemon?.types || []} />
 
               {/* 배우는 기술 */}
             </div>
