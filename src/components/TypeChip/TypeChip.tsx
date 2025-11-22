@@ -14,8 +14,8 @@ function TypeChip({
 
   return (
     <div
-      className={`sm:rounded-full rounded-lg font-bold ${textSize == "2xs" ? "w-[42px]" : "w-[65px]"}  ${
-        textSize == "2xs" ? "text-[11px]" : `text-${textSize}`
+      className={`sm:rounded-full rounded-lg font-bold ${textSize == "2xs" ? "w-[42px] sm:w-[65px]" : "w-[65px]"}  ${
+        textSize == "2xs" ? "sm:text-xs text-[11px]" : `text-${textSize}`
       } text-center text-white bg-${type.toLowerCase()} ${textSize == "2xs" ? "px-1" : "px-2.5"} py-1.5`}
     >
       {korType ? korType : korType2 ? korType2 : type}

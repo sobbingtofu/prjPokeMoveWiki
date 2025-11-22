@@ -37,7 +37,7 @@ export interface koreanMoveType {
   koreanName: string;
   type: pokemonTypeEnNames;
   korType: string;
-  learningPokemonEn: initialPokemonType[];
+  learningPokemonEn?: initialPokemonType[];
   damageClass: damageClassType;
   url: string;
   hasKoreanName?: boolean;
@@ -49,6 +49,7 @@ export interface koreanMoveType {
   priority: number;
   effectChance: number | null;
   target: string;
+  versionGroupDetails?: versionGroupDetailType[];
 }
 
 export type pokemonTypeEnNames =

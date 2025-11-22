@@ -46,7 +46,5 @@ export function refineMoveDetails(pokemonMoveDetails: moveDetailType[]) {
     };
   });
 
-  console.log("refinedMoveDetails 결과:", refinedMoveDetails);
-
   return refinedMoveDetails;
 }

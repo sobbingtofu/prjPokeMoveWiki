@@ -89,7 +89,7 @@ export const generateKoreanMoveData = async (initialMovesArr: initialMovesType[]
   });
 
   const koreanMoveNameArr = await Promise.all(promises);
-  const validMoves = koreanMoveNameArr.filter((move): move is koreanMoveType => move !== null);
+  const validMoves = koreanMoveNameArr.filter((move) => move !== null) as koreanMoveType[];
 
   return validMoves.filter((move) => move.type !== "shadow" && !move.korDescription.includes("사용할 수 없는 기술"));
 };
@@ -297,7 +297,9 @@ export const fetchPokemonAbilityData = async (abilities: detailedPokemInfoType["
 };
 
 //06. 기술 국문명 추가
-export const generateKoreanMoveData02 = async (rawMoveData: rawMoveDataFromPokmonDetailType[]) => {
+export const generateKoreanMoveData02 = async (
+  rawMoveData: rawMoveDataFromPokmonDetailType[]
+): Promise<koreanMoveType[]> => {
   const promises = rawMoveData.map(async (rawMoveItem) => {
     try {
       const {data} = await axios.get(rawMoveItem.move.url, {timeout: 10000});
@@ -342,7 +344,7 @@ export const generateKoreanMoveData02 = async (rawMoveData: rawMoveDataFromPokmo
         effectChance: data.effect_chance,
         target: data.target.name,
         versionGroupDetails: versionGroupDetails,
-      };
+      } as koreanMoveType;
     } catch (itemError) {
       console.error(`기술 ${rawMoveItem.move.name} 데이터 조회 실패:`, itemError);
       return null;
@@ -352,6 +354,7 @@ export const generateKoreanMoveData02 = async (rawMoveData: rawMoveDataFromPokmo
   const koreanMoveNameArr = await Promise.all(promises);
 
   return koreanMoveNameArr.filter(
-    (move) => move !== null && move.type !== "shadow" && !move.korDescription.includes("사용할 수 없는 기술")
+    (move): move is koreanMoveType =>
+      move !== null && move.type !== "shadow" && !move.korDescription.includes("사용할 수 없는 기술")
   );
 };
