@@ -1,4 +1,11 @@
-import {koreanMoveType, initialPokemonType, pokemonTypeEnNames, pokemonTypeKorNames} from "@/logic/pokeapiLogics/type";
+import {
+  koreanMoveType,
+  initialPokemonType,
+  pokemonTypeEnNames,
+  pokemonTypeKorNames,
+  initialMovesType,
+  rawMoveDataFromPokmonDetailType,
+} from "@/logic/pokeapiLogics/type";
 import {generalPokemonTypes} from "@/utils/getTypeDefenseMatchup";
 
 export interface loadingStatesType {
@@ -16,8 +23,8 @@ export interface selectedMoveType extends koreanMoveType {
 }
 
 export interface versionDetailType {
-  genNumber: number;
   versionName: string;
+  genNumber: number;
   learnMethod: string;
   learnedLevel: number;
 }
@@ -51,6 +58,8 @@ export interface detailedPokemInfoType {
   captureRate: number;
 
   evolutionChainUrl: string;
+
+  moveRawData?: rawMoveDataFromPokmonDetailType[];
 
   moveDetails?: moveDetailType[];
 }

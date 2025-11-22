@@ -9,8 +9,6 @@ interface TypeDefenseGridProps {
 function TypeDefenseGrid({types}: TypeDefenseGridProps) {
   const defenseMatchup = getPokemonDefenseMatchup(types);
 
-  console.log("defenseMatchup in TypeDefenseGrid:", defenseMatchup);
-
   // 배수 순서 정의해 고정
   const multiplierOrder = ["200", "100", "50", "25", "0"];
 

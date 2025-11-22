@@ -4,7 +4,20 @@ export interface initialMovesType {
   url: string;
 }
 
+export interface rawMoveDataFromPokmonDetailType {
+  move: {
+    name: string;
+    url: string;
+  };
+  version_group_details: {
+    level_learned_at: number;
+    move_learn_method: {name: string; url: string};
+    version_group: {name: string; url: string};
+  }[];
+}
+
 export interface versionGroupDetailType {
+  genNumber: number;
   versionName: string;
   levelLearned: number;
   learnMethod: string;
@@ -14,7 +27,6 @@ export interface initialPokemonType {
   id?: number;
   name: string;
   url: string;
-  version_group_details?: versionGroupDetailType[];
 }
 
 export type damageClassType = "physical" | "special" | "status";

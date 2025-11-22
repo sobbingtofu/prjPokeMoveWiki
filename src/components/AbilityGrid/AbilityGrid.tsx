@@ -25,6 +25,12 @@ function AbilityGrid({types, abilities}: AbilityGridProps) {
         {"특성 (숨겨진 특성은 *)"}
       </div>
 
+      {isAbilitiesLoading && (
+        <div className="w-full flex justify-center items-center py-4">
+          <p>특성 정보를 불러오는 중...</p>
+        </div>
+      )}
+
       {/* Content */}
       {abilitiesData && (
         <div>

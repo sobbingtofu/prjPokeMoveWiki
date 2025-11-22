@@ -5,12 +5,17 @@ import TypeDefenseGrid from "@/components/TypeDefenseGrid/TypeDefenseGrid";
 import {detailedPokemInfoType} from "@/store/type";
 import Image from "next/image";
 import React, {useEffect} from "react";
+import LearningMovesSection from "../LearningMovesSection/LearningMovesSection";
 
 interface DetailedPokemonSectionProps {
   currentPokemon: detailedPokemInfoType;
 }
 
 function DetailedPokemonSection({currentPokemon}: DetailedPokemonSectionProps) {
+  useEffect(() => {
+    console.log("DetailedPokemonSection - currentPokemon:", currentPokemon);
+  }, [currentPokemon]);
+
   return (
     <>
       {currentPokemon && (
@@ -27,7 +32,7 @@ function DetailedPokemonSection({currentPokemon}: DetailedPokemonSectionProps) {
               <div className="flex sm:flex-row flex-col sm:items-start items-center gap-x-6 w-full sm:gap-y-0 gap-y-4">
                 {/* 이미지 */}
                 <Image
-                  className="border-2 border-gray-700 bg-gray-50"
+                  className="border-[1px] border-gray-500 bg-gray-50"
                   src={currentPokemon.officialArtworkUrl || ""}
                   alt={currentPokemon.koreanName || "Pokemon"}
                   width={200}
@@ -60,6 +65,7 @@ function DetailedPokemonSection({currentPokemon}: DetailedPokemonSectionProps) {
               <TypeDefenseGrid types={currentPokemon?.types || []} />
 
               {/* 배우는 기술 */}
+              <LearningMovesSection moves={currentPokemon.moveRawData || []} types={currentPokemon?.types || []} />
             </div>
           </div>
         </section>

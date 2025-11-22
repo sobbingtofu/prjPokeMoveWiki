@@ -1,4 +1,10 @@
-import {initialMovesType, koreanMoveType, initialPokemonType, versionGroupDetailType} from "@/logic/pokeapiLogics/type";
+import {
+  initialMovesType,
+  koreanMoveType,
+  initialPokemonType,
+  rawMoveDataFromPokmonDetailType,
+  versionGroupDetailType,
+} from "@/logic/pokeapiLogics/type";
 import {
   API_CALLED_STAT_NAMES_MAP,
   MOVE_SUPPLEMENTARY_INFO,
@@ -6,7 +12,7 @@ import {
   TYPE_NAME_EN_TO_KO,
   VERSION_GROUP_TO_GEN,
 } from "@/store/constantStore";
-import {detailedPokemInfoType, moveDetailType, selectedMoveType} from "@/store/type";
+import {detailedPokemInfoType, moveDetailType, selectedMoveType, versionDetailType} from "@/store/type";
 import {extractNumberBySplitting, getGenNumberByVersionGroup} from "@/utils/pokeApiUtils";
 import axios from "axios";
 
@@ -42,7 +48,7 @@ export const getInitialPokemons = async () => {
   return initialPokemons;
 };
 
-// 02. 기술 국문명 추가 및 어떻게든 배우는 포켓몬 (영어이름 + url) 객체 배열 가져와 learningPokemonEn 속성에 추가 > 얘를 03에서 활용
+// 02. 기술 국문명 추가 및 어떻게든 배우는 포켓몬 (영어이름 + url) 객체 배열 가져와 learningPokemonEn 속성에 추가
 export const generateKoreanMoveData = async (initialMovesArr: initialMovesType[]) => {
   const promises = initialMovesArr.map(async (initialMoveItem) => {
     try {
@@ -183,7 +189,7 @@ export const generateDetailedPokemon = async (commonPokemons: initialPokemonType
 
           // evolutionChainUrl: speciesData.evolution_chain.url,
 
-          moves: basicData.moves,
+          moveRawData: basicData.moves,
         };
       } catch (error) {
         console.error(`포켓몬 ${pokemonInfo.name} 처리 실패:`, error);
@@ -288,4 +294,64 @@ export const fetchPokemonAbilityData = async (abilities: detailedPokemInfoType["
   });
   const abilityDetails = await Promise.all(abilityDetailsPromises);
   return abilityDetails;
+};
+
+//06. 기술 국문명 추가
+export const generateKoreanMoveData02 = async (rawMoveData: rawMoveDataFromPokmonDetailType[]) => {
+  const promises = rawMoveData.map(async (rawMoveItem) => {
+    try {
+      const {data} = await axios.get(rawMoveItem.move.url, {timeout: 10000});
+
+      const moveKorName =
+        data.names.find((nameItem: any) => nameItem.language.name === "ko")?.name ||
+        MOVE_SUPPLEMENTARY_INFO.find((move) => move.name === rawMoveItem.move.name)?.addedKorName ||
+        rawMoveItem.move.name;
+
+      const versionGroupDetails: versionGroupDetailType[] = rawMoveItem.version_group_details.map((detail) => {
+        const genNumber = getGenNumberByVersionGroup(detail.version_group.name);
+
+        return {
+          genNumber: genNumber,
+          versionName: detail.version_group.name,
+          levelLearned: detail.level_learned_at,
+          learnMethod: detail.move_learn_method.name,
+        };
+      });
+
+      return {
+        id: data.id,
+        name: rawMoveItem.move.name,
+        koreanName: moveKorName,
+        type: data.type.name,
+        korType: TYPE_NAME_EN_TO_KO.find((type) => type.typeName === data.type.name)?.korTypeName || data.type.name,
+        damageClass: data.damage_class.name,
+        url: rawMoveItem.move.url,
+        korDescription: (
+          data.flavor_text_entries.findLast((entry: any) => entry.language.name === "ko")?.flavor_text ||
+          data.flavor_text_entries.findLast((entry: any) => entry.language.name === "en")?.flavor_text ||
+          ""
+        )
+          .replace(/\n/g, " ")
+          .replace(/\s+/g, " ")
+          .trim(),
+        hasKoreanDescription: !!data.flavor_text_entries.findLast((entry: any) => entry.language.name === "ko"),
+        power: data.power,
+        accuracy: data.accuracy,
+        pp: data.pp,
+        priority: data.priority,
+        effectChance: data.effect_chance,
+        target: data.target.name,
+        versionGroupDetails: versionGroupDetails,
+      };
+    } catch (itemError) {
+      console.error(`기술 ${rawMoveItem.move.name} 데이터 조회 실패:`, itemError);
+      return null;
+    }
+  });
+
+  const koreanMoveNameArr = await Promise.all(promises);
+
+  return koreanMoveNameArr.filter(
+    (move) => move !== null && move.type !== "shadow" && !move.korDescription.includes("사용할 수 없는 기술")
+  );
 };
