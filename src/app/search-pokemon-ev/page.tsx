@@ -15,10 +15,6 @@ function SearchPokemonEvPage() {
   return (
     <>
       <InitialLoadingScreen />
-      {/* <div className="w-dvw h-dvh overflow-hidden">
-        <InitialLoadingScreen />
-        <SearchPokemonSection />
-      </div> */}
     </>
   );
 }

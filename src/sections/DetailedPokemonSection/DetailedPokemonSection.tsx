@@ -7,6 +7,7 @@ import Image from "next/image";
 import React, {useEffect, useRef} from "react";
 import LearningMovesSection from "../LearningMovesSection/LearningMovesSection";
 import ScrollToTopButton from "@/components/ScrollToTopButton/ScrollToTopButton";
+import PokemonSearch from "@/components/PokemonSearch/PokemonSearch";
 
 interface DetailedPokemonSectionProps {
   currentPokemon: detailedPokemInfoType;
@@ -29,10 +30,19 @@ function DetailedPokemonSection({currentPokemon}: DetailedPokemonSectionProps) {
         >
           <div
             className="max-w-[1050px] sm:w-[60%] w-[80%] sm:min-w-[700px] min-w-[360px]
-                py-16 flex flex-col items-center sm:gap-y-2 gap-y-6"
+                pt-8 pb-16 flex flex-col items-center gap-y-2"
           >
+            <div className="w-[75%] min-w-[340px]">
+              <PokemonSearch
+                searchType={"ev"}
+                outSideClickDropdownClose={true}
+                enableEnterArrowKeyHandling={true}
+                sizeType="small"
+              />
+            </div>
+
             {/* 이미지, 이름, 타입칩, 특성 영역 */}
-            <div className="w-full flex flex-col gap-y-8">
+            <div className="w-full flex flex-col gap-y-8 mt-8">
               <div className="flex sm:flex-row flex-col sm:items-start items-center gap-x-6 w-full sm:gap-y-0 gap-y-4">
                 {/* 이미지 */}
                 <Image

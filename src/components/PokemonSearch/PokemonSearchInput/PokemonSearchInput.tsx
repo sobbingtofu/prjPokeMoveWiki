@@ -1,6 +1,6 @@
 import React, {useCallback, useEffect, useRef, useState} from "react";
-import {CloseIcon} from "../CloseIcon/CloseIcon";
-import {Loader} from "../Loader/Loader";
+import {CloseIcon} from "../../CloseIcon/CloseIcon";
+import {Loader} from "../../Loader/Loader";
 import {detailedPokemInfoType} from "@/store/type";
 import {useZustandStore} from "@/store/zustandStore";
 
@@ -14,12 +14,14 @@ interface PokemonSearchInputProps {
   accentedPokemonIndex: number;
   setAccentedPokemonIndex: React.Dispatch<React.SetStateAction<number>>;
   handleDropdownItemClick_searchPokemon: (accentedPokemon: detailedPokemInfoType) => void;
+
+  sizeType?: "default" | "small";
 }
 
 function PokemonSearchInput({
   searchValue,
   setSearchValue,
-
+  sizeType = "default",
   setIsPokemonDropdownOpen,
   enableEnterArrowKeyHandling = false,
 
@@ -153,25 +155,29 @@ function PokemonSearchInput({
 
   return (
     <div
-      className="bg-white px-6 py-4 flex justify-between items-center shadow-sm
+      className={`bg-white flex justify-between items-center shadow-sm
                focus-within:border-blue-500 focus-within:ring-1 focus-within:ring-blue-500
                w-full text-lg border-2 border-gray-300 rounded-lg focus:outline-none focus:border-blue-500
                focus:ring-2 focus:ring-blue-200 transition-all duration-200
-               overflow-hidden"
+               overflow-hidden
+               ${sizeType === "small" ? "px-4 py-3" : "px-6 py-4"}
+               `}
     >
       <input
-        autoFocus
+        autoFocus={sizeType !== "small"}
         type="text"
         ref={inputValueRef}
         onKeyDown={handleKeyDownSearchInput}
         placeholder="포켓몬의 이름을 입력"
-        className=" w-full focus:outline-none bg-transparent"
+        className={`w-full focus:outline-none bg-transparent
+          ${sizeType === "small" ? "text-sm" : ""}
+          `}
         onBlur={(e) => {
           e.preventDefault();
         }}
         onFocus={handleInputFocus}
       />
-      {isDebouncing && <Loader />}
+      {isDebouncing && <Loader sizeType={sizeType} />}
       {!isDebouncing && searchValue.trim() !== "" && <CloseIcon onClick={handleClickCloseIcon} />}
     </div>
   );

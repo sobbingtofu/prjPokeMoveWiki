@@ -29,7 +29,7 @@ function PokemonCard({pokemon}: {pokemon: detailedPokemInfoType}) {
   };
 
   return (
-    <Link href={`/pokemons/${pokemon.pokemonId}`} target="_blank" rel="noopener noreferrer" className="p-1">
+    <Link href={`/pokemons/${pokemon.pokemonId}`} target="_blank" rel="noopener noreferrer" className="sm:p-1 p-0">
       <div
         key={pokemon.name}
         onClick={() => handleCardClick(pokemon)}
