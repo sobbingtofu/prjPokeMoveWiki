@@ -41,7 +41,7 @@ export const MoveCard = ({
       className={`bg-${move.type.toLowerCase()}-shallow
       xl:min-w-[200px] select-none flex flex-row
       gap-2 rounded-lg bg-gray-100 shadow-md
-      ${type === "searchLearningPokemon" ? "pr-4" : "px-8"}
+      ${type === "searchLearningPokemon" ? "pr-4" : "sm:px-8 px-6"}
       `}
       {...props}
     >
@@ -104,7 +104,13 @@ export const MoveCard = ({
         </div>
 
         {/* 기술 설명 */}
-        <p className="text-xs sm:block hidden mb-1">{move.korDescription}</p>
+        <p
+          className={`text-xs mb-1
+          ${type === "searchLearningPokemon" ? "sm:block hidden" : ""}
+          `}
+        >
+          {move.korDescription}
+        </p>
 
         {/* 버전 별 습득 방법  */}
         {type === "pokemonDetail" && versionGroupDataOnSelectedGen && versionGroupDataOnSelectedGen.length > 0 && (

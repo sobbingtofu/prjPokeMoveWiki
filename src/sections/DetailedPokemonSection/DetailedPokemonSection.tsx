@@ -4,14 +4,17 @@ import TypeChipContainer from "@/components/TypeChip/TypeChipContainer";
 import TypeDefenseGrid from "@/components/TypeDefenseGrid/TypeDefenseGrid";
 import {detailedPokemInfoType} from "@/store/type";
 import Image from "next/image";
-import React, {useEffect} from "react";
+import React, {useEffect, useRef} from "react";
 import LearningMovesSection from "../LearningMovesSection/LearningMovesSection";
+import ScrollToTopButton from "@/components/ScrollToTopButton/ScrollToTopButton";
 
 interface DetailedPokemonSectionProps {
   currentPokemon: detailedPokemInfoType;
 }
 
 function DetailedPokemonSection({currentPokemon}: DetailedPokemonSectionProps) {
+  const sectionRef = useRef<HTMLElement>(null!);
+
   useEffect(() => {
     console.log("DetailedPokemonSection - currentPokemon:", currentPokemon);
   }, [currentPokemon]);
@@ -20,6 +23,7 @@ function DetailedPokemonSection({currentPokemon}: DetailedPokemonSectionProps) {
     <>
       {currentPokemon && (
         <section
+          ref={sectionRef}
           className="w-dvw h-[calc(100dvh-7dvh)] bg-gray-300 flex flex-col justify-start items-center
             overflow-y-auto scrollbar-thin scrollbar-track-gray-300 scrollbar-thumb-gray-500 no-scrollbar-buttons"
         >
@@ -68,6 +72,8 @@ function DetailedPokemonSection({currentPokemon}: DetailedPokemonSectionProps) {
               <LearningMovesSection moves={currentPokemon.moveRawData || []} types={currentPokemon?.types || []} />
             </div>
           </div>
+
+          <ScrollToTopButton scrollContainerRef={sectionRef} />
         </section>
       )}
     </>
