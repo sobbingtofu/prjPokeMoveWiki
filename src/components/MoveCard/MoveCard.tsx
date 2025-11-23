@@ -117,8 +117,8 @@ export const MoveCard = ({
           <div className="text-xs sm:block hidden mb-1">
             {versionGroupDataOnSelectedGen?.map((detail, index) => {
               return (
-                <div key={index} className="flex gap-x-4 font-bold">
-                  <p>{SERIES_NAME_MAP[detail.versionName]}</p>
+                <div key={index} className="flex gap-x-2 font-bold">
+                  <p className="w-[105px]">{SERIES_NAME_MAP[detail.versionName]}</p>
                   <p>{METHOD_NAME_MAP[detail.learnMethod]}</p>
                   <p>
                     {detail.learnMethod == "level-up"

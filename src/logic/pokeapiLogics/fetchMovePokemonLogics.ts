@@ -187,7 +187,7 @@ export const generateDetailedPokemon = async (commonPokemons: initialPokemonType
 
           // captureRate: speciesData.capture_rate,
 
-          // evolutionChainUrl: speciesData.evolution_chain.url,
+          evolutionChainUrl: speciesData.evolution_chain.url,
 
           moveRawData: basicData.moves,
         };
