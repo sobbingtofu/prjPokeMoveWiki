@@ -8,6 +8,7 @@ import React, {useEffect, useRef} from "react";
 import LearningMovesSection from "../LearningMovesSection/LearningMovesSection";
 import ScrollToTopButton from "@/components/ScrollToTopButton/ScrollToTopButton";
 import PokemonSearch from "@/components/PokemonSearch/PokemonSearch";
+import EvolChainSection from "@/components/EvolChainSection/EvolChainSection";
 
 interface DetailedPokemonSectionProps {
   currentPokemon: detailedPokemInfoType;
@@ -72,6 +73,10 @@ function DetailedPokemonSection({currentPokemon}: DetailedPokemonSectionProps) {
                   />
                 </div>
               </div>
+
+              {/* 진화 체인 */}
+              <EvolChainSection evolutionChainUrl={currentPokemon.evolutionChainUrl || ""} />
+
               {/* 특성 표 - 최하단 */}
               <AbilityGrid types={currentPokemon?.types || []} abilities={currentPokemon?.abilities || []} />
 

@@ -48,9 +48,9 @@ function LearningMovesSection({moves, types}: LearningMovesSectionProps) {
 
   useEffect(() => {
     if (isMovesLoading) {
-      console.log("LearningMovesSection - moves are loading...");
+      // console.log("LearningMovesSection - moves are loading...");
     } else {
-      console.log("sortedFinalMoves:", sortedFinalMoves);
+      // console.log("sortedFinalMoves:", sortedFinalMoves);
     }
   }, [movesData, isMovesLoading, selectedGen]);
 

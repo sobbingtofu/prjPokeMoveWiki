@@ -13,12 +13,13 @@ import {
   VERSION_GROUP_TO_GEN,
 } from "@/store/constantStore";
 import {detailedPokemInfoType, moveDetailType, selectedMoveType, versionDetailType} from "@/store/type";
+import {parseEvolutionChain} from "@/utils/parseEvolutionChain";
 import {extractNumberBySplitting, getGenNumberByVersionGroup} from "@/utils/pokeApiUtils";
 import axios from "axios";
 
 // 01-1. 기술 raw data 배열 가져오기
 export const getInitialMoveData = async () => {
-  const {data: rawData} = await axios.get("https://pokeapi.co/api/v2/move?offset=0&limit=1000");
+  const {data: rawData} = await axios.get<any>("https://pokeapi.co/api/v2/move?offset=0&limit=1000");
   if (!Array.isArray(rawData.results)) {
     throw new Error(`Invalid data format: ${typeof rawData.results}`);
   }
@@ -34,7 +35,7 @@ export const getInitialMoveData = async () => {
 
 // 01-2. 푸키먼 raw data 배열 가져오기
 export const getInitialPokemons = async () => {
-  const {data} = await axios.get("https://pokeapi.co/api/v2/pokemon?&limit=1500");
+  const {data} = await axios.get<any>("https://pokeapi.co/api/v2/pokemon?&limit=1500");
   if (!Array.isArray(data.results)) {
     throw new Error(`Invalid data format: ${typeof data.results}`);
   }
@@ -52,7 +53,7 @@ export const getInitialPokemons = async () => {
 export const generateKoreanMoveData = async (initialMovesArr: initialMovesType[]) => {
   const promises = initialMovesArr.map(async (initialMoveItem) => {
     try {
-      const {data} = await axios.get(initialMoveItem.url, {timeout: 10000});
+      const {data} = await axios.get<any>(initialMoveItem.url, {timeout: 10000});
 
       return {
         id: initialMoveItem.id,
@@ -107,7 +108,7 @@ export const generateDetailedPokemon = async (commonPokemons: initialPokemonType
 
     const promises = batch.map(async (pokemonInfo) => {
       try {
-        const {data: basicData} = await axios.get(pokemonInfo.url, {timeout: 10000});
+        const {data: basicData} = await axios.get<any>(pokemonInfo.url, {timeout: 10000});
 
         const speciesUrl = basicData.species.url;
         const alternateSpeciesUrl = `https://pokeapi.co/api/v2/pokemon-species/${basicData.name}/`;
@@ -123,13 +124,13 @@ export const generateDetailedPokemon = async (commonPokemons: initialPokemonType
               " 리전폼)"
             : "";
 
-        let {data: speciesData} = await axios.get(speciesUrl, {timeout: 5000});
+        let {data: speciesData} = await axios.get<any>(speciesUrl, {timeout: 5000});
 
         if (!speciesData || !speciesData.name || !speciesData.names || !Array.isArray(speciesData.names)) {
           console.warn(`포켓몬 ${pokemonInfo.name}의 speciesUrl이 유효하지 않아 alternateSpeciesUrl로 재시도`);
 
           try {
-            const alternateResponse = await axios.get(alternateSpeciesUrl, {timeout: 5000});
+            const alternateResponse = await axios.get<any>(alternateSpeciesUrl, {timeout: 5000});
             speciesData = alternateResponse.data;
 
             // alternateSpeciesUrl로도 실패하면 null 반환
@@ -223,7 +224,7 @@ export const addLearningMethodsAndGensToPokemons = async (
   selectedMoves: selectedMoveType[]
 ) => {
   const updatedPokemonsPromises = pokemons.map(async (pokemon) => {
-    const {data: pokemonData} = await axios.get(pokemon.basicUrl);
+    const {data: pokemonData} = await axios.get<any>(pokemon.basicUrl);
 
     const moveDetails: moveDetailType[] = [];
 
@@ -261,7 +262,7 @@ export const addLearningMethodsAndGensToPokemons = async (
 export const fetchPokemonAbilityData = async (abilities: detailedPokemInfoType["abilities"]) => {
   const abilityDetailsPromises = abilities.map(async (ability) => {
     try {
-      const {data: abilityData} = await axios.get(ability.abilityUrl);
+      const {data: abilityData} = await axios.get<any>(ability.abilityUrl);
 
       // console.log("abilityData.flavor_text_entries:", abilityData.flavor_text_entries);
 
@@ -302,7 +303,7 @@ export const generateKoreanMoveData02 = async (
 ): Promise<koreanMoveType[]> => {
   const promises = rawMoveData.map(async (rawMoveItem) => {
     try {
-      const {data} = await axios.get(rawMoveItem.move.url, {timeout: 10000});
+      const {data} = await axios.get<any>(rawMoveItem.move.url, {timeout: 10000});
 
       const moveKorName =
         data.names.find((nameItem: any) => nameItem.language.name === "ko")?.name ||
@@ -357,4 +358,85 @@ export const generateKoreanMoveData02 = async (
     (move): move is koreanMoveType =>
       move !== null && move.type !== "shadow" && !move.korDescription.includes("사용할 수 없는 기술")
   );
+};
+
+export const getEvolChainData = async (evolutionChainUrl: string) => {
+  const {data} = await axios.get<any>(evolutionChainUrl, {timeout: 10000});
+
+  console.log("getEvolChainData 호출 완료: ", data);
+
+  const refinedData = parseEvolutionChain(data);
+
+  console.log("parse 완료: ", refinedData);
+
+  const speciesPromises = refinedData.map(async (pokemonSpeciesItem) => {
+    try {
+      const {data: speciesData} = await axios.get<any>(pokemonSpeciesItem.url, {timeout: 10000});
+
+      console.log("speciesData: ", speciesData);
+
+      const chainLevel = pokemonSpeciesItem.chainLevel;
+      const pokemonSpeciesNameEn = pokemonSpeciesItem.name;
+      const pokemonSpeciesNameKo = speciesData?.names?.find?.((nameItem: any) => nameItem.language.name === "ko")?.name;
+      const pokemonVarieties = speciesData?.varieties;
+
+      const varietyPromises = pokemonVarieties.map(async (varietyItem: any) => {
+        try {
+          const {data: varietyData} = await axios.get<any>(varietyItem.pokemon.url, {timeout: 10000});
+
+          console.log("varietyData: ", varietyData);
+          console.log("varietyPokemonName: ", varietyItem.pokemon.name);
+          return {
+            chainLevel: chainLevel,
+            pokemonVarietyNameEn: varietyItem.pokemon.name,
+            pokemonSpeciesNameEn: pokemonSpeciesNameEn,
+            pokemonSpeciesNameKo: pokemonSpeciesNameKo,
+            pokemonId: varietyData.id || "",
+            pokemonUrl: varietyItem.url || "",
+            speciesUrl: varietyData.species.url || "",
+            spriteUrl: varietyData.sprites.front_default || "",
+            officialArtworkUrl: varietyData.sprites.other["official-artwork"].front_default || "",
+            types: varietyData.types || [],
+          };
+        } catch (error) {
+          console.error(`포켓몬 ${pokemonSpeciesNameEn} 처리 실패:`, error);
+          return null;
+        } finally {
+        }
+      });
+
+      const returnVal = await Promise.all(varietyPromises);
+
+      const filtered = returnVal.filter((item) => {
+        const varietyKeyword = extractSuffix(item.pokemonVarietyNameEn);
+
+        function extractSuffix(str: string) {
+          const parts = str.split("-");
+          return parts.length > 1 ? parts[parts.length - 1] : "";
+        }
+
+        console.log(item.pokemonVarietyNameEn, varietyKeyword);
+
+        function isValidRegion(value: string) {
+          return REGION_NAME_EN_TO_KO.some((region) => region.eng === value);
+        }
+
+        if (isValidRegion(varietyKeyword) || varietyKeyword == "") {
+          return true;
+        } else {
+          return false;
+        }
+      });
+
+      return filtered;
+    } catch (error) {
+      console.error(`포켓몬 ${pokemonSpeciesItem.name} 처리 실패:`, error);
+      return null;
+    } finally {
+    }
+  });
+
+  const speciesData = await Promise.all(speciesPromises);
+
+  return speciesData;
 };
