@@ -2,9 +2,10 @@ import React, {useState, useEffect, useRef} from "react";
 
 interface ScrollToTopButtonProps {
   scrollContainerRef: React.RefObject<HTMLElement>;
+  durationTime?: number;
 }
 
-function ScrollToTopButton({scrollContainerRef}: ScrollToTopButtonProps) {
+function ScrollToTopButton({scrollContainerRef, durationTime = 300}: ScrollToTopButtonProps) {
   const [isVisible, setIsVisible] = useState(false);
 
   useEffect(() => {
@@ -31,7 +32,7 @@ function ScrollToTopButton({scrollContainerRef}: ScrollToTopButtonProps) {
     if (!scrollContainer) return;
 
     const startPosition = scrollContainer.scrollTop;
-    const duration = 300; // ms
+    const duration = durationTime; // ms
     const startTime = performance.now();
 
     const easeInOutQuad = (t: number) => {

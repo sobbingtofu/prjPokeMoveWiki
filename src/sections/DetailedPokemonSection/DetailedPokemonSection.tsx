@@ -73,7 +73,7 @@ function DetailedPokemonSection({currentPokemon}: DetailedPokemonSectionProps) {
             </div>
           </div>
 
-          <ScrollToTopButton scrollContainerRef={sectionRef} />
+          <ScrollToTopButton scrollContainerRef={sectionRef} durationTime={300} />
         </section>
       )}
     </>
