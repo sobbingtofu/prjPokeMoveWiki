@@ -1,11 +1,14 @@
 import {koreanMoveType} from "@/logic/pokeapiLogics/type";
+import {METHOD_NAME_MAP, SERIES_NAME_MAP} from "@/store/constantStore";
 import {useZustandStore} from "@/store/zustandStore";
+import {getVersionGroupDataByGen} from "@/utils/getVersionGroupDataByGen";
 import {PropsWithChildren} from "react";
 
 interface MoveCardProps {
   type?: "searchLearningPokemon" | "pokemonDetail";
   move: koreanMoveType;
   key: number;
+  genNumber?: number;
   onClick?: () => void;
 }
 
@@ -13,6 +16,7 @@ export const MoveCard = ({
   move,
   type = "searchLearningPokemon",
   onClick,
+  genNumber,
   ...props
 }: PropsWithChildren<MoveCardProps>) => {
   const selectedMovesArrayStates = useZustandStore((state) => state.selectedMovesArrayStates);
@@ -28,6 +32,9 @@ export const MoveCard = ({
       )
     );
   };
+
+  const versionGroupDataOnSelectedGen = getVersionGroupDataByGen(move.versionGroupDetails, genNumber);
+
   return (
     <div
       onClick={onClick}
@@ -38,6 +45,7 @@ export const MoveCard = ({
       `}
       {...props}
     >
+      {/* 체크박스 */}
       {type === "searchLearningPokemon" && (
         <div className="flex-1 flex justify-center items-start">
           <div
@@ -65,18 +73,59 @@ export const MoveCard = ({
         </div>
       )}
 
+      {/* 내용물 */}
       <div className="flex flex-col flex-20 gap-y-2 py-3">
-        <p className="mt-0.5 text-sm font-bold">{move.koreanName}</p>
-        <div className="flex flex-row  items-baseline justify-between">
-          <p className="text-xs font-bold ">
-            {move.power ? `위력: ${move.power}` : "위력: --"} / {move.accuracy ? `명중: ${move.accuracy}` : "명중: --"}
+        <div
+          className={`flex gap-y-2 
+            ${type === "searchLearningPokemon" ? "flex-col" : "flex-row items-baseline w-full justify-between"}
+            `}
+        >
+          <p
+            className={`mt-0.5 font-bold
+            ${type === "searchLearningPokemon" ? "text-sm" : "text-md"}
+            `}
+          >
+            {move.koreanName}
           </p>
-          <p className="text-xs font-bold italic">
-            {move.korType} /{" "}
-            {move.damageClass === "physical" ? "물리" : move.damageClass === "special" ? "특수" : "변화"}
-          </p>
+          <div
+            className={`flex flex-row items-baseline justify-between
+            ${type === "searchLearningPokemon" ? "" : "gap-x-10"}
+            `}
+          >
+            <p className="text-xs font-bold ">
+              {move.power ? `위력: ${move.power}` : "위력: --"} /{" "}
+              {move.accuracy ? `명중: ${move.accuracy}` : "명중: --"}
+            </p>
+            <p className="text-xs font-bold italic">
+              {move.korType} /{" "}
+              {move.damageClass === "physical" ? "물리" : move.damageClass === "special" ? "특수" : "변화"}
+            </p>
+          </div>
         </div>
+
+        {/* 기술 설명 */}
         <p className="text-xs sm:block hidden mb-1">{move.korDescription}</p>
+
+        {/* 버전 별 습득 방법  */}
+        {type === "pokemonDetail" && versionGroupDataOnSelectedGen && versionGroupDataOnSelectedGen.length > 0 && (
+          <div className="text-xs sm:block hidden mb-1">
+            {versionGroupDataOnSelectedGen?.map((detail, index) => {
+              return (
+                <div key={index} className="flex gap-x-4 font-bold">
+                  <p>{SERIES_NAME_MAP[detail.versionName]}</p>
+                  <p>{METHOD_NAME_MAP[detail.learnMethod]}</p>
+                  <p>
+                    {detail.learnMethod == "level-up"
+                      ? `( Lv. ${detail.levelLearned} )`
+                      : detail.learnMethod == "egg"
+                      ? `( Lv. 0 )`
+                      : ""}
+                  </p>
+                </div>
+              );
+            })}
+          </div>
+        )}
       </div>
     </div>
   );

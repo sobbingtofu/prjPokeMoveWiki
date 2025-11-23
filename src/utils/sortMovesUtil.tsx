@@ -12,17 +12,21 @@ export function sortMovesByGeneration(moves: koreanMoveType[], selectedGen: numb
     const matchingDetails = move.versionGroupDetails?.filter((detail) => detail.genNumber === selectedGen) || [];
 
     // level-up 방식이 있는지 확인
-    const hasLevelUp = matchingDetails.some((detail) => detail.learnMethod === "level-up");
+    const hasLevelUp = matchingDetails.some(
+      (detail) => detail.learnMethod === "level-up" || detail.learnMethod === "egg"
+    );
 
     if (hasLevelUp) {
       // 그룹 A: level-up 있음
       // level-up인 마지막 요소의 levelLearned 찾기
-      const levelUpDetails = matchingDetails.filter((detail) => detail.learnMethod === "level-up");
+      const levelUpDetails = matchingDetails.filter(
+        (detail) => detail.learnMethod === "level-up" || detail.learnMethod === "egg"
+      );
       const lastLevelUpDetail = levelUpDetails[levelUpDetails.length - 1];
 
       return {
         group: "A" as const,
-        levelLearned: lastLevelUpDetail.levelLearned,
+        levelLearned: lastLevelUpDetail.levelLearned || 0,
         isMachine: false,
       };
     } else {

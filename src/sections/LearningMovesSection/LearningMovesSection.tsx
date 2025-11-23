@@ -13,7 +13,7 @@ interface LearningMovesSectionProps {
 }
 
 function LearningMovesSection({moves, types}: LearningMovesSectionProps) {
-  const [selectedGen, setSelectedGen] = React.useState<number | null>(9);
+  const [selectedGen, setSelectedGen] = React.useState<number>(9);
 
   const {data: movesData, isLoading: isMovesLoading} = useQuery({
     queryKey: ["moves", moves],
@@ -80,7 +80,7 @@ function LearningMovesSection({moves, types}: LearningMovesSectionProps) {
       >
         {sortedFinalMoves.length > 0 ? (
           sortedFinalMoves.map((move) => {
-            return move ? <MoveCard move={move} key={move.id} type="pokemonDetail" /> : null;
+            return move ? <MoveCard move={move} key={move.id} type="pokemonDetail" genNumber={selectedGen} /> : null;
           })
         ) : (
           <p className="text-sm text-gray-500">배우는 기술 정보가 존재하지 않습니다.</p>

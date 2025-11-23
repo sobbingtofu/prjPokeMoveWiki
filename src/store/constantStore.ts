@@ -623,3 +623,27 @@ export const EXPIRE_MS = 24 * 60 * 60 * 1000; // 24시간
 
 export const DB_NAME_KOREAN_MOVES = "koreanMovesDB";
 export const STORE_NAME_KOREAN_MOVES = "koreanMoves";
+
+export const SERIES_NAME_MAP: {[key: string]: string} = {
+  "scarlet-violet": "스칼렛/바이올렛",
+  "legends-arceus": "레전드 아르세우스",
+  "brilliant-diamond-and-shining-pearl": "브다샤펄",
+  "sword-shield": "소드실드",
+  "lets-go-pikachu-lets-go-eevee": "렛츠고 피카츄/이브이",
+  "ultra-sun-ultra-moon": "울썬문",
+  "sun-moon": "썬문",
+  "omega-ruby-alpha-sapphire": "ORAS",
+  "x-y": "XY",
+  "black-2-white-2": "블화2",
+  "black-white": "블화",
+  "heartgold-soulsilver": "하골소실",
+  platinum: "PT",
+  "diamond-pearl": "DP",
+  "firered-leafgreen": "파이어레드/리프그린",
+  emerald: "에메랄드",
+  "ruby-sapphire": "루비/사파이어",
+  crystal: "크리스탈",
+  "gold-silver": "금/은",
+  yellow: "피카츄",
+  "red-blue": "레드/블루",
+};
