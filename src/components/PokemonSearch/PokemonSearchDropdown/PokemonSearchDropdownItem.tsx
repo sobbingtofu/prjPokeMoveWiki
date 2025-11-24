@@ -1,10 +1,10 @@
+import {Loader} from "@/components/Loader/Loader";
 import TypeChipContainer from "@/components/TypeChip/TypeChipContainer";
 import useHandleDropdownItemClick_searchPokemon from "@/hooks/useHandleDropdownItemClick_searchPokemon";
 import {STAT_LABELS} from "@/store/constantStore";
 import {detailedPokemInfoType} from "@/store/type";
 import Image from "next/image";
-import {useRouter} from "next/navigation";
-import React, {RefObject} from "react";
+import React, {RefObject, useState} from "react";
 
 interface PokemonSearchDropdownItemProps {
   pokemon: detailedPokemInfoType;
@@ -27,6 +27,8 @@ function PokemonSearchDropdownItem({
 }: PokemonSearchDropdownItemProps) {
   const handleDropdownItemClick_searchPokemon = useHandleDropdownItemClick_searchPokemon();
 
+  const [imageLoading, setImageLoading] = useState<boolean>(true);
+
   return (
     <div
       key={pokemon.pokemonId}
@@ -39,16 +41,24 @@ function PokemonSearchDropdownItem({
       ref={index === accentedPokemonIndex ? accentedItemRef : null}
     >
       <div
-        className={`w-[30%] flex items-center gap-2 min-w-20`}
+        className={`w-[30%] flex items-center gap-2 min-w-20 `}
         onClick={() => handleDropdownItemClick_searchPokemon(pokemon)}
       >
-        <Image
-          src={pokemon.spriteUrl}
-          alt={"이미지 로딩중"}
-          width={60}
-          height={60}
-          className={"rounded-full hidden md:block"}
-        />
+        <div className="relative w-[60px] h-[60px] hidden md:flex items-center justify-center">
+          {imageLoading && (
+            <div className="absolute inset-0 flex items-center justify-center">
+              <Loader sizeType="small" />
+            </div>
+          )}
+          <Image
+            src={pokemon.spriteUrl}
+            alt={"이미지 로딩중"}
+            width={60}
+            height={60}
+            className={`rounded-full ${imageLoading ? "opacity-0" : "opacity-100"} transition-opacity duration-300`}
+            onLoadingComplete={() => setImageLoading(false)}
+          />
+        </div>
         <p className="text-gray-900 text-sm ">{pokemon.koreanName}</p>
       </div>
 
