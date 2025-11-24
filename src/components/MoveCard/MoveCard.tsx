@@ -92,14 +92,22 @@ export const MoveCard = ({
             ${type === "searchLearningPokemon" ? "" : "gap-x-10"}
             `}
           >
-            <p className="text-xs font-bold ">
-              {move.power ? `위력: ${move.power}` : "위력: --"} /{" "}
-              {move.accuracy ? `명중: ${move.accuracy}` : "명중: --"}
-            </p>
-            <p className="text-xs font-bold italic">
-              {move.korType} /{" "}
-              {move.damageClass === "physical" ? "물리" : move.damageClass === "special" ? "특수" : "변화"}
-            </p>
+            <div
+              className={`text-xs font-bold flex gap-2
+              ${type === "searchLearningPokemon" ? "" : "w-[115px] justify-end"}
+              `}
+            >
+              <p className="w-[53px]">{move.power ? `위력: ${move.power}` : "위력: --"}</p>
+              <p className="w-[53px]">{move.accuracy ? `명중: ${move.accuracy}` : "명중: --"}</p>
+            </div>
+            <div
+              className={`text-xs font-bold italic flex gap-2 
+              ${type === "searchLearningPokemon" ? "" : "w-[78px] justify-end"}
+              `}
+            >
+              <p>{move.korType} / </p>
+              <p>{move.damageClass === "physical" ? "물리" : move.damageClass === "special" ? "특수" : "변화"}</p>
+            </div>
           </div>
         </div>
 
