@@ -47,7 +47,7 @@ function DetailedPokemonSection({currentPokemon}: DetailedPokemonSectionProps) {
               <div className="flex sm:flex-row flex-col sm:items-start items-center gap-x-6 w-full sm:gap-y-0 gap-y-4">
                 {/* 이미지 */}
                 <Image
-                  className="border-[1px] border-gray-500 bg-gray-50"
+                  className="border border-gray-500 bg-gray-50"
                   src={currentPokemon.officialArtworkUrl || ""}
                   alt={currentPokemon.koreanName || "Pokemon"}
                   width={200}

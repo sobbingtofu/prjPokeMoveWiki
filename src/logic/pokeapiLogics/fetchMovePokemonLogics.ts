@@ -4,6 +4,8 @@ import {
   initialPokemonType,
   rawMoveDataFromPokmonDetailType,
   versionGroupDetailType,
+  EvolutionChainDataType,
+  EvolutionChainVarietyType,
 } from "@/logic/pokeapiLogics/type";
 import {
   API_CALLED_STAT_NAMES_MAP,
@@ -297,7 +299,7 @@ export const fetchPokemonAbilityData = async (abilities: detailedPokemInfoType["
   return abilityDetails;
 };
 
-//06. 기술 국문명 추가
+// 06. 기술 국문명 추가
 export const generateKoreanMoveData02 = async (
   rawMoveData: rawMoveDataFromPokmonDetailType[]
 ): Promise<koreanMoveType[]> => {
@@ -360,67 +362,58 @@ export const generateKoreanMoveData02 = async (
   );
 };
 
-export const getEvolChainData = async (evolutionChainUrl: string) => {
+// 07. 진화 정보 가져오기
+export const getEvolChainData = async (evolutionChainUrl: string): Promise<EvolutionChainDataType> => {
   const {data} = await axios.get<any>(evolutionChainUrl, {timeout: 10000});
 
-  console.log("getEvolChainData 호출 완료: ", data);
-
   const refinedData = parseEvolutionChain(data);
-
-  console.log("parse 완료: ", refinedData);
 
   const speciesPromises = refinedData.map(async (pokemonSpeciesItem) => {
     try {
       const {data: speciesData} = await axios.get<any>(pokemonSpeciesItem.url, {timeout: 10000});
-
-      console.log("speciesData: ", speciesData);
-
       const chainLevel = pokemonSpeciesItem.chainLevel;
       const pokemonSpeciesNameEn = pokemonSpeciesItem.name;
       const pokemonSpeciesNameKo = speciesData?.names?.find?.((nameItem: any) => nameItem.language.name === "ko")?.name;
       const pokemonVarieties = speciesData?.varieties;
 
-      const varietyPromises = pokemonVarieties.map(async (varietyItem: any) => {
-        try {
-          const {data: varietyData} = await axios.get<any>(varietyItem.pokemon.url, {timeout: 10000});
+      const varietyPromises = pokemonVarieties.map(
+        async (varietyItem: any): Promise<EvolutionChainVarietyType | null> => {
+          try {
+            const {data: varietyData} = await axios.get<any>(varietyItem.pokemon.url, {timeout: 10000});
 
-          console.log("varietyData: ", varietyData);
-          console.log("varietyPokemonName: ", varietyItem.pokemon.name);
-          return {
-            chainLevel: chainLevel,
-            pokemonVarietyNameEn: varietyItem.pokemon.name,
-            pokemonSpeciesNameEn: pokemonSpeciesNameEn,
-            pokemonSpeciesNameKo: pokemonSpeciesNameKo,
-            pokemonId: varietyData.id || "",
-            pokemonUrl: varietyItem.url || "",
-            speciesUrl: varietyData.species.url || "",
-            spriteUrl: varietyData.sprites.front_default || "",
-            officialArtworkUrl: varietyData.sprites.other["official-artwork"].front_default || "",
-            types: varietyData.types || [],
-          };
-        } catch (error) {
-          console.error(`포켓몬 ${pokemonSpeciesNameEn} 처리 실패:`, error);
-          return null;
-        } finally {
+            return {
+              chainLevel: chainLevel,
+              pokemonVarietyNameEn: varietyItem.pokemon.name,
+              pokemonSpeciesNameEn: pokemonSpeciesNameEn,
+              pokemonSpeciesNameKo: pokemonSpeciesNameKo,
+              pokemonId: varietyData.id || "",
+              pokemonUrl: varietyItem.pokemon.url || "",
+              speciesUrl: varietyData.species.url || "",
+              spriteUrl: varietyData.sprites.front_default || "",
+              officialArtworkUrl: varietyData.sprites.other["official-artwork"].front_default || "",
+              types: varietyData.types || [],
+            };
+          } catch (error) {
+            console.error(`포켓몬 ${pokemonSpeciesNameEn} 처리 실패:`, error);
+            return null;
+          }
         }
-      });
+      );
 
       const returnVal = await Promise.all(varietyPromises);
 
-      const filtered = returnVal.filter((item) => {
+      const filtered = returnVal.filter((item): item is EvolutionChainVarietyType => {
+        if (!item) return false;
+
         const varietyKeyword = extractSuffix(item.pokemonVarietyNameEn);
 
         function extractSuffix(str: string) {
           const parts = str.split("-");
           return parts.length > 1 ? parts[parts.length - 1] : "";
         }
-
-        console.log(item.pokemonVarietyNameEn, varietyKeyword);
-
         function isValidRegion(value: string) {
           return REGION_NAME_EN_TO_KO.some((region) => region.eng === value);
         }
-
         if (isValidRegion(varietyKeyword) || varietyKeyword == "") {
           return true;
         } else {
@@ -431,12 +424,12 @@ export const getEvolChainData = async (evolutionChainUrl: string) => {
       return filtered;
     } catch (error) {
       console.error(`포켓몬 ${pokemonSpeciesItem.name} 처리 실패:`, error);
-      return null;
-    } finally {
+      return [];
     }
   });
 
   const speciesData = await Promise.all(speciesPromises);
 
-  return speciesData;
+  const flattenedSpeciesData = speciesData.flat();
+  return flattenedSpeciesData;
 };

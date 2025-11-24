@@ -1,4 +1,5 @@
 import {getEvolChainData} from "@/logic/pokeapiLogics/fetchMovePokemonLogics";
+import {EvolutionChainDataType} from "@/logic/pokeapiLogics/type";
 import {useQuery} from "@tanstack/react-query";
 import React, {useEffect} from "react";
 
@@ -7,7 +8,7 @@ interface EvolChainSectionProps {
 }
 
 function EvolChainSection({evolutionChainUrl}: EvolChainSectionProps) {
-  const {data: parsedEvolChain, isLoading: isEvolChainLoading} = useQuery({
+  const {data: parsedEvolChain, isLoading: isEvolChainLoading} = useQuery<EvolutionChainDataType>({
     queryKey: ["evolutionChainUrl", evolutionChainUrl],
     queryFn: () => getEvolChainData(evolutionChainUrl!),
     staleTime: Infinity,

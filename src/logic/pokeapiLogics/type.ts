@@ -96,3 +96,18 @@ export type pokemonTypeKorNames =
   | "페어리"
   | "???"
   | "스텔라";
+
+export interface EvolutionChainVarietyType {
+  chainLevel: number;
+  pokemonVarietyNameEn: string;
+  pokemonSpeciesNameEn: string;
+  pokemonSpeciesNameKo: string;
+  pokemonId: number;
+  pokemonUrl: string;
+  speciesUrl: string;
+  spriteUrl: string;
+  officialArtworkUrl: string;
+  types: any[];
+}
+
+export type EvolutionChainDataType = EvolutionChainVarietyType[];
