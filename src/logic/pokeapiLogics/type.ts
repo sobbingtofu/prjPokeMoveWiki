@@ -99,9 +99,15 @@ export type pokemonTypeKorNames =
 
 export interface EvolutionChainVarietyType {
   chainLevel: number;
-  pokemonVarietyNameEn: string;
+
   pokemonSpeciesNameEn: string;
   pokemonSpeciesNameKo: string;
+
+  pokemonVarietyNameEn: string;
+  pokemonVarietyNameKo: string;
+
+  varietyKeyword: string;
+
   pokemonId: number;
   pokemonUrl: string;
   speciesUrl: string;
@@ -110,4 +116,4 @@ export interface EvolutionChainVarietyType {
   types: any[];
 }
 
-export type EvolutionChainDataType = EvolutionChainVarietyType[];
+export type EvolutionChainDataType = {chainLevel: number; chainData: EvolutionChainVarietyType[]}[];

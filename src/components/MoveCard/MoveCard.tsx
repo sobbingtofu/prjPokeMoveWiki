@@ -3,6 +3,7 @@ import {METHOD_NAME_MAP, SERIES_NAME_MAP} from "@/store/constantStore";
 import {useZustandStore} from "@/store/zustandStore";
 import {getVersionGroupDataByGen} from "@/utils/getVersionGroupDataByGen";
 import {PropsWithChildren} from "react";
+import TypeChip from "../TypeChip/TypeChip";
 
 interface MoveCardProps {
   type?: "searchLearningPokemon" | "pokemonDetail";
@@ -41,7 +42,7 @@ export const MoveCard = ({
       className={`bg-${move.type.toLowerCase()}-shallow
       xl:min-w-[200px] select-none flex flex-row
       gap-2 rounded-lg bg-gray-100 shadow-md
-      ${type === "searchLearningPokemon" ? "pr-4" : "sm:px-8 px-6"}
+      ${type === "searchLearningPokemon" ? "pr-4" : "sm:pl-8 pl-6 sm:pr-5 pr-4"}
       `}
       {...props}
     >
@@ -77,7 +78,11 @@ export const MoveCard = ({
       <div className="flex flex-col flex-20 gap-y-2 py-3">
         <div
           className={`flex gap-y-2 
-            ${type === "searchLearningPokemon" ? "flex-col" : "flex-row items-baseline w-full justify-between"}
+            ${
+              type === "searchLearningPokemon"
+                ? "flex-col"
+                : "sm:flex-row flex-col items-baseline w-full sm:justify-between"
+            }
             `}
         >
           <p
@@ -89,7 +94,7 @@ export const MoveCard = ({
           </p>
           <div
             className={`flex flex-row items-baseline justify-between
-            ${type === "searchLearningPokemon" ? "" : "gap-x-10"}
+            ${type === "searchLearningPokemon" ? "" : "gap-x-10 sm:w-auto w-full sm:justify-end justify-between"}
             `}
           >
             <div
@@ -101,12 +106,15 @@ export const MoveCard = ({
               <p className="w-[53px]">{move.accuracy ? `명중: ${move.accuracy}` : "명중: --"}</p>
             </div>
             <div
-              className={`text-xs font-bold italic flex gap-2 
-              ${type === "searchLearningPokemon" ? "" : "w-[78px] justify-end"}
+              className={`text-xs font-bold italic flex  items-center 
+                ${type === "searchLearningPokemon" ? "w-auto gap-2" : "w-full gap-3"}
+                ${type === "searchLearningPokemon" ? "" : "w-[78px] justify-end"}
               `}
             >
-              <p>{move.korType} / </p>
+              {type === "searchLearningPokemon" && <p>{move.korType} / </p>}
+
               <p>{move.damageClass === "physical" ? "물리" : move.damageClass === "special" ? "특수" : "변화"}</p>
+              {type === "pokemonDetail" && <TypeChip type={move.type} textSize="2xs" />}
             </div>
           </div>
         </div>

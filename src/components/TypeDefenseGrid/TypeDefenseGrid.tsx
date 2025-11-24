@@ -36,7 +36,7 @@ function TypeDefenseGrid({types}: TypeDefenseGridProps) {
             const columnWidth = getColumnWidth(typeList.length);
             return (
               <div key={multiplier} className={`flex flex-col ${columnWidth} border-r border-gray-500 last:border-r-0`}>
-                <div className="flex justify-center items-center w-full py-2 text-sm border-b border-gray-700 font-medium">
+                <div className="min-w-10 flex justify-center items-center w-full py-2 sm:text-sm text-[11px] border-b border-gray-700 font-medium">
                   {parseInt(multiplier) / 100 + "배"}
                 </div>
                 <div className="flex flex-wrap justify-center items-center gap-1.5 p-2 min-h-[60px]">

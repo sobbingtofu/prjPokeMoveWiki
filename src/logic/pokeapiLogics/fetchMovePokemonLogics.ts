@@ -381,18 +381,41 @@ export const getEvolChainData = async (evolutionChainUrl: string): Promise<Evolu
           try {
             const {data: varietyData} = await axios.get<any>(varietyItem.pokemon.url, {timeout: 10000});
 
-            return {
-              chainLevel: chainLevel,
-              pokemonVarietyNameEn: varietyItem.pokemon.name,
-              pokemonSpeciesNameEn: pokemonSpeciesNameEn,
-              pokemonSpeciesNameKo: pokemonSpeciesNameKo,
-              pokemonId: varietyData.id || "",
-              pokemonUrl: varietyItem.pokemon.url || "",
-              speciesUrl: varietyData.species.url || "",
-              spriteUrl: varietyData.sprites.front_default || "",
-              officialArtworkUrl: varietyData.sprites.other["official-artwork"].front_default || "",
-              types: varietyData.types || [],
-            };
+            const pokemonVarietyEnName = varietyItem.pokemon.name;
+
+            const varietyKeyword = extractSuffix(pokemonVarietyEnName);
+
+            function extractSuffix(str: string) {
+              const parts = str.split("-");
+              return parts.length > 1 ? parts[parts.length - 1] : "";
+            }
+            function isValidRegion(value: string) {
+              return REGION_NAME_EN_TO_KO.some((region) => region.eng === value);
+            }
+
+            if (isValidRegion(varietyKeyword) || varietyKeyword == "") {
+              const varietyKeywordKo = REGION_NAME_EN_TO_KO.find((region) => region.eng === varietyKeyword)?.kor || "";
+              return {
+                chainLevel: chainLevel,
+
+                pokemonSpeciesNameEn: pokemonSpeciesNameEn,
+                pokemonSpeciesNameKo: pokemonSpeciesNameKo,
+                pokemonVarietyNameEn: pokemonVarietyEnName,
+                pokemonVarietyNameKo:
+                  varietyKeywordKo == ""
+                    ? pokemonSpeciesNameKo
+                    : pokemonSpeciesNameKo + " (" + varietyKeywordKo + " 리전폼)",
+                varietyKeyword: varietyKeyword,
+                pokemonId: varietyData.id || "",
+                pokemonUrl: varietyItem.pokemon.url || "",
+                speciesUrl: varietyData.species.url || "",
+                spriteUrl: varietyData.sprites.front_default || "",
+                officialArtworkUrl: varietyData.sprites.other["official-artwork"].front_default || "",
+                types: varietyData.types || [],
+              };
+            } else {
+              return null;
+            }
           } catch (error) {
             console.error(`포켓몬 ${pokemonSpeciesNameEn} 처리 실패:`, error);
             return null;
@@ -403,22 +426,8 @@ export const getEvolChainData = async (evolutionChainUrl: string): Promise<Evolu
       const returnVal = await Promise.all(varietyPromises);
 
       const filtered = returnVal.filter((item): item is EvolutionChainVarietyType => {
-        if (!item) return false;
-
-        const varietyKeyword = extractSuffix(item.pokemonVarietyNameEn);
-
-        function extractSuffix(str: string) {
-          const parts = str.split("-");
-          return parts.length > 1 ? parts[parts.length - 1] : "";
-        }
-        function isValidRegion(value: string) {
-          return REGION_NAME_EN_TO_KO.some((region) => region.eng === value);
-        }
-        if (isValidRegion(varietyKeyword) || varietyKeyword == "") {
-          return true;
-        } else {
-          return false;
-        }
+        if (item == null || !item) return false;
+        return true;
       });
 
       return filtered;
@@ -430,6 +439,24 @@ export const getEvolChainData = async (evolutionChainUrl: string): Promise<Evolu
 
   const speciesData = await Promise.all(speciesPromises);
 
-  const flattenedSpeciesData = speciesData.flat();
-  return flattenedSpeciesData;
+  // chainLevel 기준으로 그룹화
+  const groupedByChainLevel = new Map<number, EvolutionChainVarietyType[]>();
+
+  for (const pokemonArray of speciesData) {
+    for (const pokemon of pokemonArray) {
+      const level = pokemon.chainLevel;
+      if (!groupedByChainLevel.has(level)) {
+        groupedByChainLevel.set(level, []);
+      }
+      groupedByChainLevel.get(level)!.push(pokemon);
+    }
+  }
+
+  // Map을 배열로 변환하고 chainLevel 순으로 정렬
+  return Array.from(groupedByChainLevel.entries())
+    .sort(([a], [b]) => a - b)
+    .map(([chainLevel, chainData]) => ({
+      chainLevel,
+      chainData,
+    }));
 };

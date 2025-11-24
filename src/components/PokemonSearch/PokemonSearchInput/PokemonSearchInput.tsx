@@ -1,8 +1,8 @@
-import React, {useCallback, useEffect, useRef, useState} from "react";
+import React, {useEffect, useRef, useState} from "react";
 import {CloseIcon} from "../../CloseIcon/CloseIcon";
 import {Loader} from "../../Loader/Loader";
-import {detailedPokemInfoType} from "@/store/type";
 import {useZustandStore} from "@/store/zustandStore";
+import useHandleDropdownItemClick_searchPokemon from "@/hooks/useHandleDropdownItemClick_searchPokemon";
 
 interface PokemonSearchInputProps {
   searchValue: string;
@@ -13,7 +13,6 @@ interface PokemonSearchInputProps {
 
   accentedPokemonIndex: number;
   setAccentedPokemonIndex: React.Dispatch<React.SetStateAction<number>>;
-  handleDropdownItemClick_searchPokemon: (accentedPokemon: detailedPokemInfoType) => void;
 
   sizeType?: "default" | "small";
 }
@@ -27,7 +26,6 @@ function PokemonSearchInput({
 
   accentedPokemonIndex,
   setAccentedPokemonIndex,
-  handleDropdownItemClick_searchPokemon,
 }: PokemonSearchInputProps) {
   const [isDebouncing, setIsDebouncing] = useState(false);
 
@@ -39,6 +37,8 @@ function PokemonSearchInput({
   const filteredPokemons = useZustandStore((state) => state.filteredPokemons);
   const setFilteredPokemons = useZustandStore((state) => state.setFilteredPokemons);
   const detailedPokemons = useZustandStore((state) => state.detailedPokemons);
+
+  const handleDropdownItemClick_searchPokemon = useHandleDropdownItemClick_searchPokemon();
 
   useEffect(() => {
     if (searchValue.trim() === "") {

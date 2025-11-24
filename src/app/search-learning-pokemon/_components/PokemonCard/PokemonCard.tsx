@@ -1,7 +1,5 @@
 import {detailedPokemInfoType} from "@/store/type";
-import React, {useState} from "react";
-import TypeChip from "../../../../components/TypeChip/TypeChip";
-import {STAT_LABELS} from "@/store/constantStore";
+import React from "react";
 import {useZustandStore} from "@/store/zustandStore";
 import Image from "next/image";
 import TypeChipContainer from "@/components/TypeChip/TypeChipContainer";
@@ -41,18 +39,11 @@ function PokemonCard({pokemon}: {pokemon: detailedPokemInfoType}) {
           {/* 이미지, 이름, 타입칩 */}
           <div className="w-full flex flex-col items-center gap-1">
             <div className="relative">
-              <Image
-                src={pokemon.spriteUrl}
-                alt={pokemon.koreanName}
-                className="fit"
-                width={90}
-                height={90}
-                priority={false}
-              />
+              <Image src={pokemon.spriteUrl} alt={pokemon.koreanName} width={90} height={90} priority={false} />
             </div>
 
             <p className="text-lg">{pokemonMainName}</p>
-            <p className="text-[8pt] h-[14px]">{pokemonRegionSubname}</p>
+            <p className="text-[8pt] h-3.5">{pokemonRegionSubname}</p>
             <TypeChipContainer types={pokemon.types} koreantypes={pokemon.koreantypes} />
           </div>
 

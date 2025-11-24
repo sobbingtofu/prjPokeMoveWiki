@@ -1,8 +1,6 @@
 import React, {useEffect, useRef, useState} from "react";
 import PokemonSearchInput from "./PokemonSearchInput/PokemonSearchInput";
 import PokemonSearchDropdown from "./PokemonSearchDropdown/PokemonSearchDropdown";
-import {useRouter} from "next/navigation";
-import {detailedPokemInfoType} from "@/store/type";
 import {useZustandStore} from "@/store/zustandStore";
 import {useLoadData_DetailedPokemonsArr} from "@/hooks/useLoadData_DetailedPokemonsArr";
 
@@ -45,20 +43,12 @@ function PokemonSearch({
     }
   }, [setIsPokemonDropdownOpen]);
 
-  const router = useRouter();
-
-  const handleDropdownItemClick_searchPokemon = (accentedPokemon: detailedPokemInfoType) => {
-    console.log("Selected Pokemon:", accentedPokemon);
-    router.push(`/pokemons/${accentedPokemon.pokemonId}`);
-  };
-
   return (
     <>
       <div className="relative w-full h-min font-black" ref={searchContainerRef}>
         {/* 검색창 */}
         <PokemonSearchInput
           sizeType={sizeType}
-          handleDropdownItemClick_searchPokemon={handleDropdownItemClick_searchPokemon}
           accentedPokemonIndex={accentedPokemonIndex}
           setAccentedPokemonIndex={setAccentedPokemonIndex}
           searchValue={searchValue}
@@ -73,7 +63,6 @@ function PokemonSearch({
             sizeType={sizeType}
             searchType={sizeType == "small" ? "normal" : searchType}
             accentedPokemonIndex={accentedPokemonIndex}
-            handleDropdownItemClick_searchPokemon={handleDropdownItemClick_searchPokemon}
           />
         )}
       </div>

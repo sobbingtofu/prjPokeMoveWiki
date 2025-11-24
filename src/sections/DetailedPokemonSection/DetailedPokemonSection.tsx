@@ -4,11 +4,12 @@ import TypeChipContainer from "@/components/TypeChip/TypeChipContainer";
 import TypeDefenseGrid from "@/components/TypeDefenseGrid/TypeDefenseGrid";
 import {detailedPokemInfoType} from "@/store/type";
 import Image from "next/image";
-import React, {useEffect, useRef} from "react";
+import React, {useEffect, useRef, useState} from "react";
 import LearningMovesSection from "../LearningMovesSection/LearningMovesSection";
 import ScrollToTopButton from "@/components/ScrollToTopButton/ScrollToTopButton";
 import PokemonSearch from "@/components/PokemonSearch/PokemonSearch";
 import EvolChainSection from "@/components/EvolChainSection/EvolChainSection";
+import {Loader} from "@/components/Loader/Loader";
 
 interface DetailedPokemonSectionProps {
   currentPokemon: detailedPokemInfoType;
@@ -16,6 +17,8 @@ interface DetailedPokemonSectionProps {
 
 function DetailedPokemonSection({currentPokemon}: DetailedPokemonSectionProps) {
   const sectionRef = useRef<HTMLElement>(null!);
+
+  const [imageLoading, setImageLoading] = useState<boolean>(true);
 
   useEffect(() => {
     console.log("DetailedPokemonSection - currentPokemon:", currentPokemon);
@@ -46,13 +49,22 @@ function DetailedPokemonSection({currentPokemon}: DetailedPokemonSectionProps) {
             <div className="w-full flex flex-col gap-y-8 mt-8">
               <div className="flex sm:flex-row flex-col sm:items-start items-center gap-x-6 w-full sm:gap-y-0 gap-y-4">
                 {/* 이미지 */}
-                <Image
-                  className="border border-gray-500 bg-gray-50"
-                  src={currentPokemon.officialArtworkUrl || ""}
-                  alt={currentPokemon.koreanName || "Pokemon"}
-                  width={200}
-                  height={200}
-                />
+                <div className="relative w-[200px] h-[200px] bg-gray-100 border border-gray-400 shrink-0">
+                  {imageLoading && (
+                    <div className="absolute inset-0 flex items-center justify-center">
+                      <Loader />
+                    </div>
+                  )}
+                  <Image
+                    className={`${imageLoading ? "opacity-0" : "opacity-100"} transition-opacity duration-300`}
+                    src={currentPokemon.officialArtworkUrl || ""}
+                    alt={currentPokemon.koreanName || "Pokemon"}
+                    fill
+                    sizes="200px"
+                    style={{objectFit: "contain"}}
+                    onLoadingComplete={() => setImageLoading(false)}
+                  />
+                </div>
 
                 <div className="flex flex-col h-full w-full justify-between sm:gap-y-0 gap-y-4">
                   {/* 이름 및 타입칩 - 최상단 */}
@@ -75,7 +87,10 @@ function DetailedPokemonSection({currentPokemon}: DetailedPokemonSectionProps) {
               </div>
 
               {/* 진화 체인 */}
-              <EvolChainSection evolutionChainUrl={currentPokemon.evolutionChainUrl || ""} />
+              <EvolChainSection
+                evolutionChainUrl={currentPokemon.evolutionChainUrl || ""}
+                types={currentPokemon?.types || []}
+              />
 
               {/* 특성 표 - 최하단 */}
               <AbilityGrid types={currentPokemon?.types || []} abilities={currentPokemon?.abilities || []} />
