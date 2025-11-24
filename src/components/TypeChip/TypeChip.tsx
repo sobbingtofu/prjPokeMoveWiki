@@ -16,8 +16,8 @@ function TypeChip({
     <div
       className={` font-bold
         ${textSize == "2xs" ? "sm:rounded-lg rounded-md" : "sm:rounded-full rounded-lg"} 
-        ${textSize == "2xs" ? "w-[42px] sm:w-[50px]" : "w-[62px]"} 
-        ${textSize == "2xs" ? "sm:text-xs text-[11px]" : `text-sm`} text-center text-white bg-${type.toLowerCase()}
+        ${textSize == "2xs" ? "w-[40px] sm:w-[45px]" : "w-[62px]"} 
+        ${textSize == "2xs" ? "sm:text-[11px] text-[10px]" : `text-sm`} text-center text-white bg-${type.toLowerCase()}
         ${textSize == "2xs" ? "px-1 py-1" : "px-2.5 py-1.5"}
       `}
     >

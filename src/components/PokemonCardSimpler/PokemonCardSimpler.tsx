@@ -17,7 +17,9 @@ function PokemonCardSimpler({chainItem, className}: PokemonCardSimplerProps) {
   };
 
   return (
-    <div className={`py-2 border border-gray-500 flex flex-col justify-center items-center select-none ${className}`}>
+    <div
+      className={`py-2 px-1.5 border border-gray-500 flex flex-col justify-center items-center select-none ${className}`}
+    >
       <div
         className="w-full flex justify-center items-center cursor-pointer text-gray-300
         hover:scale-[1.05] hover:text-white duration-200 transition-transform"
@@ -32,8 +34,13 @@ function PokemonCardSimpler({chainItem, className}: PokemonCardSimplerProps) {
             height={"80"}
           />
         </div>
-        <div className="flex flex-col gap-1 flex-3">
-          <p className="sm:text-sm text-xs font-bold">{chainItem.pokemonVarietyNameKo}</p>
+        <div className="flex flex-col gap-1.5 flex-4">
+          <div className="flex flex-col gap-0 items-start">
+            <p className="sm:text-sm text-xs font-bold ">{chainItem.pokemonSpeciesNameKo}</p>
+            {chainItem.varietyKeyword && (
+              <p className="sm:text-[11px] text-[10px] font-bold">{"(" + chainItem.varietyKeyword + " 리전폼)"}</p>
+            )}
+          </div>
           <div className="flex flex-row gap-1">
             {chainItem.types.map((type, index) => {
               return <TypeChip key={index} type={type.type.name} textSize="2xs" />;

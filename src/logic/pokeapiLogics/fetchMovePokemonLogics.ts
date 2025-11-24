@@ -405,7 +405,7 @@ export const getEvolChainData = async (evolutionChainUrl: string): Promise<Evolu
                   varietyKeywordKo == ""
                     ? pokemonSpeciesNameKo
                     : pokemonSpeciesNameKo + " (" + varietyKeywordKo + " 리전폼)",
-                varietyKeyword: varietyKeyword,
+                varietyKeyword: varietyKeywordKo,
                 pokemonId: varietyData.id || "",
                 pokemonUrl: varietyItem.pokemon.url || "",
                 speciesUrl: varietyData.species.url || "",
