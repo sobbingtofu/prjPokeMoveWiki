@@ -1,13 +1,6 @@
 "use client";
 
-import {useZustandStore} from "@/store/zustandStore";
-
-import React, {useEffect, useRef, useState} from "react";
-import PokemonSearchDropdown from "../../components/PokemonSearch/PokemonSearchDropdown/PokemonSearchDropdown";
-import PokemonSearchInput from "@/components/PokemonSearch/PokemonSearchInput/PokemonSearchInput";
-import {detailedPokemInfoType} from "@/store/type";
-import {useRouter} from "next/navigation";
-import {useLoadData_DetailedPokemonsArr} from "@/hooks/useLoadData_DetailedPokemonsArr";
+import React, {useRef} from "react";
 import PokemonSearch, {SearchPokemonSectionProps} from "@/components/PokemonSearch/PokemonSearch";
 
 function SearchPokemonSection({

@@ -2,7 +2,7 @@ import {EvolutionChainVarietyType} from "@/logic/pokeapiLogics/type";
 import Image from "next/image";
 import React from "react";
 import TypeChip from "../TypeChip/TypeChip";
-import {useRouter} from "next/navigation";
+import {usePathname, useRouter} from "next/navigation";
 
 interface PokemonCardSimplerProps {
   chainItem: EvolutionChainVarietyType;
@@ -11,9 +11,17 @@ interface PokemonCardSimplerProps {
 
 function PokemonCardSimpler({chainItem, className}: PokemonCardSimplerProps) {
   const router = useRouter();
+  const pathname = usePathname();
+
   const handleDropdownItemClick_searchPokemon = (pokemon: EvolutionChainVarietyType) => {
     console.log("Selected Pokemon:", pokemon);
-    router.push(`/pokemons/${pokemon.pokemonId}`);
+    const targetPath = `/pokemons/${pokemon.pokemonId}`;
+
+    if (pathname === targetPath) {
+      router.refresh();
+    } else {
+      router.push(targetPath);
+    }
   };
 
   return (

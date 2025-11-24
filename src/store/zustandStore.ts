@@ -35,6 +35,9 @@ export const useZustandStore = create<zustandStoreType>((set) => ({
       return {selectedMovesArrayStates: next};
     }),
 
+  searchTargetMoveState: null,
+  setSearchTargetMoveState: (update) => set(() => ({searchTargetMoveState: update})),
+
   lastSearchMovesArrayStates: [],
   setLastSearchMovesArrayStates: (update) =>
     set((state) => {
@@ -191,6 +194,7 @@ export const useZustandStore = create<zustandStoreType>((set) => ({
       searchValue: "",
       isDropdownOpen01: false,
       isMoveSearchDebouncing: false,
+      searchTargetMoveState: null,
     }),
 
   detailedPokemons: [],

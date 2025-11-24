@@ -42,7 +42,7 @@ function TopNavigationBar() {
   const menuItems = [
     {href: "/search-learning-pokemon", label: "기술을 배우는 포켓몬", reset: true},
     {href: "/search-pokemons", label: "포켓몬", reset: false},
-    {href: "/search-moves", label: "기술", reset: false},
+    {href: "/search-moves", label: "기술", reset: true},
   ];
 
   // 외부 클릭시 드롭다운 닫기

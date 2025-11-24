@@ -1,12 +1,19 @@
 import {detailedPokemInfoType} from "@/store/type";
-import {useRouter} from "next/navigation";
+import {usePathname, useRouter} from "next/navigation";
 
 function useHandleDropdownItemClick_searchPokemon() {
   const router = useRouter();
+  const pathname = usePathname();
 
   const handleDropdownItemClick_searchPokemon = (pokemon: detailedPokemInfoType) => {
     console.log("Selected Pokemon:", pokemon);
-    router.push(`/pokemons/${pokemon.pokemonId}`);
+    const targetPath = `/pokemons/${pokemon.pokemonId}`;
+
+    if (pathname === targetPath) {
+      router.refresh();
+    } else {
+      router.push(targetPath);
+    }
   };
 
   return handleDropdownItemClick_searchPokemon;

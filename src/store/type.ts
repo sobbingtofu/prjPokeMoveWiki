@@ -94,6 +94,9 @@ export interface zustandStoreType {
     update: selectedMoveType[] | ((prev: selectedMoveType[]) => selectedMoveType[])
   ) => void;
 
+  searchTargetMoveState: selectedMoveType | null;
+  setSearchTargetMoveState: (update: selectedMoveType | null) => void;
+
   lastSearchMovesArrayStates: selectedMoveType[];
   setLastSearchMovesArrayStates: (
     update: selectedMoveType[] | ((prev: selectedMoveType[]) => selectedMoveType[])

@@ -36,7 +36,15 @@ export const SearchSection = ({
     selectedMovesArrayStates,
     setSelectedMovesArrayStates,
     setIsToastMessageVisible,
+    searchTargetMoveState,
+    setSearchTargetMoveState,
   } = useZustandStore();
+
+  useEffect(() => {
+    // 초기에는 빈 배열로 설정
+    setFilteredMoves([]);
+    setSearchTargetMoveState(null);
+  }, []);
 
   const searchContainerRef = useRef<HTMLDivElement>(null);
   const debounceRef = useRef<NodeJS.Timeout | null>(null);
@@ -92,9 +100,11 @@ export const SearchSection = ({
     } else if (filteredMoves.length > 0 && accentedMoveIndexRef.current >= 0) {
       const accentedMove = filteredMoves[accentedMoveIndexRef.current];
       if (accentedMove) {
-        handleDropdownItemClick_searchLearningPokemon(accentedMove);
-        // 초기화
-        // enterKeyPressedCounRef.current = 0;
+        if (type === "searchLearningPokemon") {
+          handleDropdownItemClick_searchLearningPokemon(accentedMove);
+        } else if (type === "searchMoves") {
+          handleDropdownItemClick_searchMoves(accentedMove);
+        }
       }
     }
   };
@@ -184,13 +194,11 @@ export const SearchSection = ({
   };
 
   const handleDropdownItemClick_searchMoves = (move: koreanMoveType) => {
-    setSelectedMovesArrayStates(() => {
-      const newMove: selectedMoveType = {
-        ...move,
-        isSelectedForDeletion: false,
-      };
-      return [newMove];
-    });
+    const newMove: selectedMoveType = {
+      ...move,
+      isSelectedForDeletion: false,
+    };
+    setSearchTargetMoveState(newMove);
   };
 
   const handleClickCloseIcon = () => {
@@ -203,10 +211,12 @@ export const SearchSection = ({
     }
   };
 
+  const hasSelectedMoves = type === "searchMoves" && searchTargetMoveState !== null;
+
   return (
     <section
       className={`${className} w-full flex flex-col gap-2 items-center justify-start font-bold
-      ${type == "searchLearningPokemon" ? "" : "min-h-dvh bg-gray-300 py-16"}
+      ${type === "searchLearningPokemon" ? "" : `transition-all duration-200 ${hasSelectedMoves ? "py-4" : "py-16"}`}
     `}
     >
       <div className={` ${type == "searchLearningPokemon" ? "min-w-60 w-[80%]" : "md:w-[60%] w-[80%]"}  sm:mb-0 mb-24`}>

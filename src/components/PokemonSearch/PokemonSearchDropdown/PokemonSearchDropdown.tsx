@@ -1,12 +1,7 @@
-import {STAT_LABELS, TYPE_MAP} from "@/store/constantStore";
-import TypeChip from "../../TypeChip/TypeChip";
-import Image from "next/image";
 import React, {useEffect, useRef} from "react";
 import {useZustandStore} from "@/store/zustandStore";
-import {detailedPokemInfoType} from "@/store/type";
-import TypeChipContainer from "../../TypeChip/TypeChipContainer";
+
 import PokemonSearchDropdownItem from "./PokemonSearchDropdownItem";
-import {useRouter} from "next/navigation";
 
 interface PokemonSearchDropdownProps {
   searchType?: "normal" | "ev";

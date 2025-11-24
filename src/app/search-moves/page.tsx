@@ -9,18 +9,19 @@ import {useZustandStore} from "@/store/zustandStore";
 function SearchMovesPage() {
   useLoadData_KoreanMovesArr();
 
-  const {selectedMovesArrayStates} = useZustandStore();
+  const {searchTargetMoveState} = useZustandStore();
 
   useEffect(() => {
-    if (selectedMovesArrayStates.length > 0) {
-      console.log("Selected Moves:", selectedMovesArrayStates);
+    if (searchTargetMoveState !== null) {
+      console.log("Selected Move:", searchTargetMoveState);
     }
-  }, [selectedMovesArrayStates]);
+  }, [searchTargetMoveState]);
 
   return (
-    <div className="w-dvw">
+    <div className="w-dvw min-h-dvh bg-gray-300">
       <InitialLoadingScreen />
-      <SearchSection dropDownHeight={160} smDropDownHeight={120} className="h-[30dvh]" type="searchMoves" />
+      <SearchSection dropDownHeight={240} smDropDownHeight={120} className="bg-cyan-400" type="searchMoves" />
+      <div>{searchTargetMoveState !== null ? searchTargetMoveState.koreanName : "선택된 기술 없음"}</div>
     </div>
   );
 }
