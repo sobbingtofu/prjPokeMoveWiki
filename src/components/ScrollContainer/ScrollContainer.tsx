@@ -1,3 +1,4 @@
+"use client";
 import React, {useEffect, useRef, useState} from "react";
 
 interface ScrollContainerProps {
@@ -60,7 +61,7 @@ function ScrollContainer({
     <div className="relative">
       {/* 상단 그라데이션 */}
       {!isScrolledToTop && (
-        <div className="absolute top-0 left-0 right-0 h-4 bg-gradient-to-b from-white to-transparent pointer-events-none z-10" />
+        <div className="absolute top-0 left-0 right-0 h-4 bg-linear-to-b from-white to-transparent pointer-events-none z-10" />
       )}
 
       {/* 스크롤 컨테이너 */}
@@ -74,7 +75,7 @@ function ScrollContainer({
 
       {/* 하단 그라데이션 */}
       {!isScrolledToBottom && (
-        <div className="absolute bottom-0 left-0 right-0 h-4 bg-gradient-to-t from-white to-transparent pointer-events-none" />
+        <div className="absolute bottom-0 left-0 right-0 h-4 bg-linear-to-t from-white to-transparent pointer-events-none" />
       )}
     </div>
   );

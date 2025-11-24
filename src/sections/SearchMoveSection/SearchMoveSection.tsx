@@ -14,9 +14,15 @@ interface SearchSectionProps {
   className?: string;
   smDropDownHeight: number;
   dropDownHeight: number;
+  type?: "searchMoves" | "searchLearningPokemon";
 }
 
-export const SearchSection = ({className = "", smDropDownHeight, dropDownHeight}: SearchSectionProps) => {
+export const SearchSection = ({
+  className = "",
+  smDropDownHeight,
+  dropDownHeight,
+  type = "searchLearningPokemon",
+}: SearchSectionProps) => {
   const {
     searchValue,
     setSearchValue,
@@ -177,6 +183,16 @@ export const SearchSection = ({className = "", smDropDownHeight, dropDownHeight}
     }
   };
 
+  const handleDropdownItemClick_searchMoves = (move: koreanMoveType) => {
+    setSelectedMovesArrayStates(() => {
+      const newMove: selectedMoveType = {
+        ...move,
+        isSelectedForDeletion: false,
+      };
+      return [newMove];
+    });
+  };
+
   const handleClickCloseIcon = () => {
     setIsToastMessageVisible(false);
     inputValueRef.current = "";
@@ -188,10 +204,17 @@ export const SearchSection = ({className = "", smDropDownHeight, dropDownHeight}
   };
 
   return (
-    <section className={`${className} bg-gray-300 w-full flex flex-col gap-2 items-center justify-start font-bold `}>
-      <div className="min-w-[240px] w-[80%] sm:mb-0 mb-24">
-        <Toast className="sm:mt-4 mt-2" />
-        <p className="mt-2 w-full text-xs italic text-gray-600">배우는 포켓몬을 찾아볼 기술을 검색해 클릭</p>
+    <section
+      className={`${className} w-full flex flex-col gap-2 items-center justify-start font-bold
+      ${type == "searchLearningPokemon" ? "" : "min-h-dvh bg-gray-300 py-16"}
+    `}
+    >
+      <div className={` ${type == "searchLearningPokemon" ? "min-w-60 w-[80%]" : "md:w-[60%] w-[80%]"}  sm:mb-0 mb-24`}>
+        {type === "searchLearningPokemon" && <Toast className="sm:mt-4 mt-2" />}
+        {type === "searchLearningPokemon" && (
+          <p className="mt-2 w-full text-xs italic text-gray-600">배우는 포켓몬을 찾아볼 기술을 검색해 클릭</p>
+        )}
+        {type === "searchMoves" && <p className="mt-2 w-full text-sm italic text-gray-600 font-bold">{"기술 검색"}</p>}
         {/* Search Container = 검색창 + 드롭다운 + 검색결과없음 메시지 */}
         <div ref={searchContainerRef} className="relative mt-2">
           {/* 검색창 */}
@@ -221,7 +244,11 @@ export const SearchSection = ({className = "", smDropDownHeight, dropDownHeight}
               dropDownHeight={dropDownHeight}
               smDropDownHeight={smDropDownHeight}
               move={filteredMoves}
-              dropDownOnClick={handleDropdownItemClick_searchLearningPokemon}
+              dropDownOnClick={
+                type === "searchLearningPokemon"
+                  ? handleDropdownItemClick_searchLearningPokemon
+                  : handleDropdownItemClick_searchMoves
+              }
               accentedMoveIndex={accentedMoveIndexRef.current}
             />
           )}
