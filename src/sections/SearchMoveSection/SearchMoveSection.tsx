@@ -1,6 +1,6 @@
 "use client";
 
-import {useEffect, useRef} from "react";
+import {useEffect, useRef, useState} from "react";
 import {useZustandStore} from "@/store/zustandStore";
 import {koreanMoveType} from "@/logic/pokeapiLogics/type";
 import {CloseIcon} from "../../components/CloseIcon/CloseIcon";
@@ -40,6 +40,8 @@ export const SearchSection = ({
     setSearchTargetMoveState,
   } = useZustandStore();
 
+  const [isNoDataMsgVisible, setIsNoDataMsgVisible] = useState<boolean>(true);
+
   useEffect(() => {
     // 초기에는 빈 배열로 설정
     setFilteredMoves([]);
@@ -68,6 +70,10 @@ export const SearchSection = ({
     // setFilteredMoves(filtered.slice(0, 60));
     setFilteredMoves(filtered);
     setIsDropdownOpen01(filtered.length > 0);
+
+    if (type === "searchMoves") {
+      setIsNoDataMsgVisible(filtered.length === 0);
+    }
   }, [searchValue, koreanMovesArrayStates, setFilteredMoves, setIsDropdownOpen01]);
 
   const handleMoveSearchButtonClick = useHandleMoveSearchBtnClick();
@@ -78,6 +84,10 @@ export const SearchSection = ({
       if (searchContainerRef.current && !searchContainerRef.current.contains(event.target as Node)) {
         setIsDropdownOpen01(false);
         setIsToastMessageVisible(false);
+
+        if (type === "searchMoves") {
+          setIsNoDataMsgVisible(false);
+        }
       }
     };
 
@@ -171,6 +181,10 @@ export const SearchSection = ({
       setIsToastMessageVisible(false);
       setIsDropdownOpen01(true);
     }
+
+    if (type === "searchMoves") {
+      setIsNoDataMsgVisible(filteredMoves.length === 0);
+    }
   };
 
   const handleDropdownItemClick_searchLearningPokemon = (move: koreanMoveType) => {
@@ -199,6 +213,7 @@ export const SearchSection = ({
       isSelectedForDeletion: false,
     };
     setSearchTargetMoveState(newMove);
+    setIsDropdownOpen01(false);
   };
 
   const handleClickCloseIcon = () => {
@@ -216,21 +231,36 @@ export const SearchSection = ({
   return (
     <section
       className={`${className} w-full flex flex-col gap-2 items-center justify-start font-bold
-      ${type === "searchLearningPokemon" ? "" : `transition-all duration-200 ${hasSelectedMoves ? "py-4" : "py-16"}`}
+      ${type === "searchLearningPokemon" ? "" : `transition-all duration-300 ${hasSelectedMoves ? "py-4" : "py-16"}`}
     `}
     >
-      <div className={` ${type == "searchLearningPokemon" ? "min-w-60 w-[80%]" : "md:w-[60%] w-[80%]"}  sm:mb-0 mb-24`}>
+      <div
+        className={` ${
+          type == "searchLearningPokemon"
+            ? "min-w-60 w-[80%]"
+            : "md:w-[60%] w-[80%] flex flex-col justify-center items-center"
+        }  sm:mb-0 mb-24`}
+      >
         {type === "searchLearningPokemon" && <Toast className="sm:mt-4 mt-2" />}
         {type === "searchLearningPokemon" && (
           <p className="mt-2 w-full text-xs italic text-gray-600">배우는 포켓몬을 찾아볼 기술을 검색해 클릭</p>
         )}
-        {type === "searchMoves" && <p className="mt-2 w-full text-sm italic text-gray-600 font-bold">{"기술 검색"}</p>}
+        {type === "searchMoves" && !hasSelectedMoves && (
+          <p className="mt-2 w-full text-sm italic text-gray-600 font-bold">{"기술 검색"}</p>
+        )}
         {/* Search Container = 검색창 + 드롭다운 + 검색결과없음 메시지 */}
-        <div ref={searchContainerRef} className="relative mt-2">
+        <div
+          ref={searchContainerRef}
+          className={`relative mt-2 ${type === "searchMoves" && hasSelectedMoves ? "w-[60%]" : "w-full"}`}
+        >
           {/* 검색창 */}
           <div
-            className="bg-white px-6 py-4 flex justify-between items-center shadow-sm
-           focus-within:border-blue-500 focus-within:ring-1 focus-within:ring-blue-500 w-full text-lg border-2 border-gray-300 rounded-lg focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all duration-200"
+            className={` bg-white flex justify-between items-center shadow-sm w-full 
+            focus-within:border-blue-500 focus-within:ring-1 focus-within:ring-blue-500 
+            text-lg border-2 border-gray-300 rounded-lg focus:outline-none focus:border-blue-500 focus:ring-2 
+            focus:ring-blue-200 transition-all duration-200
+            ${type === "searchMoves" && hasSelectedMoves ? "px-3 py-1.5 text-sm text-gray-600" : "px-6 py-4"}
+            `}
           >
             <input
               autoFocus
@@ -244,7 +274,7 @@ export const SearchSection = ({
                 e.preventDefault();
               }}
             />
-            {isMoveSearchDebouncing && <Loader />}
+            {isMoveSearchDebouncing && <Loader sizeType={type == "searchMoves" ? "small" : "default"} />}
             {!isMoveSearchDebouncing && searchValue.trim() !== "" && <CloseIcon onClick={handleClickCloseIcon} />}
           </div>
 
@@ -254,6 +284,7 @@ export const SearchSection = ({
               dropDownHeight={dropDownHeight}
               smDropDownHeight={smDropDownHeight}
               move={filteredMoves}
+              dropDownRowSize={type === "searchMoves" && hasSelectedMoves ? "small" : "default"}
               dropDownOnClick={
                 type === "searchLearningPokemon"
                   ? handleDropdownItemClick_searchLearningPokemon
@@ -264,7 +295,7 @@ export const SearchSection = ({
           )}
 
           {/* 검색 결과 없을 시 메시지 */}
-          {filteredMoves.length === 0 && searchValue.trim() !== "" && !isMoveSearchDebouncing && (
+          {filteredMoves.length === 0 && searchValue.trim() !== "" && !isMoveSearchDebouncing && isNoDataMsgVisible && (
             <div className="absolute top-full left-0 right-0 mt-1 bg-white border border-gray-300 rounded-lg shadow-lg p-4 z-5">
               <p className="text-gray-500 text-center select-none">검색 결과가 없습니다.</p>
             </div>

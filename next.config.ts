@@ -13,6 +13,12 @@ const nextConfig: NextConfig = {
         protocol: "https",
         hostname: "pokeapi.co",
       },
+      {
+        protocol: "https",
+        hostname: "i.namu.wiki",
+        port: "",
+        pathname: "/**",
+      },
     ],
   },
 };

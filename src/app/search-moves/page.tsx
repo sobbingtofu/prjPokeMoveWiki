@@ -5,6 +5,7 @@ import {SearchSection} from "@/sections/SearchMoveSection/SearchMoveSection";
 import React, {useEffect} from "react";
 import {SelectedMovesSection} from "../search-learning-pokemon/_sections/SelectedMovesSection/SelectedMovesSection";
 import {useZustandStore} from "@/store/zustandStore";
+import DetailedMoveSection from "@/sections/DetailedMoveSection/DetailedMoveSection";
 
 function SearchMovesPage() {
   useLoadData_KoreanMovesArr();
@@ -20,8 +21,8 @@ function SearchMovesPage() {
   return (
     <div className="w-dvw min-h-dvh bg-gray-300">
       <InitialLoadingScreen />
-      <SearchSection dropDownHeight={240} smDropDownHeight={120} className="bg-cyan-400" type="searchMoves" />
-      <div>{searchTargetMoveState !== null ? searchTargetMoveState.koreanName : "선택된 기술 없음"}</div>
+      <SearchSection dropDownHeight={240} smDropDownHeight={120} className="" type="searchMoves" />
+      {searchTargetMoveState !== null && <DetailedMoveSection />}
     </div>
   );
 }
