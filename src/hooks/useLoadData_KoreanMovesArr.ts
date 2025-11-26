@@ -1,11 +1,11 @@
 "use client";
 
 import {useQuery} from "@tanstack/react-query";
-import {getInitialMoveData, generateKoreanMoveData} from "@/logic/pokeapiLogics/fetchMovePokemonLogics";
+import {getInitialMoveData} from "@/logic/pokeapiLogics/fetchMovePokemonLogics";
 import {useZustandStore} from "@/store/zustandStore";
 import {useEffect} from "react";
-import {getDBMeta, getFromDB, openDB, saveToDB} from "@/logic/indexedDBLogics/indexedDBLogics";
-import {DB_NAME_KOREAN_MOVES, DB_VERSION, EXPIRE_MS, META_STORE, STORE_NAME_KOREAN_MOVES} from "@/store/constantStore";
+import {fetchAndStoreKoreanMoves} from "@/logic/pokeapiLogics/fetchAndStoreLogic";
+import {koreanMoveType} from "@/logic/pokeapiLogics/type";
 
 export const useLoadData_KoreanMovesArr = () => {
   const setLoadingStates = useZustandStore((state) => state.setLoadingStates);
@@ -28,43 +28,29 @@ export const useLoadData_KoreanMovesArr = () => {
 
         console.log("기술 데이터 가져오기 시작");
 
-        const db = await openDB(DB_NAME_KOREAN_MOVES, DB_VERSION, STORE_NAME_KOREAN_MOVES, META_STORE, "id");
+        // 각 성공 배치마다 Zustand 상태 업데이트
+        const handleProgressUpdate = (currentMoves: koreanMoveType[]) => {
+          console.log(`Zustand 상태 업데이트: ${currentMoves.length}개 기술`);
+          setKoreanMovesArrayStates(currentMoves);
+        };
 
-        const meta = await getDBMeta(db, META_STORE);
-        const now = Date.now();
-
-        if (meta && now - meta.addedAt <= EXPIRE_MS) {
-          console.log("IndexedDB에서 기술 데이터 가져오기");
-          return await getFromDB(db, STORE_NAME_KOREAN_MOVES);
-        }
-
-        console.log("API에서 기술 데이터 가져오기");
-        const moves = await generateKoreanMoveData(initialMoves);
-
-        if (!moves || moves.length === 0) {
-          console.error("기술 데이터를 가져오지 못했습니다");
-          return [];
-        }
-
-        console.log("DB에 기술 데이터 저장");
-        await saveToDB(db, moves, STORE_NAME_KOREAN_MOVES, META_STORE);
-
-        return moves;
+        const koreanMovesData = await fetchAndStoreKoreanMoves(initialMoves, handleProgressUpdate);
+        return koreanMovesData;
       } catch (error) {
         console.error("koreanMoves 조회 중 오류:", error);
-        throw error; // TanStack Query가 에러를 처리하도록
+        throw error;
       }
     },
     enabled: !!initialMoves && initialMoves.length > 0,
     staleTime: Infinity,
     gcTime: Infinity,
-    retry: 0, // 재시도 비활성화 (디버깅용)
+    retry: 0,
   });
 
   // 3단계: Zustand 상태 업데이트
   useEffect(() => {
     if (koreanMoves && koreanMoves.length > 0) {
-      console.log("Zustand 상태에 koreanMoves 설정");
+      console.log("최종 Zustand 상태 확인:", koreanMoves);
       setKoreanMovesArrayStates(koreanMoves);
     }
   }, [koreanMoves, setKoreanMovesArrayStates]);
