@@ -12,7 +12,6 @@ import {
   MOVE_SUPPLEMENTARY_INFO,
   REGION_NAME_EN_TO_KO,
   TYPE_NAME_EN_TO_KO,
-  VERSION_GROUP_TO_GEN,
 } from "@/store/constantStore";
 import {detailedPokemInfoType, moveDetailType, selectedMoveType, versionDetailType} from "@/store/type";
 import {parseEvolutionChain} from "@/utils/parseEvolutionChain";
@@ -20,19 +19,24 @@ import {extractNumberBySplitting, getGenNumberByVersionGroup} from "@/utils/poke
 import axios from "axios";
 
 // 01-1. 기술 raw data 배열 가져오기
-export const getInitialMoveData = async () => {
-  const {data: rawData} = await axios.get<any>("https://pokeapi.co/api/v2/move?offset=0&limit=1000");
-  if (!Array.isArray(rawData.results)) {
-    throw new Error(`Invalid data format: ${typeof rawData.results}`);
+export const getInitialMoveData = async (): Promise<initialMovesType[]> => {
+  try {
+    const {data: rawData} = await axios.get<any>("https://pokeapi.co/api/v2/move?offset=0&limit=1000");
+    if (!Array.isArray(rawData.results)) {
+      throw new Error(`Invalid data format: ${typeof rawData.results}`);
+    }
+
+    const initialMovesArr: initialMovesType[] = rawData.results.map((item: any, index: number) => ({
+      id: index + 1,
+      name: item.name,
+      url: item.url,
+    }));
+
+    return initialMovesArr;
+  } catch (error) {
+    console.error("기술 raw data 배열 가져오기 실패:", error);
+    return [];
   }
-
-  const initialMovesArr: initialMovesType[] = rawData.results.map((item: any, index: number) => ({
-    id: index + 1,
-    name: item.name,
-    url: item.url,
-  }));
-
-  return initialMovesArr;
 };
 
 // 01-2. 푸키먼 raw data 배열 가져오기
@@ -94,7 +98,14 @@ export const generateKoreanMoveData = async (initialMovesArr: initialMovesType[]
   const koreanMoveNameArr = await Promise.all(promises);
   const validMoves = koreanMoveNameArr.filter((move) => move !== null) as koreanMoveType[];
 
-  return validMoves.filter((move) => move.type !== "shadow" && !move.korDescription.includes("사용할 수 없는 기술"));
+  const finalMoves = validMoves.filter(
+    (move) => move.type !== "shadow"
+    // && !move.korDescription.includes("사용할 수 없는 기술")
+  );
+
+  console.log("최종 기술", finalMoves);
+
+  return finalMoves;
 };
 
 // 03. 포켓몬의 상세정보 추가
