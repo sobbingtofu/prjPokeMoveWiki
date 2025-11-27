@@ -1,9 +1,10 @@
 import {DB_NAME_KOREAN_MOVES, DB_VERSION, EXPIRE_MS, META_STORE, STORE_NAME_KOREAN_MOVES} from "@/store/constantStore";
 import {getDBMeta, getFromDB, openDB, saveToDB} from "../indexedDBLogics/indexedDBLogics";
-import {initialMovesType, koreanMoveType} from "./type";
+import {initialMovesType, initialPokemonType, koreanMoveType} from "./type";
 import {generateKoreanMoveData} from "./fetchMovePokemonLogics";
+import {detailedPokemInfoType} from "@/store/type";
 
-interface FetchResult {
+interface FetchMovesResult {
   successMoves: koreanMoveType[];
   failedInitialMoves: initialMovesType[];
 }
@@ -11,7 +12,7 @@ interface FetchResult {
 // 맨 처음 fetch => 성공/실패 결과를 분리해 저장
 // 성공한 애들은 DB 저장 및 zustand 상태 업데이트
 // 실패한 애들에 대해선 아래 재시도 함수 적용
-const fetchKoreanMovesOnce = async (initialMovesParam: initialMovesType[]): Promise<FetchResult> => {
+const fetchKoreanMovesOnce = async (initialMovesParam: initialMovesType[]): Promise<FetchMovesResult> => {
   const successMoves: koreanMoveType[] = [];
   const failedInitialMoves: initialMovesType[] = [];
 

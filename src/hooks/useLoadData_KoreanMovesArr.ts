@@ -4,7 +4,7 @@ import {useQuery} from "@tanstack/react-query";
 import {getInitialMoveData} from "@/logic/pokeapiLogics/fetchMovePokemonLogics";
 import {useZustandStore} from "@/store/zustandStore";
 import {useEffect} from "react";
-import {fetchAndStoreKoreanMoves} from "@/logic/pokeapiLogics/fetchAndStoreLogic";
+import {fetchAndStoreKoreanMoves} from "@/logic/pokeapiLogics/fetchAndStoreLogic_Moves";
 import {koreanMoveType} from "@/logic/pokeapiLogics/type";
 
 export const useLoadData_KoreanMovesArr = () => {
@@ -30,8 +30,11 @@ export const useLoadData_KoreanMovesArr = () => {
 
         // 각 성공 배치마다 Zustand 상태 업데이트
         const handleProgressUpdate = (currentMoves: koreanMoveType[]) => {
-          console.log(`Zustand 상태 업데이트: ${currentMoves.length}개 기술`);
-          setKoreanMovesArrayStates(currentMoves);
+          const filteredMoves = currentMoves.filter(
+            (move) => move.type !== "shadow" && !move.korDescription.includes("사용할 수 없는 기술")
+          );
+          console.log(`Zustand 상태 업데이트: ${filteredMoves.length}개 기술`);
+          setKoreanMovesArrayStates(filteredMoves);
         };
 
         const koreanMovesData = await fetchAndStoreKoreanMoves(initialMoves, handleProgressUpdate);

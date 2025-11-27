@@ -98,20 +98,11 @@ export const generateKoreanMoveData = async (initialMovesArr: initialMovesType[]
   const koreanMoveNameArr = await Promise.all(promises);
   const validMoves = koreanMoveNameArr.filter((move) => move !== null) as koreanMoveType[];
 
-  const finalMoves = validMoves.filter(
-    (move) => move.type !== "shadow"
-    // && !move.korDescription.includes("사용할 수 없는 기술")
-  );
-
-  console.log("최종 기술", finalMoves);
-
-  return finalMoves;
+  return validMoves;
 };
 
 // 03. 포켓몬의 상세정보 추가
 export const generateDetailedPokemon = async (commonPokemons: initialPokemonType[]) => {
-  console.log(`총 ${commonPokemons.length}개 포켓몬 처리 시작`);
-
   const BATCH_SIZE = 50; // 한 번에 50개씩 처리
   const results = [];
 
@@ -227,7 +218,6 @@ export const generateDetailedPokemon = async (commonPokemons: initialPokemonType
     return true;
   });
 
-  console.log("최종 데이터:", finalData.length, "개");
   return finalData;
 };
 

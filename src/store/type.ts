@@ -55,7 +55,7 @@ export interface detailedPokemInfoType {
 
   abilities: {abilityName: string; abilityUrl: string; hidden: boolean}[];
 
-  captureRate: number;
+  captureRate?: number;
 
   evolutionChainUrl: string;
 
