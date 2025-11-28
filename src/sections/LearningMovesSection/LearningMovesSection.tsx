@@ -1,3 +1,4 @@
+import GenTabNavigation from "@/components/GenTabNavigation/GenTabNavigation";
 import {MoveCard} from "@/components/MoveCard/MoveCard";
 import {generateKoreanMoveData02} from "@/logic/pokeapiLogics/fetchMovePokemonLogics";
 import {koreanMoveType, rawMoveDataFromPokmonDetailType} from "@/logic/pokeapiLogics/type";
@@ -5,6 +6,7 @@ import {generalPokemonTypes} from "@/utils/getTypeDefenseMatchup";
 import {sortMovesByGeneration} from "@/utils/sortMovesUtil";
 
 import {useQuery} from "@tanstack/react-query";
+import {Gentium_Book_Plus} from "next/font/google";
 import React, {useEffect, useMemo} from "react";
 
 interface LearningMovesSectionProps {
@@ -57,23 +59,7 @@ function LearningMovesSection({moves, types}: LearningMovesSectionProps) {
   return (
     <section className="w-full">
       <h3 className="font-bold text-lg mb-2">배우는 기술</h3>
-      <div className="flex flex-row  w-full flex-wrap">
-        {generationText.map((genText, index) => (
-          <div
-            key={index}
-            className="flex flex-col cursor-pointer flex-1"
-            onClick={() => handleGenClick(Number(genText))}
-          >
-            <h4
-              className={`text-xs font-semibold text-center border-t border-gray-500 py-3 border-r border-l rounded-t-xl 
-                ${selectedGen === Number(genText) ? "bg-white" : "bg-gray-700"}
-                ${selectedGen === Number(genText) ? "text-black" : "text-gray-200"}`}
-            >
-              {genText}세대
-            </h4>
-          </div>
-        ))}
-      </div>
+      <GenTabNavigation selectedGen={selectedGen} handleGenClick={handleGenClick} />
       <div
         className="w-full border-l border-r border-b border-gray-500 min-h-2.5 bg-white
       flex flex-col gap-y-2 px-4 py-3 rounded-b-lg"
