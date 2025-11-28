@@ -75,8 +75,8 @@ export async function GET(request: NextRequest): FinalDataType {
       imageUrl = await findImageFromUrl(url2, moveName);
     }
 
-    if (!imageUrl) {
-      return NextResponse.json({result: "error", data: "No matching image found"}, {status: 404});
+    if (imageUrl === null) {
+      return NextResponse.json({result: "error", data: "No matching image found"}, {status: 200});
     }
 
     return NextResponse.json({result: "success", data: imageUrl}, {status: 200});

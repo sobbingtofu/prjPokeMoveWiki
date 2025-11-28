@@ -14,7 +14,7 @@ function TypeChip({
 
   return (
     <div
-      className={` font-bold
+      className={` font-bold h-min
         ${textSize == "2xs" ? "sm:rounded-lg rounded-md" : "sm:rounded-full rounded-lg"} 
         ${textSize == "2xs" ? "w-10 sm:w-[45px]" : "w-[62px]"} 
         ${textSize == "2xs" ? "sm:text-[11px] text-[10px]" : `text-sm`} text-center text-white bg-${type.toLowerCase()}

@@ -36,7 +36,7 @@ export interface koreanMoveType {
   name: string;
   koreanName: string;
   type: pokemonTypeEnNames;
-  korType: string;
+  korType: pokemonTypeKorNames;
   learningPokemonEn?: initialPokemonType[];
   damageClass: damageClassType;
   url: string;
