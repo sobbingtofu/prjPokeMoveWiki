@@ -6,6 +6,7 @@ import {generalPokemonTypes} from "@/utils/getTypeDefenseMatchup";
 import {sortMovesByGeneration} from "@/utils/sortMovesUtil";
 
 import {useQuery} from "@tanstack/react-query";
+import Link from "next/link";
 import React, {useEffect, useMemo} from "react";
 
 interface LearningMovesSectionProps {
@@ -22,8 +23,6 @@ function LearningMovesSection({moves, types}: LearningMovesSectionProps) {
     staleTime: Infinity,
     gcTime: Infinity,
   });
-
-  const generationText = ["9", "8", "7", "6", "5", "4", "3", "2", "1"];
 
   const handleGenClick = (gen: number) => {
     setSelectedGen(gen);
@@ -65,7 +64,17 @@ function LearningMovesSection({moves, types}: LearningMovesSectionProps) {
       >
         {sortedFinalMoves.length > 0 ? (
           sortedFinalMoves.map((move) => {
-            return move ? <MoveCard move={move} key={move.id} type="pokemonDetail" genNumber={selectedGen} /> : null;
+            return move ? (
+              <Link href={`/moves/${move.id}`} target="_blank" rel="noopener noreferrer" className="sm:p-1 p-0">
+                <MoveCard
+                  move={move}
+                  key={move.id}
+                  type="pokemonDetail"
+                  genNumber={selectedGen}
+                  style="cursor-pointer"
+                />
+              </Link>
+            ) : null;
           })
         ) : (
           <p className="text-sm text-gray-500">배우는 기술 정보가 존재하지 않습니다.</p>

@@ -9,12 +9,13 @@ import {Toast} from "@/components/Toast/Toast";
 import {selectedMoveType} from "@/store/type";
 import MoveSearchDropdown from "@/components/MoveSearchDropdown/MoveSearchDropdown";
 import useHandleMoveSearchBtnClick from "@/hooks/useHandleMoveSearchBtnClick";
+import {useRouter} from "next/navigation";
 
 interface SearchSectionProps {
   className?: string;
   smDropDownHeight: number;
   dropDownHeight: number;
-  type?: "searchMoves" | "searchLearningPokemon";
+  type?: "searchMoves" | "movesDetail" | "searchLearningPokemon";
 }
 
 export const SearchSection = ({
@@ -36,8 +37,6 @@ export const SearchSection = ({
     selectedMovesArrayStates,
     setSelectedMovesArrayStates,
     setIsToastMessageVisible,
-    searchTargetMoveState,
-    setSearchTargetMoveState,
   } = useZustandStore();
 
   const [isNoDataMsgVisible, setIsNoDataMsgVisible] = useState<boolean>(true);
@@ -45,7 +44,6 @@ export const SearchSection = ({
   useEffect(() => {
     // 초기에는 빈 배열로 설정
     setFilteredMoves([]);
-    setSearchTargetMoveState(null);
   }, []);
 
   const searchContainerRef = useRef<HTMLDivElement>(null);
@@ -73,6 +71,10 @@ export const SearchSection = ({
 
     if (type === "searchMoves") {
       setIsNoDataMsgVisible(filtered.length === 0);
+    }
+
+    if (type === "movesDetail") {
+      setIsDropdownOpen01(false);
     }
   }, [searchValue, koreanMovesArrayStates, setFilteredMoves, setIsDropdownOpen01]);
 
@@ -112,7 +114,7 @@ export const SearchSection = ({
       if (accentedMove) {
         if (type === "searchLearningPokemon") {
           handleDropdownItemClick_searchLearningPokemon(accentedMove);
-        } else if (type === "searchMoves") {
+        } else if (type === "searchMoves" || type === "movesDetail") {
           handleDropdownItemClick_searchMoves(accentedMove);
         }
       }
@@ -207,13 +209,11 @@ export const SearchSection = ({
     }
   };
 
+  const router = useRouter();
+
   const handleDropdownItemClick_searchMoves = (move: koreanMoveType) => {
-    const newMove: selectedMoveType = {
-      ...move,
-      isSelectedForDeletion: false,
-    };
-    setSearchTargetMoveState(newMove);
     setIsDropdownOpen01(false);
+    router.push(`/moves/${move.id}`);
   };
 
   const handleClickCloseIcon = () => {
@@ -226,12 +226,14 @@ export const SearchSection = ({
     }
   };
 
-  const hasSelectedMoves = type === "searchMoves" && searchTargetMoveState !== null;
-
   return (
     <section
       className={`${className} w-full flex flex-col gap-2 items-center justify-start font-bold
-      ${type === "searchLearningPokemon" ? "" : `transition-all duration-300 ${hasSelectedMoves ? "py-4" : "py-16"}`}
+      ${
+        type === "searchLearningPokemon"
+          ? ""
+          : `transition-all duration-300 ${type === "movesDetail" ? "py-4" : "py-16"}`
+      }
     `}
     >
       <div
@@ -245,25 +247,20 @@ export const SearchSection = ({
         {type === "searchLearningPokemon" && (
           <p className="mt-2 w-full text-xs italic text-gray-600">배우는 포켓몬을 찾아볼 기술을 검색해 클릭</p>
         )}
-        {type === "searchMoves" && !hasSelectedMoves && (
-          <p className="mt-2 w-full text-sm italic text-gray-600 font-bold">{"기술 검색"}</p>
-        )}
+        {type === "searchMoves" && <p className="mt-2 w-full text-sm italic text-gray-600 font-bold">{"기술 검색"}</p>}
         {/* Search Container = 검색창 + 드롭다운 + 검색결과없음 메시지 */}
-        <div
-          ref={searchContainerRef}
-          className={`relative mt-2 ${type === "searchMoves" && hasSelectedMoves ? "w-[60%]" : "w-full"}`}
-        >
+        <div ref={searchContainerRef} className={`relative mt-2 ${type === "movesDetail" ? "w-[60%]" : "w-full"}`}>
           {/* 검색창 */}
           <div
             className={` bg-white flex justify-between items-center shadow-sm w-full 
             focus-within:border-blue-500 focus-within:ring-1 focus-within:ring-blue-500 
             text-lg border-2 border-gray-300 rounded-lg focus:outline-none focus:border-blue-500 focus:ring-2 
             focus:ring-blue-200 transition-all duration-200
-            ${type === "searchMoves" && hasSelectedMoves ? "px-3 py-1.5 text-sm text-gray-600" : "px-6 py-4"}
+            ${type === "movesDetail" ? "px-3 py-1.5 text-sm text-gray-600" : "px-6 py-4"}
             `}
           >
             <input
-              autoFocus
+              autoFocus={type !== "movesDetail"}
               type="text"
               onChange={handleInputChange}
               onKeyDown={handleKeyDownInMoveSearchInput}
@@ -284,7 +281,7 @@ export const SearchSection = ({
               dropDownHeight={dropDownHeight}
               smDropDownHeight={smDropDownHeight}
               move={filteredMoves}
-              dropDownRowSize={type === "searchMoves" && hasSelectedMoves ? "small" : "default"}
+              dropDownRowSize={type === "movesDetail" ? "small" : "default"}
               dropDownOnClick={
                 type === "searchLearningPokemon"
                   ? handleDropdownItemClick_searchLearningPokemon

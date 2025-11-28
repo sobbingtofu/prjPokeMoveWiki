@@ -5,17 +5,31 @@ import {SearchSection} from "@/sections/SearchMoveSection/SearchMoveSection";
 import React, {useEffect} from "react";
 import {useZustandStore} from "@/store/zustandStore";
 import DetailedMoveSection from "@/sections/DetailedMoveSection/DetailedMoveSection";
+import {selectedMoveType} from "@/store/type";
 
-function SearchMovesPage() {
+interface MovesDetailPageProps {
+  params: Promise<{moveId: string}>;
+}
+
+function MovesDetailPage({params}: MovesDetailPageProps) {
   useLoadData_KoreanMovesArr();
 
-  const {searchTargetMoveState} = useZustandStore();
+  const {koreanMovesArrayStates} = useZustandStore();
+
+  const {moveId} = React.use(params);
+
+  const currentMove = koreanMovesArrayStates.find((p) => p.id == parseInt(moveId));
 
   useEffect(() => {
-    if (searchTargetMoveState !== null) {
-      console.log("Selected Move:", searchTargetMoveState);
+    console.log("Current Move Id:", moveId);
+    if (currentMove !== null) {
+      console.log("Selected Move:", currentMove);
     }
-  }, [searchTargetMoveState]);
+  }, [currentMove]);
+
+  const editedCurrentMove: selectedMoveType | null = currentMove
+    ? {...currentMove, isSelectedForDeletion: false}
+    : null;
 
   return (
     <div
@@ -23,10 +37,11 @@ function SearchMovesPage() {
       h-[calc(100dvh-7dvh)] overflow-y-auto scrollbar-thin scrollbar-track-gray-300 scrollbar-thumb-gray-500 no-scrollbar-buttons pb-20"
     >
       <InitialLoadingScreen />
-      <SearchSection dropDownHeight={240} smDropDownHeight={120} className="" type="searchMoves" />
-      {searchTargetMoveState !== null && <DetailedMoveSection />}
+      <SearchSection dropDownHeight={240} smDropDownHeight={120} className="" type="movesDetail" />
+      {!editedCurrentMove && "선택된 기술 없음"}
+      {editedCurrentMove && <DetailedMoveSection currentMove={editedCurrentMove} />}
     </div>
   );
 }
 
-export default SearchMovesPage;
+export default MovesDetailPage;

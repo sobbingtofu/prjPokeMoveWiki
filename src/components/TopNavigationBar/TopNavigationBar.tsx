@@ -99,7 +99,7 @@ function TopNavigationBar() {
           </div>
 
           {isMenuOpen && (
-            <div className="w-[240px] bg-gray-700 text-white flex flex-col gap-4 px-10 py-2 absolute z-10 right-0 top-full mt-2">
+            <div className="w-60 bg-gray-700 text-white flex flex-col gap-4 px-10 py-2 absolute z-10 right-0 top-full mt-2">
               {menuItems.map((item) => (
                 <Link
                   key={item.href}

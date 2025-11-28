@@ -11,6 +11,7 @@ interface MoveCardProps {
   key: number;
   genNumber?: number;
   onClick?: () => void;
+  style?: string;
 }
 
 export const MoveCard = ({
@@ -18,6 +19,7 @@ export const MoveCard = ({
   type = "searchLearningPokemon",
   onClick,
   genNumber,
+  style,
   ...props
 }: PropsWithChildren<MoveCardProps>) => {
   const selectedMovesArrayStates = useZustandStore((state) => state.selectedMovesArrayStates);
@@ -39,7 +41,8 @@ export const MoveCard = ({
   return (
     <div
       onClick={onClick}
-      className={`bg-${move.type.toLowerCase()}-shallow
+      className={`
+        ${style} bg-${move.type.toLowerCase()}-shallow
       xl:min-w-[200px] select-none flex flex-row
       gap-2 rounded-lg bg-gray-100 shadow-md
       ${type === "searchLearningPokemon" ? "pr-4" : "sm:pl-8 pl-6 sm:pr-5 pr-4"}

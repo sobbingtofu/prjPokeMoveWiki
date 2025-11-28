@@ -4,27 +4,31 @@ import Image from "next/image";
 import {Loader} from "@/components/Loader/Loader";
 import useFetchMoveImgFromNamuWiki from "@/hooks/useFetchMoveImgFromNamuWiki";
 import TypeChip from "@/components/TypeChip/TypeChip";
+import {koreanMoveType} from "@/logic/pokeapiLogics/type";
+import {selectedMoveType} from "@/store/type";
 
-function DetailedMoveSection() {
-  const {searchTargetMoveState} = useZustandStore();
+interface DetailedMoveSectionProps {
+  currentMove: selectedMoveType;
+}
 
-  const {fetchImageResult, isLoading} = useFetchMoveImgFromNamuWiki(searchTargetMoveState);
+function DetailedMoveSection({currentMove}: DetailedMoveSectionProps) {
+  const {fetchImageResult, isLoading} = useFetchMoveImgFromNamuWiki(currentMove);
 
-  const moveDetailItems = searchTargetMoveState
+  const moveDetailItems = currentMove
     ? [
-        {label: "명중률", value: searchTargetMoveState.accuracy ? searchTargetMoveState.accuracy : "―", span: 3},
-        {label: "위력", value: searchTargetMoveState.power ? searchTargetMoveState.power : "―", span: 3},
-        {label: "PP", value: searchTargetMoveState.pp, span: 2},
-        {label: "확률", value: searchTargetMoveState.effectChance ? searchTargetMoveState.effectChance : "―", span: 2},
-        {label: "우선도", value: "+" + searchTargetMoveState.priority, span: 2},
-        // {label: "대상", value: searchTargetMoveState.target === "selected-pokemon" ? "지정 대상" : ""},
+        {label: "명중률", value: currentMove.accuracy ? currentMove.accuracy : "―", span: 3},
+        {label: "위력", value: currentMove.power ? currentMove.power : "―", span: 3},
+        {label: "PP", value: currentMove.pp, span: 2},
+        {label: "확률", value: currentMove.effectChance ? currentMove.effectChance : "―", span: 2},
+        {label: "우선도", value: "+" + currentMove.priority, span: 2},
+        // {label: "대상", value: currentMove.target === "selected-pokemon" ? "지정 대상" : ""},
       ]
     : [];
 
   return (
     <section className="w-full flex justify-center items-start">
       <div className="w-[80%] min-w-[360px]">
-        {searchTargetMoveState !== null ? (
+        {currentMove !== null ? (
           <>
             <div
               className="w-full lg:min-w-[750px] min-w-[350px] px-2 py-2 border border-gray-600 bg-gray-100
@@ -33,15 +37,10 @@ function DetailedMoveSection() {
               "
             >
               {/* 이미지 영역 */}
-              <div className="lg:w-[360px] w-[300px] lg:h-60 h-[200px] flex justify-center items-center relative shrink-0 bg-red-400 ">
+              <div className="lg:w-[360px] w-[300px] lg:h-60 h-[200px] flex justify-center items-center relative shrink-0 bg-gray-400 ">
                 {isLoading && <Loader />}
                 {fetchImageResult?.result === "success" && !isLoading && (
-                  <Image
-                    src={fetchImageResult.data}
-                    alt={searchTargetMoveState.koreanName}
-                    fill
-                    className="object-cover"
-                  />
+                  <Image src={fetchImageResult.data} alt={currentMove.koreanName} fill className="object-cover" />
                 )}
                 {fetchImageResult?.result === "error" && !isLoading && (
                   <div className="flex flex-col items-center gap-y-2">
@@ -57,24 +56,20 @@ function DetailedMoveSection() {
                 <div className="flex flex-col items-start w-full">
                   {/* 기술명, 타입, 유형 */}
                   <div className="flex flex-row  gap-x-6 items-center w-full sm:justify-start justify-between ">
-                    <h2 className="text-xl font-bold">{searchTargetMoveState.koreanName}</h2>
+                    <h2 className="text-xl font-bold">{currentMove.koreanName}</h2>
                     <div className="flex items-center gap-x-2">
-                      <TypeChip
-                        korType={searchTargetMoveState.korType}
-                        type={searchTargetMoveState.type}
-                        textSize="2xs"
-                      />
+                      <TypeChip korType={currentMove.korType} type={currentMove.type} textSize="2xs" />
                       <p className="text-xs font-bold text-gray-700">
-                        {searchTargetMoveState.damageClass == "physical"
+                        {currentMove.damageClass == "physical"
                           ? "물리"
-                          : searchTargetMoveState.damageClass == "special"
+                          : currentMove.damageClass == "special"
                           ? "특수"
                           : "변화"}
                       </p>
                     </div>
                   </div>
                   {/* 기술 설명 */}
-                  <p className="mt-4 text-sm">{searchTargetMoveState.korDescription}</p>
+                  <p className="mt-4 text-sm">{currentMove.korDescription}</p>
                 </div>
                 {/* 하단부 */}
                 <div
