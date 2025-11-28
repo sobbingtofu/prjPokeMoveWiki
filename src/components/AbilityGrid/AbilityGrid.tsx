@@ -45,7 +45,7 @@ function AbilityGrid({types, abilities}: AbilityGridProps) {
                     </p>
                   </div>
                   <div className="flex-8 border border-gray-700 flex justify-start items-center py-2 px-4 min-h-[45px]">
-                    <p className="leading-relaxed">{ability.descriptionKo}</p>
+                    <p className="leading-relaxed">{ability.descriptionKo || ability.descriptionEn}</p>
                   </div>
                 </div>
               )

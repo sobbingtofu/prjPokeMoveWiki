@@ -65,6 +65,11 @@ function EvolChainSection({evolutionChainUrl, types}: EvolChainSectionProps) {
               })}
             </div>
           )}
+          {totalCount === 0 && (
+            <div className="flex justify-center py-2">
+              <p className="text-gray-600 italic text-xs font-bold">진화 정보가 없습니다.</p>
+            </div>
+          )}
 
           {/* 잉여영역 */}
           {totalCount > 6 && (
