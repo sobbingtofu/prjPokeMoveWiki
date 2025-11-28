@@ -6,6 +6,7 @@ import React, {useEffect} from "react";
 import {useZustandStore} from "@/store/zustandStore";
 import DetailedMoveSection from "@/sections/DetailedMoveSection/DetailedMoveSection";
 import {selectedMoveType} from "@/store/type";
+import LearningPokemonsSection from "@/app/search-learning-pokemon/_sections/LearningPokemonsSection/LearningPokemonsSection";
 
 interface MovesDetailPageProps {
   params: Promise<{moveId: string}>;
@@ -38,8 +39,12 @@ function MovesDetailPage({params}: MovesDetailPageProps) {
     >
       <InitialLoadingScreen />
       <SearchSection dropDownHeight={240} smDropDownHeight={120} className="" type="movesDetail" />
-      {!editedCurrentMove && "선택된 기술 없음"}
       {editedCurrentMove && <DetailedMoveSection currentMove={editedCurrentMove} />}
+      <section className="w-full flex justify-center items-start bg-red-300">
+        <div className="w-[70%] min-w-[360px]">
+          <LearningPokemonsSection type="movesDetail" />
+        </div>
+      </section>
     </div>
   );
 }
