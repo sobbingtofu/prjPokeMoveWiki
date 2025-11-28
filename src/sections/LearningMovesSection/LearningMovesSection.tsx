@@ -6,7 +6,6 @@ import {generalPokemonTypes} from "@/utils/getTypeDefenseMatchup";
 import {sortMovesByGeneration} from "@/utils/sortMovesUtil";
 
 import {useQuery} from "@tanstack/react-query";
-import {Gentium_Book_Plus} from "next/font/google";
 import React, {useEffect, useMemo} from "react";
 
 interface LearningMovesSectionProps {

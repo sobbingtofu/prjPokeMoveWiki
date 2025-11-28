@@ -125,11 +125,18 @@ export const fetchAndStoreDetailedPokemons = async (
     allPokemons = [...allPokemons, ...newPokemons];
     const combinedPokemons = [...existingPokemons, ...newPokemons];
 
-    console.log(`DB에 ${newPokemons.length}개 포켓몬 데이터 추가 저장 (총 ${combinedPokemons.length}개)`);
-    await saveToDB(db, combinedPokemons, STORE_NAME_DETAILED_POKEMONS, META_STORE);
+    const seen = new Set<string>();
+    const finalData = combinedPokemons.filter((pokemon) => {
+      if (seen.has(pokemon.koreanName)) return false;
+      seen.add(pokemon.koreanName);
+      return true;
+    });
+
+    console.log(`DB에 ${newPokemons.length}개 포켓몬 데이터 추가 저장 (총 ${finalData.length}개)`);
+    await saveToDB(db, finalData, STORE_NAME_DETAILED_POKEMONS, META_STORE);
 
     if (onProgressUpdate) {
-      onProgressUpdate(combinedPokemons);
+      onProgressUpdate(finalData);
     }
   };
 
