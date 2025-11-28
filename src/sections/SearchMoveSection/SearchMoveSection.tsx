@@ -72,11 +72,13 @@ export const SearchSection = ({
     if (type === "searchMoves") {
       setIsNoDataMsgVisible(filtered.length === 0);
     }
+  }, [searchValue, koreanMovesArrayStates, setFilteredMoves, setIsDropdownOpen01]);
 
+  useEffect(() => {
     if (type === "movesDetail") {
       setIsDropdownOpen01(false);
     }
-  }, [searchValue, koreanMovesArrayStates, setFilteredMoves, setIsDropdownOpen01]);
+  }, []);
 
   const handleMoveSearchButtonClick = useHandleMoveSearchBtnClick();
 
@@ -271,7 +273,7 @@ export const SearchSection = ({
                 e.preventDefault();
               }}
             />
-            {isMoveSearchDebouncing && <Loader sizeType={type == "searchMoves" ? "small" : "default"} />}
+            {isMoveSearchDebouncing && <Loader sizeType={type == "movesDetail" ? "small" : "default"} />}
             {!isMoveSearchDebouncing && searchValue.trim() !== "" && <CloseIcon onClick={handleClickCloseIcon} />}
           </div>
 

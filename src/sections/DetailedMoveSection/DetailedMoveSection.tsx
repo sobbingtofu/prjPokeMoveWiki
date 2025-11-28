@@ -27,13 +27,14 @@ function DetailedMoveSection({currentMove}: DetailedMoveSectionProps) {
 
   return (
     <section className="w-full flex justify-center items-start">
-      <div className="w-[80%] min-w-[360px]">
+      <div className="w-[70%] min-w-[360px]">
         {currentMove !== null ? (
           <>
             <div
-              className="w-full lg:min-w-[750px] min-w-[350px] px-2 py-2 border border-gray-600 bg-gray-100
+              className="w-full lg:min-w-[780px] min-w-[350px] px-8 lg:pt-2 pt-8 lg:pb-2 pb-2
+              border border-gray-600 bg-gray-100 rounded-lg shadow-sm
               flex lg:flex-row flex-col items-center
-              lg:h-[280px] h-auto
+              lg:h-80 h-auto
               "
             >
               {/* 이미지 영역 */}
@@ -51,7 +52,7 @@ function DetailedMoveSection({currentMove}: DetailedMoveSectionProps) {
               </div>
 
               {/* 기술 상세 영역 */}
-              <div className="flex flex-col items-start justify-between py-6 h-full px-8 w-full">
+              <div className="flex flex-col items-start justify-between py-6 h-full xl:pl-8 px-12 min-w-[390px] w-full">
                 {/* 상단부 */}
                 <div className="flex flex-col items-start w-full">
                   {/* 기술명, 타입, 유형 */}
