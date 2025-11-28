@@ -237,9 +237,9 @@ export const SearchSection = ({
       <div
         className={` ${
           type == "searchLearningPokemon"
-            ? "min-w-60 w-[80%]"
+            ? "min-w-60 w-[80%] sm:mb-0 mb-24"
             : "md:w-[60%] w-[80%] flex flex-col justify-center items-center"
-        }  sm:mb-0 mb-24`}
+        }  `}
       >
         {type === "searchLearningPokemon" && <Toast className="sm:mt-4 mt-2" />}
         {type === "searchLearningPokemon" && (

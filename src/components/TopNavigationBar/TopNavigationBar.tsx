@@ -61,7 +61,10 @@ function TopNavigationBar() {
 
   return (
     <div className={`${isMenuOpen ? "h-auto" : "h-[7dvh]"} transition-all duration-300`}>
-      <aside className="w-full bg-gray-800 text-white px-10 flex flex-row justify-between items-center h-[7dvh] min-h-[45px] relative">
+      <aside
+        className="w-full bg-gray-800 text-white px-10 flex flex-row justify-between items-center h-[7dvh] min-h-[45px] relative
+      z-20"
+      >
         <Link
           href="/"
           onClick={(e) => {

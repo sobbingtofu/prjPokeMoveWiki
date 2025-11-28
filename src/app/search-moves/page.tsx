@@ -19,7 +19,10 @@ function SearchMovesPage() {
   }, [searchTargetMoveState]);
 
   return (
-    <div className="w-dvw min-h-dvh bg-gray-300">
+    <div
+      className="w-dvw min-h-dvh bg-gray-300 
+      h-[calc(100dvh-7dvh)] overflow-y-auto scrollbar-thin scrollbar-track-gray-300 scrollbar-thumb-gray-500 no-scrollbar-buttons pb-20"
+    >
       <InitialLoadingScreen />
       <SearchSection dropDownHeight={240} smDropDownHeight={120} className="" type="searchMoves" />
       {searchTargetMoveState !== null && <DetailedMoveSection />}

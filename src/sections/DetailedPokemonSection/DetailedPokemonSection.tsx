@@ -29,7 +29,7 @@ function DetailedPokemonSection({currentPokemon}: DetailedPokemonSectionProps) {
       {currentPokemon && (
         <section
           ref={sectionRef}
-          className="w-dvw h-[calc(100dvh-7dvh)] bg-gray-300 flex flex-col justify-start items-center
+          className="h-[calc(100dvh-7dvh)] flex flex-col justify-start items-center
             overflow-y-auto scrollbar-thin scrollbar-track-gray-300 scrollbar-thumb-gray-500 no-scrollbar-buttons"
         >
           <div

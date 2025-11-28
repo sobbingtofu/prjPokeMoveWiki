@@ -20,10 +20,10 @@ function page({params}: pageProps) {
   const currentPokemon = detailedPokemons.find((p) => p.pokemonId == pokemonId);
 
   return (
-    <>
+    <div className="w-dvw min-h-dvh bg-gray-300">
       <InitialLoadingScreen />
       {currentPokemon && <DetailedPokemonSection currentPokemon={currentPokemon} />}
-    </>
+    </div>
   );
 }
 
