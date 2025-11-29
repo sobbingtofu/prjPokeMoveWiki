@@ -5,6 +5,7 @@ import LearningPokemonsContents from "./LearningPokemonsContents";
 import {useZustandStore} from "@/store/zustandStore";
 import useGenerateSingleMoveLearningPokemons from "@/hooks/useGenerateSingleMoveLearningPokemons";
 import {selectedMoveType} from "@/store/type";
+import {Loader} from "@/components/Loader/Loader";
 
 interface LearningPokemonsSectionProps {
   className?: string;
@@ -39,11 +40,17 @@ function LearningPokemonsSection({
       ${
         type === "searchLearningPokemons"
           ? "w-[60%] bg-gray-700 h-full"
-          : "w-full mt-4 rounded-lg bg-gray-700 border border-gray-800 min-h-[400px] pb-10"
+          : "w-full mt-4 rounded-lg bg-gray-700 border border-gray-800 min-h-[400px] pb-10 h-full"
       }
     `}
     >
-      <LearningPokemonsContents type={type} />
+      {type === "movesDetail" && isGenerating && (
+        <div className="w-full h-[300px] flex justify-center items-center">
+          <Loader />
+        </div>
+      )}
+      {type === "movesDetail" && !isGenerating && <LearningPokemonsContents type={type} />}
+      {type === "searchLearningPokemons" && <LearningPokemonsContents type={type} />}
     </section>
   );
 }

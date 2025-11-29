@@ -90,7 +90,11 @@ const LearningPokemonsContents = React.memo(function LearningPokemonsContents({
   return (
     <>
       {/* 필터 및 정렬 */}
-      <div className="w-full flex flex-col gap-4 md:h-[15dvh] h-min">
+      <div
+        className={`w-full flex flex-col gap-4 
+        ${type === "searchLearningPokemons" ? "md:h-[15dvh] h-min" : "h-min"}
+        `}
+      >
         <div className="flex flex-col xl:flex-row justify-between xl:items-end items-start w-full md:gap-0 gap-3">
           <h3 className="text-white font-bold text-2xl">배우는 포켓몬 ({detailedLearningPokemons_Filtered.length})</h3>
           <div className="flex md:flex-row flex-col md:gap-6 gap-3 text-white font-bold text-xs">
@@ -131,7 +135,8 @@ const LearningPokemonsContents = React.memo(function LearningPokemonsContents({
             </div>
           </div>
         </div>
-        {(lastSearchMovesArrayStates.length === 0 || detailedLearningPokemons_Filtered.length === 0) && (
+        {((type === "searchLearningPokemons" && lastSearchMovesArrayStates.length === 0) ||
+          detailedLearningPokemons_Filtered.length === 0) && (
           <p className="text-gray-500 font-bold text-sm">검색된 포켓몬이 없습니다</p>
         )}
         <div className="w-full flex justify-between items-center ">
