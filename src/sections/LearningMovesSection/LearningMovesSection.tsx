@@ -65,7 +65,13 @@ function LearningMovesSection({moves, types}: LearningMovesSectionProps) {
         {sortedFinalMoves.length > 0 ? (
           sortedFinalMoves.map((move) => {
             return move ? (
-              <Link href={`/moves/${move.id}`} target="_blank" rel="noopener noreferrer" className="sm:p-1 p-0">
+              <Link
+                href={`/moves/${move.id}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="sm:p-1 p-0"
+                key={move.id}
+              >
                 <MoveCard
                   move={move}
                   key={move.id}

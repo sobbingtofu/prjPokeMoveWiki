@@ -31,7 +31,7 @@ function DetailedMoveSection({currentMove}: DetailedMoveSectionProps) {
         {currentMove !== null ? (
           <>
             <div
-              className="w-full lg:min-w-[780px] min-w-[350px] px-8 lg:pt-2 pt-8 lg:pb-2 pb-2
+              className="w-full lg:min-w-[710px] min-w-[350px] px-10 lg:pt-2 pt-8 lg:pb-2 pb-2
               border border-gray-600 bg-gray-100 rounded-lg shadow-sm
               flex lg:flex-row flex-col items-center
               lg:h-80 h-auto
@@ -52,7 +52,7 @@ function DetailedMoveSection({currentMove}: DetailedMoveSectionProps) {
               </div>
 
               {/* 기술 상세 영역 */}
-              <div className="flex flex-col items-start justify-between py-6 h-full xl:pl-8 px-12 min-w-[390px] w-full">
+              <div className="flex flex-col items-start justify-between py-6 h-full xl:pl-8 pl-4 min-w-[300px] w-full">
                 {/* 상단부 */}
                 <div className="flex flex-col items-start w-full">
                   {/* 기술명, 타입, 유형 */}

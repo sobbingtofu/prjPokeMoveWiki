@@ -39,12 +39,16 @@ function MovesDetailPage({params}: MovesDetailPageProps) {
     >
       <InitialLoadingScreen />
       <SearchSection dropDownHeight={240} smDropDownHeight={120} className="" type="movesDetail" />
-      {editedCurrentMove && <DetailedMoveSection currentMove={editedCurrentMove} />}
-      <section className="w-full flex justify-center items-start bg-red-300">
-        <div className="w-[70%] min-w-[360px]">
-          <LearningPokemonsSection type="movesDetail" />
-        </div>
-      </section>
+      {editedCurrentMove && (
+        <>
+          <DetailedMoveSection currentMove={editedCurrentMove} />
+          <section className="w-full flex justify-center items-start ">
+            <div className="w-[70%] min-w-[360px]">
+              <LearningPokemonsSection type="movesDetail" currentMoveId={moveId} />
+            </div>
+          </section>
+        </>
+      )}
     </div>
   );
 }

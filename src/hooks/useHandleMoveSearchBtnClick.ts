@@ -27,20 +27,20 @@ function useHandleMoveSearchBtnClick() {
       setPokemonsLearningAllLastSearchMoves([]);
       setDetailedLearningPokemons_PreFilter([]);
     } else {
-      const firstMoveLearners = selectedMovesArrayStates[0].learningPokemonEn;
+      const firstMoveLearners = selectedMovesArrayStates[0].learningPokemonEn || [];
 
       const commonPokemons = firstMoveLearners.filter((pokemon) => {
         // 첫 번째 기술을 배우는 포켓몬이 나머지 모든 기술도 배우는지 확인
         return selectedMovesArrayStates
           .slice(1)
           .every((move) =>
-            move.learningPokemonEn.some((learner) => learner.name === pokemon.name && learner.url === pokemon.url)
+            move.learningPokemonEn?.some((learner) => learner.name === pokemon.name && learner.url === pokemon.url)
           );
       });
 
       setPokemonsLearningAllLastSearchMoves(commonPokemons);
 
-      const learningPokemons = await generateDetailedPokemon(commonPokemons, "moves");
+      const learningPokemons = await generateDetailedPokemon(commonPokemons);
 
       if (!learningPokemons) throw new Error("learningPokemons Error");
 

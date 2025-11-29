@@ -7,7 +7,13 @@ import useApplySortingsChange from "@/hooks/useApplySortingsChange";
 import PokemonCard from "../../_components/PokemonCard/PokemonCard";
 import React from "react";
 
-const LearningPokemonsContents = React.memo(function LearningPokemonsContents() {
+interface LearningPokemonsContentsProps {
+  type?: "searchLearningPokemons" | "movesDetail";
+}
+
+const LearningPokemonsContents = React.memo(function LearningPokemonsContents({
+  type = "searchLearningPokemons",
+}: LearningPokemonsContentsProps) {
   const lastSearchMovesArrayStates = useZustandStore((state) => state.lastSearchMovesArrayStates);
   const detailedLearningPokemons_Filtered = useZustandStore((state) => state.detailedLearningPokemons_Filtered);
   const genFilter = useZustandStore((state) => state.genFilter);
@@ -145,11 +151,14 @@ const LearningPokemonsContents = React.memo(function LearningPokemonsContents() 
       {/* 카드 나열 */}
       {detailedLearningPokemons_Filtered.length > 0 && (
         <div
-          className="grid lg:grid-cols-4 grid-cols-2 w-full gap-x-3 gap-y-2
-          md:h-[70dvh] sm:h-[66dvh] h-[58dvh]
-          auto-rows-max pr-2 overflow-y-scroll scrollbar-thin scrollbar-track-gray-700 scrollbar-thumb-gray-500
-          no-scrollbar-buttons
-          "
+          className={`
+            ${
+              type === "searchLearningPokemons"
+                ? "md:h-[70dvh] sm:h-[66dvh] h-[58dvh] overflow-y-scroll scrollbar-thin scrollbar-track-gray-700 scrollbar-thumb-gray-500"
+                : "h-auto overflow-y-hidden"
+            }
+          grid lg:grid-cols-4 grid-cols-2 w-full gap-x-3 gap-y-2 
+          auto-rows-max pr-2 `}
         >
           {detailedLearningPokemons_Filtered.map((pokemon, index) => (
             <PokemonCard
