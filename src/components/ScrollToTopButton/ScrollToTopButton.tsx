@@ -59,8 +59,9 @@ function ScrollToTopButton({scrollContainerRef, durationTime = 300}: ScrollToTop
       {isVisible && (
         <button
           onClick={scrollToTop}
-          className="fixed bottom-8 right-8 z-50 
-            bg-gray-700 hover:bg-gray-800 
+          className="fixed bottom-8 right-8 z-50
+            bg-black
+            sm:bg-gray-700 sm:hover:bg-gray-800 
             text-white rounded-full 
             w-12 h-12 flex items-center justify-center 
             shadow-lg transition-all duration-300 

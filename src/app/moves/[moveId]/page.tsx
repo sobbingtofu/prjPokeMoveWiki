@@ -8,6 +8,7 @@ import DetailedMoveSection from "@/sections/DetailedMoveSection/DetailedMoveSect
 import {selectedMoveType} from "@/store/type";
 import LearningPokemonsSection from "@/app/search-learning-pokemon/_sections/LearningPokemonsSection/LearningPokemonsSection";
 import ScrollToTopButton from "@/components/ScrollToTopButton/ScrollToTopButton";
+import LearningPokemonsBottomSheet from "@/app/search-learning-pokemon/_sections/LearningPokemonsSection/LearningPokemonsBottomSheet";
 
 interface MovesDetailPageProps {
   params: Promise<{moveId: string}>;
@@ -37,8 +38,11 @@ function MovesDetailPage({params}: MovesDetailPageProps) {
 
   return (
     <div
-      className="w-dvw min-h-dvh bg-gray-300 
-      h-[calc(100dvh-7dvh)] overflow-y-auto scrollbar-thin scrollbar-track-gray-300 scrollbar-thumb-gray-500 no-scrollbar-buttons pb-20"
+      className="w-dvw min-h-dvh bg-gray-300
+      h-dvh
+      overflow-y-auto scrollbar-thin scrollbar-track-gray-300 scrollbar-thumb-gray-500 no-scrollbar-buttons
+      sm:pb-20 pb-0
+      "
       ref={sectionRef}
     >
       <InitialLoadingScreen />
@@ -47,7 +51,7 @@ function MovesDetailPage({params}: MovesDetailPageProps) {
         <>
           <DetailedMoveSection currentMove={editedCurrentMove} />
           <section className="w-full flex justify-center items-start ">
-            <div className="w-[70%] min-w-[360px]">
+            <div className="sm:w-[70%] w-full min-w-[360px] sm:block flex justify-center">
               <LearningPokemonsSection type="movesDetail" currentMoveId={moveId} />
             </div>
           </section>

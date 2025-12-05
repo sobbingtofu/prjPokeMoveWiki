@@ -20,7 +20,9 @@ function LearningPokemonsSection({
 }: LearningPokemonsSectionProps) {
   const {koreanMovesArrayStates} = useZustandStore();
 
-  const currentMove = koreanMovesArrayStates.find((p) => p.id == parseInt(currentMoveId || "")) || null;
+  const currentMove = currentMoveId
+    ? koreanMovesArrayStates.find((p) => p.id == parseInt(currentMoveId)) || null
+    : null;
 
   const {generateSingleMoveLearningPokemons, isGenerating} = useGenerateSingleMoveLearningPokemons();
 
@@ -29,18 +31,18 @@ function LearningPokemonsSection({
     : null;
 
   useEffect(() => {
-    if (editedCurrentMove || !isGenerating) {
+    if (type === "movesDetail" && (editedCurrentMove !== null || !isGenerating)) {
       generateSingleMoveLearningPokemons(editedCurrentMove);
     }
   }, [currentMoveId]);
 
   return (
     <section
-      className={`${className}  px-10 pt-7 sm:flex hidden flex-col items-start gap-4 
+      className={`${className} pt-7  flex-col items-start gap-4 
       ${
         type === "searchLearningPokemons"
-          ? "w-[60%] bg-gray-700 h-full"
-          : "w-full mt-4 rounded-lg bg-gray-700 border border-gray-800 min-h-[400px] pb-10 h-full"
+          ? "w-[60%] bg-gray-700 h-full sm:flex hidden px-10"
+          : "w-full mt-4 sm:rounded-lg rounded-none bg-gray-700 border border-gray-800 min-h-[400px] sm:pb-10 pb-20 h-full px-4 sm:px-10"
       }
     `}
     >
