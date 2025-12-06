@@ -1,198 +1,297 @@
-/* CSS Reset - 브라우저 기본 스타일링 제거 */
+@import "tailwindcss";
 
-*,
-*::before,
-*::after {
-  box-sizing: border-box;
+@plugin 'tailwind-scrollbar';
+
+.no-scrollbar::-webkit-scrollbar {
+  display: none; /* Chrome, Safari, Opera*/
 }
 
-/* 기본 margin, padding 제거 */
-* {
-  margin: 0;
-  padding: 0;
+.no-scrollbar {
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
 }
 
-/* HTML, body 기본 설정 */
-html,
-body {
-  height: 100%;
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans",
-    "Droid Sans", "Helvetica Neue", sans-serif;
-  line-height: 1.5;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+@layer base {
+  :root {
+    --color-fighting: #ffa202;
+    --color-poison: #994dcf;
+    --color-ground: #ab7939;
+    --color-flying: #95c9ff;
+    --color-psychic: #ff637f;
+    --color-bug: #9fa424;
+    --color-rock: #bcb889;
+    --color-ghost: #6e4570;
+    --color-dragon: #5462d6;
+    --color-dark: #4f4747;
+    --color-steel: #6aaed3;
+    --color-fairy: #ffb1ff;
+    --color-normal: #999999;
+    --color-fire: #ff612c;
+    --color-water: #2992ff;
+    --color-electric: #ebce16;
+    --color-grass: #42bf24;
+    --color-ice: #42bfff;
+
+    --color-fighting: #ffa202;
+    --color-poison: #994dcf;
+    --color-ground: #ab7939;
+    --color-flying: #95c9ff;
+    --color-psychic: #ff637f;
+    --color-bug: #9fa424;
+    --color-rock: #bcb889;
+    --color-ghost: #6e4570;
+    --color-dragon: #5462d6;
+    --color-dark: #4f4747;
+    --color-steel: #6aaed3;
+    --color-fairy: #ffb1ff;
+    --color-normal: #999999;
+    --color-fire: #ff612c;
+    --color-water: #2992ff;
+    --color-electric: #ebce16;
+    --color-grass: #42bf24;
+    --color-ice: #42bfff;
+
+    --color-fighting-shallow: #ffe0a6;
+    --color-poison-shallow: #ddb3ed;
+    --color-ground-shallow: #e0c89e;
+    --color-flying-shallow: #d6e9ff;
+    --color-psychic-shallow: #ffc4d1;
+    --color-bug-shallow: #d2dc7f;
+    --color-rock-shallow: #e2dcc7;
+    --color-ghost-shallow: #c0a8c4;
+    --color-dragon-shallow: #b6beed;
+    --color-dark-shallow: #b8b0b0;
+    --color-steel-shallow: #c5dced;
+    --color-fairy-shallow: #ffe6ff;
+    --color-normal-shallow: #e3e3e3;
+    --color-fire-shallow: #ffbc94;
+    --color-water-shallow: #94d1ff;
+    --color-electric-shallow: #fff094;
+    --color-grass-shallow: #a1dc84;
+    --color-ice-shallow: #a1dcff;
+  }
 }
 
-/* 모든 요소 기본 스타일 제거 */
-h1,
-h2,
-h3,
-h4,
-h5,
-h6,
-p,
-blockquote,
-pre,
-a,
-abbr,
-acronym,
-address,
-big,
-cite,
-code,
-del,
-dfn,
-em,
-img,
-ins,
-kbd,
-q,
-s,
-samp,
-small,
-strike,
-strong,
-sub,
-sup,
-tt,
-var,
-b,
-u,
-i,
-center,
-dl,
-dt,
-dd,
-ol,
-ul,
-li,
-fieldset,
-form,
-label,
-legend,
-table,
-caption,
-tbody,
-tfoot,
-thead,
-tr,
-th,
-td,
-article,
-aside,
-canvas,
-details,
-embed,
-figure,
-figcaption,
-footer,
-header,
-hgroup,
-menu,
-nav,
-output,
-ruby,
-section,
-summary,
-time,
-mark,
-audio,
-video {
-  margin: 0;
-  padding: 0;
-  border: 0;
-  font-size: 100%;
-  font: inherit;
-  vertical-align: baseline;
-}
+@layer utilities {
+  .text-fighting {
+    color: var(--color-fighting);
+  }
+  .text-poison {
+    color: var(--color-poison);
+  }
+  .text-ground {
+    color: var(--color-ground);
+  }
+  .text-flying {
+    color: var(--color-flying);
+  }
+  .text-psychic {
+    color: var(--color-psychic);
+  }
+  .text-bug {
+    color: var(--color-bug);
+  }
+  .text-rock {
+    color: var(--color-rock);
+  }
+  .text-ghost {
+    color: var(--color-ghost);
+  }
+  .text-dragon {
+    color: var(--color-dragon);
+  }
+  .text-dark {
+    color: var(--color-dark);
+  }
+  .text-steel {
+    color: var(--color-steel);
+  }
+  .text-fairy {
+    color: var(--color-fairy);
+  }
+  .text-normal {
+    color: var(--color-normal);
+  }
+  .text-fire {
+    color: var(--color-fire);
+  }
+  .text-water {
+    color: var(--color-water);
+  }
+  .text-electric {
+    color: var(--color-electric);
+  }
+  .text-grass {
+    color: var(--color-grass);
+  }
+  .text-ice {
+    color: var(--color-ice);
+  }
 
-/* HTML5 display-role reset for older browsers */
-article,
-aside,
-details,
-figcaption,
-figure,
-footer,
-header,
-hgroup,
-menu,
-nav,
-section {
-  display: block;
-}
+  .bg-fighting {
+    background-color: var(--color-fighting);
+  }
+  .bg-poison {
+    background-color: var(--color-poison);
+  }
+  .bg-ground {
+    background-color: var(--color-ground);
+  }
+  .bg-flying {
+    background-color: var(--color-flying);
+  }
+  .bg-psychic {
+    background-color: var(--color-psychic);
+  }
+  .bg-bug {
+    background-color: var(--color-bug);
+  }
+  .bg-rock {
+    background-color: var(--color-rock);
+  }
+  .bg-ghost {
+    background-color: var(--color-ghost);
+  }
+  .bg-dragon {
+    background-color: var(--color-dragon);
+  }
+  .bg-dark {
+    background-color: var(--color-dark);
+  }
+  .bg-steel {
+    background-color: var(--color-steel);
+  }
+  .bg-fairy {
+    background-color: var(--color-fairy);
+  }
+  .bg-normal {
+    background-color: var(--color-normal);
+  }
+  .bg-fire {
+    background-color: var(--color-fire);
+  }
+  .bg-water {
+    background-color: var(--color-water);
+  }
+  .bg-electric {
+    background-color: var(--color-electric);
+  }
+  .bg-grass {
+    background-color: var(--color-grass);
+  }
+  .bg-ice {
+    background-color: var(--color-ice);
+  }
 
-/* 리스트 스타일 제거 */
-ol,
-ul {
-  list-style: none;
-}
+  /* Shallow 색상들을 위한 text 유틸리티 */
+  .text-fighting-shallow {
+    color: var(--color-fighting-shallow);
+  }
+  .text-poison-shallow {
+    color: var(--color-poison-shallow);
+  }
+  .text-ground-shallow {
+    color: var(--color-ground-shallow);
+  }
+  .text-flying-shallow {
+    color: var(--color-flying-shallow);
+  }
+  .text-psychic-shallow {
+    color: var(--color-psychic-shallow);
+  }
+  .text-bug-shallow {
+    color: var(--color-bug-shallow);
+  }
+  .text-rock-shallow {
+    color: var(--color-rock-shallow);
+  }
+  .text-ghost-shallow {
+    color: var(--color-ghost-shallow);
+  }
+  .text-dragon-shallow {
+    color: var(--color-dragon-shallow);
+  }
+  .text-dark-shallow {
+    color: var(--color-dark-shallow);
+  }
+  .text-steel-shallow {
+    color: var(--color-steel-shallow);
+  }
+  .text-fairy-shallow {
+    color: var(--color-fairy-shallow);
+  }
+  .text-normal-shallow {
+    color: var(--color-normal-shallow);
+  }
+  .text-fire-shallow {
+    color: var(--color-fire-shallow);
+  }
+  .text-water-shallow {
+    color: var(--color-water-shallow);
+  }
+  .text-electric-shallow {
+    color: var(--color-electric-shallow);
+  }
+  .text-grass-shallow {
+    color: var(--color-grass-shallow);
+  }
+  .text-ice-shallow {
+    color: var(--color-ice-shallow);
+  }
 
-/* 인용구 스타일 제거 */
-blockquote,
-q {
-  quotes: none;
-}
-
-blockquote:before,
-blockquote:after,
-q:before,
-q:after {
-  content: "";
-  content: none;
-}
-
-/* 테이블 기본 스타일 제거 */
-table {
-  border-collapse: collapse;
-  border-spacing: 0;
-}
-
-/* 링크 기본 스타일 제거 */
-a {
-  color: inherit;
-  text-decoration: none;
-}
-
-/* 버튼 기본 스타일 제거 */
-button {
-  border: none;
-  background: none;
-  font: inherit;
-  cursor: pointer;
-}
-
-/* 입력 요소 기본 스타일 제거 */
-input,
-textarea,
-select {
-  font: inherit;
-  border: none;
-  outline: none;
-}
-
-/* 이미지 반응형 설정 */
-img,
-picture,
-video,
-canvas,
-svg {
-  display: block;
-  max-width: 100%;
-}
-
-/* 텍스트 요소 줄바꿈 설정 */
-p,
-h1,
-h2,
-h3,
-h4,
-h5,
-h6 {
-  overflow-wrap: break-word;
-}
-
-/* 루트 요소 격리 */
-#root,
-#__next {
-  isolation: isolate;
+  /* Shallow 색상들을 위한 background 유틸리티 */
+  .bg-fighting-shallow {
+    background-color: var(--color-fighting-shallow);
+  }
+  .bg-poison-shallow {
+    background-color: var(--color-poison-shallow);
+  }
+  .bg-ground-shallow {
+    background-color: var(--color-ground-shallow);
+  }
+  .bg-flying-shallow {
+    background-color: var(--color-flying-shallow);
+  }
+  .bg-psychic-shallow {
+    background-color: var(--color-psychic-shallow);
+  }
+  .bg-bug-shallow {
+    background-color: var(--color-bug-shallow);
+  }
+  .bg-rock-shallow {
+    background-color: var(--color-rock-shallow);
+  }
+  .bg-ghost-shallow {
+    background-color: var(--color-ghost-shallow);
+  }
+  .bg-dragon-shallow {
+    background-color: var(--color-dragon-shallow);
+  }
+  .bg-dark-shallow {
+    background-color: var(--color-dark-shallow);
+  }
+  .bg-steel-shallow {
+    background-color: var(--color-steel-shallow);
+  }
+  .bg-fairy-shallow {
+    background-color: var(--color-fairy-shallow);
+  }
+  .bg-normal-shallow {
+    background-color: var(--color-normal-shallow);
+  }
+  .bg-fire-shallow {
+    background-color: var(--color-fire-shallow);
+  }
+  .bg-water-shallow {
+    background-color: var(--color-water-shallow);
+  }
+  .bg-electric-shallow {
+    background-color: var(--color-electric-shallow);
+  }
+  .bg-grass-shallow {
+    background-color: var(--color-grass-shallow);
+  }
+  .bg-ice-shallow {
+    background-color: var(--color-ice-shallow);
+  }
 }

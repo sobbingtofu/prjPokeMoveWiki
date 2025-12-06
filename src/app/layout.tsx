@@ -1,11 +1,7 @@
-import type {Metadata} from "next";
 import {Geist, Geist_Mono} from "next/font/google";
 import "./globals.css";
-
-export const metadata: Metadata = {
-  title: "Poke Move Wiki",
-  description: "Search Pokemon move information",
-};
+import {Metadata} from "next";
+import RootLayoutClient from "./layout-client";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -17,14 +13,20 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
-export default function RootLayout({
-  children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
+export const metadata: Metadata = {
+  title: "EEVEE WIKI",
+  description: "포켓몬 및 기술 정보 위키",
+  icons: {
+    icon: "/ui/icon/eevee01.png",
+  },
+};
+
+export default function RootLayout({children}: {children: React.ReactNode}) {
   return (
-    <html lang="en">
-      <body className={`${geistSans.variable} ${geistMono.variable}`}>{children}</body>
+    <html lang="ko">
+      <body className={`${geistSans.variable} ${geistMono.variable}`}>
+        <RootLayoutClient>{children}</RootLayoutClient>
+      </body>
     </html>
   );
 }
