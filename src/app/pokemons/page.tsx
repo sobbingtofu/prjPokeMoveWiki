@@ -4,10 +4,10 @@ import {Loader} from "@/components/Loader/Loader";
 import {redirect} from "next/navigation";
 import {useEffect} from "react";
 
-export default function Home() {
+export default function PokemonPage() {
   useEffect(() => {
     setTimeout(() => {
-      redirect("/search-learning-pokemon");
+      redirect("/search-pokemons");
     }, 500);
   }, []);
 
