@@ -77,7 +77,7 @@ const fetchKoreanMovesWithRetry = async (
     retryCount++;
 
     // 재시도 전 대기 (exponential backoff)
-    const waitTime = Math.min(1000 * Math.pow(2, retryCount), 10000);
+    const waitTime = Math.min(500 * Math.pow(2, retryCount), 10000);
     console.log(`${waitTime}ms 대기 후 재시도 ${retryCount}/${maxRetries}...`);
     await new Promise((resolve) => setTimeout(resolve, waitTime));
 
