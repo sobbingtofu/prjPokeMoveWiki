@@ -11,7 +11,18 @@ export type FinalDataType = Promise<NextResponse<responseDataType>>;
 async function findImageFromUrl(url: string, moveName: string) {
   console.log("Fetching URL:", url);
 
-  const response = await fetch(url);
+  // 브라우저처럼 보이도록하는 헤더 >> 나무위키의 차단 우회
+  const response = await fetch(url, {
+    headers: {
+      "User-Agent":
+        "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
+      Accept: "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8",
+      "Accept-Language": "ko-KR,ko;q=0.9,en-US;q=0.8,en;q=0.7",
+      "Accept-Encoding": "gzip, deflate, br",
+      Connection: "keep-alive",
+      "Upgrade-Insecure-Requests": "1",
+    },
+  });
   const html = await response.text();
 
   const $ = cheerio.load(html);
@@ -24,11 +35,15 @@ async function findImageFromUrl(url: string, moveName: string) {
 
   allImages.each((i, elem) => {
     const alt = $(elem).attr("alt");
-    const src = $(elem).attr("src");
+    const dataSrc = $(elem).attr("data-src");
+    const srcAttr = $(elem).attr("src");
+    // lazy-loading 이미지의 경우 data-src에 실제 URL이 있음
+    const src = dataSrc || srcAttr;
 
-    if (alt && typeof alt === "string" && alt.includes(moveName) && src) {
+    // data:image로 시작하는 placeholder 이미지는 제외
+    if (alt && typeof alt === "string" && alt.includes(moveName) && src && !src.startsWith("data:image")) {
       candidateImages.push({src, alt, index: i});
-      console.log(`Candidate image found at index ${i}:`, {src, alt});
+      console.log(`Candidate image found at index ${i}:`, {src, alt, dataSrc, srcAttr});
     }
   });
 
