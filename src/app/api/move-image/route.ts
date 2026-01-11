@@ -23,12 +23,28 @@ async function findImageFromUrl(url: string, moveName: string) {
       "Upgrade-Insecure-Requests": "1",
     },
   });
+
+  console.log("Response status:", response.status);
+  console.log("Response headers:", Object.fromEntries(response.headers.entries()));
+
   const html = await response.text();
+  console.log("HTML length:", html.length);
+  console.log("HTML preview (first 500 chars):", html.substring(0, 500));
 
   const $ = cheerio.load(html);
 
   const allImages = $("img");
   console.log("Total images found:", allImages.length);
+
+  // 모든 이미지 정보 출력 (디버깅용)
+  console.log("All images:");
+  allImages.each((i, elem) => {
+    console.log(`  Image ${i}:`, {
+      alt: $(elem).attr("alt"),
+      src: $(elem).attr("src")?.substring(0, 100),
+      dataSrc: $(elem).attr("data-src")?.substring(0, 100),
+    });
+  });
 
   // 1. alt 속성에 moveName을 포함하는 이미지들 필터링
   const candidateImages: Array<{src: string; alt: string; index: number}> = [];
