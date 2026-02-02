@@ -31,6 +31,7 @@ function LearningPokemonsSection({
     : null;
 
   useEffect(() => {
+    // 기술 상세 페이지에서 해당 섹션 호출된 경우, 해당 기술에 대해 배우는 포켓몬 정보 생성
     if (type === "movesDetail" && (editedCurrentMove !== null || !isGenerating)) {
       generateSingleMoveLearningPokemons(editedCurrentMove);
     }

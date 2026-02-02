@@ -1,8 +1,7 @@
 import {DB_NAME_KOREAN_MOVES, DB_VERSION, EXPIRE_MS, META_STORE, STORE_NAME_KOREAN_MOVES} from "@/store/constantStore";
 import {getDBMeta, getFromDB, openDB, saveToDB} from "../indexedDBLogics/indexedDBLogics";
-import {initialMovesType, initialPokemonType, koreanMoveType} from "./type";
+import {initialMovesType, koreanMoveType} from "./type";
 import {generateKoreanMoveData} from "./fetchMovePokemonLogics";
-import {detailedPokemInfoType} from "@/store/type";
 
 interface FetchMovesResult {
   successMoves: koreanMoveType[];
@@ -55,7 +54,7 @@ const fetchKoreanMovesOnce = async (initialMovesParam: initialMovesType[]): Prom
 const fetchKoreanMovesWithRetry = async (
   initialMovesParam: initialMovesType[],
   onSuccessBatch: (moves: koreanMoveType[]) => Promise<void>,
-  maxRetries: number = 5
+  maxRetries: number = 5,
 ): Promise<void> => {
   let failedMoves: initialMovesType[] = initialMovesParam;
   let retryCount = 0;
@@ -97,7 +96,7 @@ const fetchKoreanMovesWithRetry = async (
   if (failedMoves.length > 0) {
     console.warn(
       `최대 재시도 횟수 도달. ${failedMoves.length}개 기술 처리 최종 실패:`,
-      failedMoves.map((m) => m.name)
+      failedMoves.map((m) => m.name),
     );
   } else {
     console.log(`모든 기술 처리 완료!`);
@@ -106,7 +105,7 @@ const fetchKoreanMovesWithRetry = async (
 
 export const fetchAndStoreKoreanMoves = async (
   initialMovesParam: initialMovesType[],
-  onProgressUpdate?: (currentMoves: koreanMoveType[]) => void
+  onProgressUpdate?: (currentMoves: koreanMoveType[]) => void,
 ) => {
   const db = await openDB(DB_NAME_KOREAN_MOVES, DB_VERSION, STORE_NAME_KOREAN_MOVES, META_STORE, "id");
 

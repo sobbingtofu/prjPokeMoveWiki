@@ -4,15 +4,15 @@ import {useZustandStore} from "@/store/zustandStore";
 import React from "react";
 
 import {InitialLoadingScreen} from "@/components/InitialLoadingScreen/InitialLoadingScreen";
-import {useLoadData_DetailedPokemonsArr} from "@/hooks/useLoadData_DetailedPokemonsArr";
 import DetailedPokemonSection from "@/sections/DetailedPokemonSection/DetailedPokemonSection";
+import {useLoadData_DetailedPokemonsArr_v2} from "@/hooks/useLoadData_DetailedPokemonsArr_v2";
 
 interface pageProps {
   params: Promise<{pokemonId: string}>;
 }
 
 function page({params}: pageProps) {
-  useLoadData_DetailedPokemonsArr();
+  useLoadData_DetailedPokemonsArr_v2();
   const {pokemonId} = React.use(params);
 
   const detailedPokemons = useZustandStore((state) => state.detailedPokemons);
