@@ -1,11 +1,11 @@
 "use client";
 import {InitialLoadingScreen} from "@/components/InitialLoadingScreen/InitialLoadingScreen";
-import {useLoadData_KoreanMovesArr} from "@/hooks/useLoadData_KoreanMovesArr";
+import {useLoadData_KoreanMovesArr_v2} from "@/hooks/useLoadData_KoreanMovesArr_v2";
 import {SearchSection} from "@/sections/SearchMoveSection/SearchMoveSection";
 import React from "react";
 
 function SearchMovesPage() {
-  useLoadData_KoreanMovesArr();
+  useLoadData_KoreanMovesArr_v2();
 
   return (
     <div
