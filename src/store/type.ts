@@ -9,7 +9,6 @@ import {
 import {generalPokemonTypes} from "@/utils/getTypeDefenseMatchup";
 
 export interface loadingStatesType {
-  isInitialMovesLoading: boolean;
   isKoreanMovesLoading: boolean;
   isMovesLearningPokemonSearchLoading: boolean;
 
@@ -89,9 +88,15 @@ export interface zustandStoreType {
   koreanMovesArrayStates: koreanMoveType[];
   setKoreanMovesArrayStates: (update: koreanMoveType[]) => void;
 
+  loadKoreanMovesError: boolean;
+  setLoadKoreanMovesError: (update: boolean) => void;
+
+  loadDetailedPokemonsError: boolean;
+  setLoadDetailedPokemonsError: (update: boolean) => void;
+
   selectedMovesArrayStates: selectedMoveType[];
   setSelectedMovesArrayStates: (
-    update: selectedMoveType[] | ((prev: selectedMoveType[]) => selectedMoveType[])
+    update: selectedMoveType[] | ((prev: selectedMoveType[]) => selectedMoveType[]),
   ) => void;
 
   searchTargetMoveState: selectedMoveType | null;
@@ -99,22 +104,22 @@ export interface zustandStoreType {
 
   lastSearchMovesArrayStates: selectedMoveType[];
   setLastSearchMovesArrayStates: (
-    update: selectedMoveType[] | ((prev: selectedMoveType[]) => selectedMoveType[])
+    update: selectedMoveType[] | ((prev: selectedMoveType[]) => selectedMoveType[]),
   ) => void;
 
   pokemonsLearningAllLastSearchMoves: initialPokemonType[];
   setPokemonsLearningAllLastSearchMoves: (
-    update: initialPokemonType[] | ((prev: initialPokemonType[]) => initialPokemonType[])
+    update: initialPokemonType[] | ((prev: initialPokemonType[]) => initialPokemonType[]),
   ) => void;
 
   detailedLearningPokemons_PreFilter: detailedPokemInfoType[];
   setDetailedLearningPokemons_PreFilter: (
-    update: detailedPokemInfoType[] | ((prev: detailedPokemInfoType[]) => detailedPokemInfoType[])
+    update: detailedPokemInfoType[] | ((prev: detailedPokemInfoType[]) => detailedPokemInfoType[]),
   ) => void;
 
   detailedLearningPokemons_Filtered: detailedPokemInfoType[];
   setDetailedLearningPokemons_Filtered: (
-    update: detailedPokemInfoType[] | ((prev: detailedPokemInfoType[]) => detailedPokemInfoType[])
+    update: detailedPokemInfoType[] | ((prev: detailedPokemInfoType[]) => detailedPokemInfoType[]),
   ) => void;
 
   genFilter: {
@@ -131,7 +136,7 @@ export interface zustandStoreType {
   setGenFilter: (
     update:
       | Partial<zustandStoreType["genFilter"]>
-      | ((prev: zustandStoreType["genFilter"]) => zustandStoreType["genFilter"])
+      | ((prev: zustandStoreType["genFilter"]) => zustandStoreType["genFilter"]),
   ) => void;
 
   learnMethodFilter: {
@@ -143,12 +148,12 @@ export interface zustandStoreType {
   setLearnMethodFilter: (
     update:
       | Partial<zustandStoreType["learnMethodFilter"]>
-      | ((prev: zustandStoreType["learnMethodFilter"]) => zustandStoreType["learnMethodFilter"])
+      | ((prev: zustandStoreType["learnMethodFilter"]) => zustandStoreType["learnMethodFilter"]),
   ) => void;
 
   sortOption: sortOptionType;
   setSortOption: (
-    update: zustandStoreType["sortOption"] | ((prev: zustandStoreType["sortOption"]) => zustandStoreType["sortOption"])
+    update: zustandStoreType["sortOption"] | ((prev: zustandStoreType["sortOption"]) => zustandStoreType["sortOption"]),
   ) => void;
 
   sortAscDescOption: {
@@ -158,7 +163,7 @@ export interface zustandStoreType {
   setSortAscDescOption: (
     update:
       | Partial<zustandStoreType["sortAscDescOption"]>
-      | ((prev: zustandStoreType["sortAscDescOption"]) => zustandStoreType["sortAscDescOption"])
+      | ((prev: zustandStoreType["sortAscDescOption"]) => zustandStoreType["sortAscDescOption"]),
   ) => void;
 
   isToastMessageVisible: boolean;

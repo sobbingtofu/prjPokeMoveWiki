@@ -3,15 +3,17 @@ export function openDB(
   DB_VERSION: number,
   STORE_NAME: string,
   META_STORE: string,
-  keyPath: string = "id"
+  keyPath: string = "id",
 ): Promise<IDBDatabase> {
   return new Promise((resolve, reject) => {
     const request = indexedDB.open(DB_NAME, DB_VERSION);
     request.onupgradeneeded = function () {
       const db = request.result;
-      if (!db.objectStoreNames.contains(STORE_NAME)) {
-        db.createObjectStore(STORE_NAME, {keyPath});
+      if (db.objectStoreNames.contains(STORE_NAME)) {
+        db.deleteObjectStore(STORE_NAME);
       }
+      db.createObjectStore(STORE_NAME, {keyPath});
+
       if (!db.objectStoreNames.contains(META_STORE)) {
         db.createObjectStore(META_STORE, {keyPath: "key"});
       }

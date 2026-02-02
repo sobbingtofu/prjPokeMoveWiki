@@ -1,6 +1,6 @@
 import {
   DB_NAME_KOREAN_MOVES,
-  DB_NAME_DETAILED_POKEMONS,
+  DB_NAME_KOREAN_POKEMONS,
   DB_VERSION,
   EXPIRE_MS,
   META_STORE,
@@ -55,7 +55,7 @@ const fetchDetailedPokemonsOnce = async (initialPokemonsParam: initialPokemonTyp
 const fetchDetailedPokemonsWithRetry = async (
   initialPokemonsParam: initialPokemonType[],
   onSuccessBatch: (pokemons: detailedPokemInfoType[]) => Promise<void>,
-  maxRetries: number = 5
+  maxRetries: number = 5,
 ): Promise<void> => {
   let failedPokemons: initialPokemonType[] = initialPokemonsParam;
   let retryCount = 0;
@@ -94,7 +94,7 @@ const fetchDetailedPokemonsWithRetry = async (
   if (failedPokemons.length > 0) {
     console.warn(
       `최대 재시도 횟수 도달. ${failedPokemons.length}개 포켓몬 처리 최종 실패:`,
-      failedPokemons.map((p) => p.name)
+      failedPokemons.map((p) => p.name),
     );
   } else {
     console.log(`모든 포켓몬 처리 완료!`);
@@ -103,9 +103,9 @@ const fetchDetailedPokemonsWithRetry = async (
 
 export const fetchAndStoreDetailedPokemons = async (
   initialPokemonsParam: initialPokemonType[],
-  onProgressUpdate?: (currentPokemons: detailedPokemInfoType[]) => void
+  onProgressUpdate?: (currentPokemons: detailedPokemInfoType[]) => void,
 ) => {
-  const db = await openDB(DB_NAME_DETAILED_POKEMONS, DB_VERSION, STORE_NAME_DETAILED_POKEMONS, META_STORE, "pokemonId");
+  const db = await openDB(DB_NAME_KOREAN_POKEMONS, DB_VERSION, STORE_NAME_DETAILED_POKEMONS, META_STORE, "pokemonId");
 
   const meta = await getDBMeta(db, META_STORE);
   const now = Date.now();
