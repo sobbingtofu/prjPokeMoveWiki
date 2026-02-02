@@ -33,6 +33,10 @@ yarn-error.log*
 # env files (can opt-in for committing if needed)
 .env*
 
+# json data files
+src/json/KOREAN_MOVES.json
+src/json/KOREAN_POKEMONS.json
+
 # vercel
 .vercel
 

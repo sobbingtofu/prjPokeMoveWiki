@@ -1,14 +1,14 @@
 "use client";
 
 import {InitialLoadingScreen} from "@/components/InitialLoadingScreen/InitialLoadingScreen";
+import {useLoadData_KoreanMovesArr_v2} from "@/hooks/useLoadData_KoreanMovesArr_v2";
 import {SearchSection} from "@/sections/SearchMoveSection/SearchMoveSection";
-import {useLoadData_KoreanMovesArr} from "@/hooks/useLoadData_KoreanMovesArr";
-import {SelectedMovesSection} from "@/app/search-learning-pokemon/_sections/SelectedMovesSection/SelectedMovesSection";
-import LearningPokemonsSection from "@/app/search-learning-pokemon/_sections/LearningPokemonsSection/LearningPokemonsSection";
+import {SelectedMovesSection} from "./_sections/SelectedMovesSection/SelectedMovesSection";
+import LearningPokemonsSection from "./_sections/LearningPokemonsSection/LearningPokemonsSection";
 import LearningPokemonsBottomSheet from "./_sections/LearningPokemonsSection/LearningPokemonsBottomSheet";
 
 export default function SearchLearningPokemonPage() {
-  useLoadData_KoreanMovesArr();
+  useLoadData_KoreanMovesArr_v2();
 
   return (
     <>

@@ -6,7 +6,6 @@ export const useZustandStore = create<zustandStoreType>((set) => ({
   setIsFirstAccessToSearchLearningPokemon: (update) => set(() => ({isFirstAccessToSearchLearningPokemon: update})),
 
   loadingStates: {
-    isInitialMovesLoading: false,
     isKoreanMovesLoading: false,
     isMovesLearningPokemonSearchLoading: false,
 
@@ -27,6 +26,12 @@ export const useZustandStore = create<zustandStoreType>((set) => ({
     set((state) => ({
       koreanMovesArrayStates: Array.isArray(update) ? update : state.koreanMovesArrayStates,
     })),
+
+  loadKoreanMovesError: false,
+  setLoadKoreanMovesError: (update) => set({loadKoreanMovesError: update}),
+
+  loadDetailedPokemonsError: false,
+  setLoadDetailedPokemonsError: (update) => set({loadDetailedPokemonsError: update}),
 
   selectedMovesArrayStates: [],
   setSelectedMovesArrayStates: (update) =>

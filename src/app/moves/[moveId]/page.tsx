@@ -1,6 +1,5 @@
 "use client";
 import {InitialLoadingScreen} from "@/components/InitialLoadingScreen/InitialLoadingScreen";
-import {useLoadData_KoreanMovesArr} from "@/hooks/useLoadData_KoreanMovesArr";
 import {SearchSection} from "@/sections/SearchMoveSection/SearchMoveSection";
 import React, {useEffect, useRef} from "react";
 import {useZustandStore} from "@/store/zustandStore";
@@ -9,13 +8,14 @@ import {selectedMoveType} from "@/store/type";
 import LearningPokemonsSection from "@/app/search-learning-pokemon/_sections/LearningPokemonsSection/LearningPokemonsSection";
 import ScrollToTopButton from "@/components/ScrollToTopButton/ScrollToTopButton";
 import LearningPokemonsBottomSheet from "@/app/search-learning-pokemon/_sections/LearningPokemonsSection/LearningPokemonsBottomSheet";
+import {useLoadData_KoreanMovesArr_v2} from "@/hooks/useLoadData_KoreanMovesArr_v2";
 
 interface MovesDetailPageProps {
   params: Promise<{moveId: string}>;
 }
 
 function MovesDetailPage({params}: MovesDetailPageProps) {
-  useLoadData_KoreanMovesArr();
+  useLoadData_KoreanMovesArr_v2();
 
   const {koreanMovesArrayStates} = useZustandStore();
 

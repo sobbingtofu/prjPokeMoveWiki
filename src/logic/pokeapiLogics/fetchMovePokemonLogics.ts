@@ -18,43 +18,6 @@ import {parseEvolutionChain} from "@/utils/parseEvolutionChain";
 import {extractNumberBySplitting, getGenNumberByVersionGroup} from "@/utils/pokeApiUtils";
 import axios from "axios";
 
-// 01-1. 기술 raw data 배열 가져오기
-export const getInitialMoveData = async (): Promise<initialMovesType[]> => {
-  try {
-    const {data: rawData} = await axios.get<any>("https://pokeapi.co/api/v2/move?offset=0&limit=1000");
-    if (!Array.isArray(rawData.results)) {
-      throw new Error(`Invalid data format: ${typeof rawData.results}`);
-    }
-
-    const initialMovesArr: initialMovesType[] = rawData.results.map((item: any, index: number) => ({
-      id: index + 1,
-      name: item.name,
-      url: item.url,
-    }));
-
-    return initialMovesArr;
-  } catch (error) {
-    console.error("기술 raw data 배열 가져오기 실패:", error);
-    return [];
-  }
-};
-
-// 01-2. 푸키먼 raw data 배열 가져오기
-export const getInitialPokemons = async () => {
-  const {data} = await axios.get<any>("https://pokeapi.co/api/v2/pokemon?&limit=1500");
-  if (!Array.isArray(data.results)) {
-    throw new Error(`Invalid data format: ${typeof data.results}`);
-  }
-
-  const initialPokemons: initialPokemonType[] = data.results.map((item: any, index: number) => ({
-    id: extractNumberBySplitting(item.url) ? parseInt(extractNumberBySplitting(item.url)!) : index + 1,
-    name: item.name,
-    url: item.url,
-  }));
-
-  return initialPokemons;
-};
-
 // 02. 기술 국문명 추가 및 어떻게든 배우는 포켓몬 (영어이름 + url) 객체 배열 가져와 learningPokemonEn 속성에 추가
 export const generateKoreanMoveData = async (initialMovesArr: initialMovesType[]) => {
   const promises = initialMovesArr.map(async (initialMoveItem) => {
@@ -149,7 +112,7 @@ export const generateDetailedPokemon = async (commonPokemons: initialPokemonType
         }
 
         const koreanNameFromSpecies = speciesData?.names?.find?.(
-          (nameItem: any) => nameItem.language.name === "ko"
+          (nameItem: any) => nameItem.language.name === "ko",
         )?.name;
 
         return {
@@ -167,7 +130,7 @@ export const generateDetailedPokemon = async (commonPokemons: initialPokemonType
             .map((typeInfo: any) => typeInfo.type.name)
             .map(
               (typeName: string) =>
-                TYPE_NAME_EN_TO_KO.find((type) => type.typeName === typeName)?.korTypeName || typeName
+                TYPE_NAME_EN_TO_KO.find((type) => type.typeName === typeName)?.korTypeName || typeName,
             ),
 
           spriteUrl: basicData.sprites.front_default,
@@ -224,7 +187,7 @@ export const generateDetailedPokemon = async (commonPokemons: initialPokemonType
 // 04. 검색된 포켓몬에 대해서 검색 대상 기술 배우는 방법 및 세대 정보 추가
 export const addLearningMethodsAndGensToPokemons = async (
   pokemons: detailedPokemInfoType[],
-  selectedMoves: selectedMoveType[]
+  selectedMoves: selectedMoveType[],
 ) => {
   const updatedPokemonsPromises = pokemons.map(async (pokemon) => {
     const {data: pokemonData} = await axios.get<any>(pokemon.basicUrl);
@@ -274,12 +237,12 @@ export const fetchPokemonAbilityData = async (abilities: detailedPokemInfoType["
 
       const abilityDescriptionEnArray =
         (abilityData.flavor_text_entries.filter((entry: any) => entry.language.name === "en") || []).map(
-          (entry: any) => entry.flavor_text
+          (entry: any) => entry.flavor_text,
         ) || [];
 
       const abilityDescriptionKoArray =
         (abilityData.flavor_text_entries.filter((entry: any) => entry.language.name === "ko") || []).map(
-          (entry: any) => entry.flavor_text
+          (entry: any) => entry.flavor_text,
         ) || [];
 
       return {
@@ -302,7 +265,7 @@ export const fetchPokemonAbilityData = async (abilities: detailedPokemInfoType["
 
 // 06. 기술 국문명 추가
 export const generateKoreanMoveData02 = async (
-  rawMoveData: rawMoveDataFromPokmonDetailType[]
+  rawMoveData: rawMoveDataFromPokmonDetailType[],
 ): Promise<koreanMoveType[]> => {
   const promises = rawMoveData.map(async (rawMoveItem) => {
     try {
@@ -359,7 +322,7 @@ export const generateKoreanMoveData02 = async (
 
   return koreanMoveNameArr.filter(
     (move): move is koreanMoveType =>
-      move !== null && move.type !== "shadow" && !move.korDescription.includes("사용할 수 없는 기술")
+      move !== null && move.type !== "shadow" && !move.korDescription.includes("사용할 수 없는 기술"),
   );
 };
 
@@ -421,7 +384,7 @@ export const getEvolChainData = async (evolutionChainUrl: string): Promise<Evolu
             console.error(`포켓몬 ${pokemonSpeciesNameEn} 처리 실패:`, error);
             return null;
           }
-        }
+        },
       );
 
       const returnVal = await Promise.all(varietyPromises);
