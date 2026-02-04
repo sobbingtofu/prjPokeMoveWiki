@@ -27,12 +27,12 @@ function TopNavigationBar() {
 
   const linkClass = (href: string) =>
     `block rounded transition-colors hover:bg-gray-700 cursor-pointer] ${
-      isActive(href) ? "font-bold text-white" : "text-gray-300"
+      isActive(href) ? "font-bold text-primary" : "text-slate-400"
     }`;
 
   const menuLinkClass = (href: string) =>
     `text-right py-2 border-b border-gray-600 text-sm  cursor-pointer ${
-      isActive(href) ? "font-bold text-white-400" : "text-gray-300"
+      isActive(href) ? "font-bold text-primary" : "text-slate-400"
     }`;
 
   const onClickOpenMenu = () => {
@@ -61,7 +61,7 @@ function TopNavigationBar() {
 
   return (
     <header
-      className={`h-16 transition-all duration-300 w-screen bg-background-dark text-white px-10 flex flex-row justify-between items-center relative z-20`}
+      className={`h-[64px] transition-all duration-300 w-screen bg-background-dark text-white px-10 flex flex-row justify-between items-center relative z-20`}
     >
       <Link
         href="/"

@@ -21,6 +21,8 @@
     --color-background-mid: #192436;
     --color-background-light: #1e293b;
 
+    --color-primary: #3b82f6;
+
     --color-fighting: #ffa202;
     --color-poison: #994dcf;
     --color-ground: #ab7939;
@@ -91,6 +93,10 @@
 
   .text-background-light {
     background-color: var(--color-background-light);
+  }
+
+  .text-primary {
+    color: var(--color-primary);
   }
 
   .text-fighting {
