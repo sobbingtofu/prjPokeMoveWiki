@@ -39,7 +39,7 @@ function LearningPokemonsSection({
 
   return (
     <section
-      className={`${className} pt-[20px] pb-[20px] flex flex-col items-start
+      className={`${className} pt-[20px] pb-[20px] flex flex-col items-start flex-shrink-0 flex-1
       ${
         type === "searchLearningPokemons"
           ? " bg-gray-700 w-[60%]  sm:flex hidden px-10 min-h-[calc(100vh-64px)]"

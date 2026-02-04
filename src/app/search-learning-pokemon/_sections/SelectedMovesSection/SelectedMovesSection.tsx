@@ -22,20 +22,20 @@ export const SelectedMovesSection = ({className = ""}: SelectedMovesSectionProps
 
   return (
     <>
-      <section className={`${className} flex flex-col items-center  `}>
-        <div className="flex flex-col sm:mt-[60px] mt-[30px] w-[90%] gap-3">
+      <section className={`${className} flex flex-col items-center bg-background-light px-6`}>
+        <div className="flex flex-col sm:mt-[16px] mt-[30px] w-full">
           <div className="flex w-full justify-center">
             <button
               onClick={handleSearchButtonClick}
-              className="w-[80%] py-4 rounded-lg bg-gray-700 hover:bg-gray-900 text-white font-black cursor-pointer"
+              className="w-full py-4 rounded-2xl font-extrabold bg-primary hover:bg-blue-600 shadow-blue-300/25 transition-colors duration-200 text-white font-black cursor-pointer"
             >
               검색 실행
             </button>
           </div>
-          <div className="flex items-baseline mt-3 justify-between select-none">
+          <div className="flex items-baseline mt-8 justify-between select-none">
             <div className="flex items-baseline ">
-              <h2 className="text-2xl font-bold ">선택된 기술</h2>
-              <p className="ml-2 inline-block text-sm italic text-gray-700 font-bold">{`(${selectedMovesArrayStates.length}개)`}</p>
+              <h2 className="text-xs font-bold text-slate-400">선택된 기술</h2>
+              <p className="ml-2 inline-block text-xs text-slate-400 font-bold">{`(${selectedMovesArrayStates.length}개)`}</p>
             </div>
             <SelectedMovesDeleteButtons />
           </div>
@@ -43,7 +43,7 @@ export const SelectedMovesSection = ({className = ""}: SelectedMovesSectionProps
             <ScrollContainer
               shouldAutoScrollOnLengthIncrease={true}
               itemsLength={selectedMovesArrayStates.length}
-              className="grid xl:grid-cols-2 grid-cols-1 content-start gap-x-8 gap-y-4
+              className="grid grid-cols-1 content-start gap-x-8 gap-y-4 mt-4
               xl:min-w-[360px] min-w-[220px] sm:h-[43dvh] h-[43dvh] no-scrollbar auto-rows-max "
             >
               {selectedMovesArrayStates.map((move) => (

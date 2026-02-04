@@ -230,7 +230,7 @@ export const SearchSection = ({
 
   return (
     <section
-      className={`${className} w-full flex flex-col gap-2 items-center justify-start font-bold
+      className={`${className} w-full flex pt-6 px-6 flex-col gap-2 items-center justify-start font-bold bg-background-light
       ${
         type === "searchLearningPokemon"
           ? ""
@@ -241,23 +241,23 @@ export const SearchSection = ({
       <div
         className={` ${
           type == "searchLearningPokemon"
-            ? "min-w-60 w-[80%] sm:mb-0 mb-24"
+            ? "w-full sm:mb-0 mb-24"
             : "md:w-[60%] w-[80%] flex flex-col justify-center items-center"
         }  `}
       >
-        {type === "searchLearningPokemon" && <Toast className="sm:mt-1 mt-2" />}
         {type === "searchLearningPokemon" && (
-          <p className="mt-1 w-full text-xs italic text-gray-600">배우는 포켓몬을 찾아볼 기술을 검색해 클릭</p>
+          <div className="flex justify-between mb-3 items-center w-full">
+            <p className="w-full text-xs font-extrabold text-slate-400">기술 검색</p>
+            <Toast className="sm:mt-0 mt-2" />
+          </div>
         )}
         {type === "searchMoves" && <p className="mt-2 w-full text-sm italic text-gray-600 font-bold">{"기술 검색"}</p>}
         {/* Search Container = 검색창 + 드롭다운 + 검색결과없음 메시지 */}
-        <div ref={searchContainerRef} className={`relative mt-2 ${type === "movesDetail" ? "w-[60%]" : "w-full"}`}>
+        <div ref={searchContainerRef} className={`relative mt-4 ${type === "movesDetail" ? "w-[60%]" : "w-full"}`}>
           {/* 검색창 */}
           <div
-            className={` bg-white flex justify-between items-center shadow-sm w-full 
-            focus-within:border-blue-500 focus-within:ring-1 focus-within:ring-blue-500 
-            text-lg border-2 border-gray-300 rounded-lg focus:outline-none focus:border-blue-500 focus:ring-2 
-            focus:ring-blue-200 transition-all duration-200
+            className={`w-full pl-5 pr-4 py-4 rounded-2xl border-0 ring-1 text-sm h-[56px]
+            ring-slate-600 bg-background-dark focus:ring-2 focus:ring-primary transition-all shadow-sm flex jutify-between
             ${type === "movesDetail" ? "px-3 py-1.5 text-sm text-gray-600" : "px-6 py-4"}
             `}
           >
@@ -267,13 +267,13 @@ export const SearchSection = ({
               onChange={handleInputChange}
               onKeyDown={handleKeyDownInMoveSearchInput}
               onFocus={handleInputFocus}
-              placeholder="기술 이름을 입력"
-              className=" w-full focus:outline-none bg-transparent"
+              placeholder="기술 이름을 입력하세요"
+              className=" w-full focus:outline-none text-white font-light"
               onBlur={(e) => {
                 e.preventDefault();
               }}
             />
-            {isMoveSearchDebouncing && <Loader sizeType={type == "movesDetail" ? "small" : "default"} />}
+            {isMoveSearchDebouncing && <Loader sizeType={type == "movesDetail" ? "small" : "small"} />}
             {!isMoveSearchDebouncing && searchValue.trim() !== "" && <CloseIcon onClick={handleClickCloseIcon} />}
           </div>
 

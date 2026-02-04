@@ -154,6 +154,10 @@
     color: var(--color-ice);
   }
 
+  .bg-primary {
+    background-color: var(--color-primary);
+  }
+
   .bg-background-dark {
     background-color: var(--color-background-dark);
   }
