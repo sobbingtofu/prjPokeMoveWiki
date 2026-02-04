@@ -17,6 +17,10 @@
 
 @layer base {
   :root {
+    --color-background-dark: #0f172a;
+    --color-background-mid: #192436;
+    --color-background-light: #1e293b;
+
     --color-fighting: #ffa202;
     --color-poison: #994dcf;
     --color-ground: #ab7939;
@@ -77,6 +81,18 @@
 }
 
 @layer utilities {
+  .text-background-dark {
+    background-color: var(--color-background-dark);
+  }
+
+  .text-background-mid {
+    background-color: var(--color-background-mid);
+  }
+
+  .text-background-light {
+    background-color: var(--color-background-light);
+  }
+
   .text-fighting {
     color: var(--color-fighting);
   }
@@ -130,6 +146,18 @@
   }
   .text-ice {
     color: var(--color-ice);
+  }
+
+  .bg-background-dark {
+    background-color: var(--color-background-dark);
+  }
+
+  .bg-background-mid {
+    background-color: var(--color-background-mid);
+  }
+
+  .bg-background-light {
+    background-color: var(--color-background-light);
   }
 
   .bg-fighting {
