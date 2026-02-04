@@ -91,13 +91,13 @@ const LearningPokemonsContents = React.memo(function LearningPokemonsContents({
     <>
       {/* 필터 및 정렬 */}
       <div
-        className={`w-full flex flex-col gap-4 border border-white
-        ${type === "searchLearningPokemons" ? "" : "h-min"}
+        className={`w-full flex flex-col gap-4
+        ${type === "searchLearningPokemons" ? "h-[64px]" : "h-min"}
         `}
       >
         <div className="flex flex-col xl:flex-row justify-between xl:items-end items-start w-full md:gap-0 gap-3">
           <h3 className="text-white font-bold text-2xl">배우는 포켓몬 ({detailedLearningPokemons_Filtered.length})</h3>
-          <div className="flex md:flex-row flex-col md:gap-6 gap-3 text-white font-bold text-xs mt-3">
+          <div className="flex md:flex-row flex-col md:gap-6 gap-3 text-white font-bold text-xs">
             <div className="flex md:flex-col flex-row md:gap-1 gap-x-6 items-center md:items-start">
               <p className="text-xs text-gray-300">정렬</p>
               <div className="flex flex-row gap-2">
@@ -137,7 +137,7 @@ const LearningPokemonsContents = React.memo(function LearningPokemonsContents({
         </div>
       </div>
       {/* 선택된 기술 */}
-      <div className="flex flex-row gap-4 w-full flex-wrap border border-white">
+      <div className="flex flex-row gap-4 w-full flex-wrap h-[36px] mt-[8px]">
         {lastSearchMovesArrayStates.map((move) => (
           <div
             key={move.id}
@@ -150,16 +150,17 @@ const LearningPokemonsContents = React.memo(function LearningPokemonsContents({
       {/* 검색된 포켓몬이 없는 경우 */}
       {((type === "searchLearningPokemons" && lastSearchMovesArrayStates.length === 0) ||
         detailedLearningPokemons_Filtered.length === 0) && (
-        <p className="text-gray-500 font-bold text-sm">검색된 포켓몬이 없습니다</p>
+        <p className="text-gray-500 font-bold text-sm mt-[20px]">검색된 포켓몬이 없습니다</p>
       )}
 
       {/* 카드 나열 */}
       {detailedLearningPokemons_Filtered.length > 0 && (
         <div
-          className={` 
+          className={`mt-[20px]
             ${
               type === "searchLearningPokemons"
-                ? "md:h-[70dvh] sm:h-[66dvh] h-[58dvh] overflow-y-scroll scrollbar-thin scrollbar-track-gray-700 scrollbar-thumb-gray-500"
+                ? `max-h-[calc(100vh-50px-64px-40px-36px-20px-20px)] min-h-[410px]
+                  overflow-y-auto scrollbar-thin scrollbar-track-gray-700 scrollbar-thumb-gray-500`
                 : "h-auto overflow-y-hidden"
             }
           grid lg:grid-cols-4 grid-cols-2 w-full gap-x-3 gap-y-2 

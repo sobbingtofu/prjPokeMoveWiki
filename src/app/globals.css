@@ -2,6 +2,10 @@
 
 @plugin 'tailwind-scrollbar';
 
+@theme {
+  --breakpoint-2xl: 90rem; /* 1440px */
+}
+
 .no-scrollbar::-webkit-scrollbar {
   display: none; /* Chrome, Safari, Opera*/
 }

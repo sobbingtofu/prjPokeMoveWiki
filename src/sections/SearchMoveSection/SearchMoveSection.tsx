@@ -63,7 +63,7 @@ export const SearchSection = ({
     }
 
     const filtered = koreanMovesArrayStates.filter((move) =>
-      move.koreanName.toLowerCase().includes(searchValue.toLowerCase())
+      move.koreanName.toLowerCase().includes(searchValue.toLowerCase()),
     );
     // setFilteredMoves(filtered.slice(0, 60));
     setFilteredMoves(filtered);
@@ -245,9 +245,9 @@ export const SearchSection = ({
             : "md:w-[60%] w-[80%] flex flex-col justify-center items-center"
         }  `}
       >
-        {type === "searchLearningPokemon" && <Toast className="sm:mt-4 mt-2" />}
+        {type === "searchLearningPokemon" && <Toast className="sm:mt-1 mt-2" />}
         {type === "searchLearningPokemon" && (
-          <p className="mt-2 w-full text-xs italic text-gray-600">배우는 포켓몬을 찾아볼 기술을 검색해 클릭</p>
+          <p className="mt-1 w-full text-xs italic text-gray-600">배우는 포켓몬을 찾아볼 기술을 검색해 클릭</p>
         )}
         {type === "searchMoves" && <p className="mt-2 w-full text-sm italic text-gray-600 font-bold">{"기술 검색"}</p>}
         {/* Search Container = 검색창 + 드롭다운 + 검색결과없음 메시지 */}

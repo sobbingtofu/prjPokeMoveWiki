@@ -31,8 +31,8 @@ export const MoveCard = ({
       prev.map((selectedMove) =>
         selectedMove.id === move.id
           ? {...selectedMove, isSelectedForDeletion: !selectedMove.isSelectedForDeletion}
-          : selectedMove
-      )
+          : selectedMove,
+      ),
     );
   };
 
@@ -96,10 +96,11 @@ export const MoveCard = ({
             {move.koreanName}
           </p>
           <div
-            className={`flex flex-row items-baseline justify-between
+            className={`flex 2xl:flex-row xl:items-baseline xl:justify-between xl:flex-col xl:items-start xl:justify-center gap-y-2 flex-row items-baseline justify-between 
             ${type === "searchLearningPokemon" ? "" : "gap-x-10 sm:w-auto w-full sm:justify-end justify-between"}
             `}
           >
+            {/* 위력, 명중 */}
             <div
               className={`text-xs font-bold flex gap-2
               ${type === "searchLearningPokemon" ? "" : "w-[115px] justify-end"}
@@ -108,6 +109,7 @@ export const MoveCard = ({
               <p className="w-[53px]">{move.power ? `위력: ${move.power}` : "위력: --"}</p>
               <p className="w-[53px]">{move.accuracy ? `명중: ${move.accuracy}` : "명중: --"}</p>
             </div>
+            {/* 타입, 유형 */}
             <div
               className={`text-xs font-bold italic flex  items-center 
                 ${type === "searchLearningPokemon" ? "w-auto gap-2" : "w-full gap-3"}
@@ -143,8 +145,8 @@ export const MoveCard = ({
                     {detail.learnMethod == "level-up"
                       ? `( Lv. ${detail.levelLearned} )`
                       : detail.learnMethod == "egg"
-                      ? `( Lv. 0 )`
-                      : ""}
+                        ? `( Lv. 0 )`
+                        : ""}
                   </p>
                 </div>
               );
