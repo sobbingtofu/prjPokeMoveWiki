@@ -35,14 +35,14 @@ function LearningPokemonsSection({
     if (type === "movesDetail" && (editedCurrentMove !== null || !isGenerating)) {
       generateSingleMoveLearningPokemons(editedCurrentMove);
     }
-  }, [currentMoveId]);
+  }, [currentMoveId, editedCurrentMove, generateSingleMoveLearningPokemons, isGenerating]);
 
   return (
     <section
-      className={`${className} pt-7  flex-col items-start gap-4 
+      className={`${className} pt-[20px] pb-[20px] flex flex-col items-start
       ${
         type === "searchLearningPokemons"
-          ? "w-[60%] bg-gray-700 h-full sm:flex hidden px-10"
+          ? " bg-gray-700 w-[60%]  sm:flex hidden px-10 min-h-[calc(100vh-50px)]"
           : "w-full mt-4 sm:rounded-lg rounded-none bg-gray-700 border border-gray-800 min-h-[400px] sm:pb-10 pb-20 h-full px-4 sm:px-10"
       }
     `}
@@ -52,8 +52,8 @@ function LearningPokemonsSection({
           <Loader />
         </div>
       )}
-      {type === "movesDetail" && !isGenerating && <LearningPokemonsContents type={type} />}
       {type === "searchLearningPokemons" && <LearningPokemonsContents type={type} />}
+      {type === "movesDetail" && !isGenerating && <LearningPokemonsContents type={type} />}
     </section>
   );
 }

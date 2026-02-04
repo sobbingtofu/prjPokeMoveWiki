@@ -26,7 +26,7 @@ function TopNavigationBar() {
   };
 
   const linkClass = (href: string) =>
-    `block rounded transition-colors hover:bg-gray-700 cursor-pointer max-w-[100px] lg:max-w-[200px] ${
+    `block rounded transition-colors hover:bg-gray-700 cursor-pointer] ${
       isActive(href) ? "font-bold text-white" : "text-gray-300"
     }`;
 
@@ -60,11 +60,8 @@ function TopNavigationBar() {
   }, []);
 
   return (
-    <div className={`${isMenuOpen ? "h-auto" : "h-[7dvh]"} transition-all duration-300`}>
-      <aside
-        className="w-full bg-gray-800 text-white px-10 flex flex-row justify-between items-center h-[7dvh] min-h-[45px] relative
-      z-20"
-      >
+    <div className={`h-auto transition-all duration-300`}>
+      <aside className="w-full bg-gray-800 text-white px-10 flex flex-row justify-between items-center h-[50px] relative z-20">
         <Link
           href="/"
           onClick={(e) => {
@@ -73,10 +70,10 @@ function TopNavigationBar() {
           }}
           className="flex flex-row items-center gap-4 py-2 cursor-pointer"
         >
-          <Image src="/ui/icon/eevee01.png" alt="Eevee Wiki Logo" width={48} height={42} />
+          <Image src="/ui/icon/eevee01.png" alt="Eevee Wiki Logo" width={40} height={36} />
           <h1 className="text-2xl font-bold min-w-[130px]">이브이 위키</h1>
         </Link>
-        <div className="flex-row gap-10 text-sm py-5 hidden sm:flex">
+        <div className="flex-row gap-10 text-sm py-5 hidden sm:flex ">
           {menuItems.map((item) => (
             <Link
               key={item.href}
@@ -87,7 +84,7 @@ function TopNavigationBar() {
               }}
               className={linkClass(item.href)}
             >
-              {item.label}
+              <p className="whitespace-nowrap">{item.label}</p>
             </Link>
           ))}
         </div>

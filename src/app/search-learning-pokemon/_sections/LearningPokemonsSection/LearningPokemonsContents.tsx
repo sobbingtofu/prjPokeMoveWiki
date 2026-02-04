@@ -91,8 +91,8 @@ const LearningPokemonsContents = React.memo(function LearningPokemonsContents({
     <>
       {/* 필터 및 정렬 */}
       <div
-        className={`w-full flex flex-col gap-4 
-        ${type === "searchLearningPokemons" ? "md:h-[15dvh] h-min" : "h-min"}
+        className={`w-full flex flex-col gap-4
+        ${type === "searchLearningPokemons" ? "h-[64px]" : "h-min"}
         `}
       >
         <div className="flex flex-col xl:flex-row justify-between xl:items-end items-start w-full md:gap-0 gap-3">
@@ -135,31 +135,32 @@ const LearningPokemonsContents = React.memo(function LearningPokemonsContents({
             </div>
           </div>
         </div>
-        {((type === "searchLearningPokemons" && lastSearchMovesArrayStates.length === 0) ||
-          detailedLearningPokemons_Filtered.length === 0) && (
-          <p className="text-gray-500 font-bold text-sm">검색된 포켓몬이 없습니다</p>
-        )}
-        <div className="w-full flex justify-between items-center ">
-          <div className="flex flex-row gap-4 w-[60%] flex-wrap ">
-            {lastSearchMovesArrayStates.map((move) => (
-              <div
-                key={move.id}
-                className={`text-sm font-bold px-3 py-2 bg-${move.type.toLowerCase()}-shallow rounded-2xl flex justify-center items-center`}
-              >
-                {move.koreanName}
-              </div>
-            ))}
-          </div>
-        </div>
       </div>
+      {/* 선택된 기술 */}
+      <div className="flex flex-row gap-4 w-full flex-wrap h-[36px] mt-[8px]">
+        {lastSearchMovesArrayStates.map((move) => (
+          <div
+            key={move.id}
+            className={`text-sm font-bold px-3 py-2 bg-${move.type.toLowerCase()}-shallow rounded-2xl flex justify-center items-center`}
+          >
+            {move.koreanName}
+          </div>
+        ))}
+      </div>
+      {/* 검색된 포켓몬이 없는 경우 */}
+      {((type === "searchLearningPokemons" && lastSearchMovesArrayStates.length === 0) ||
+        detailedLearningPokemons_Filtered.length === 0) && (
+        <p className="text-gray-500 font-bold text-sm mt-[20px]">검색된 포켓몬이 없습니다</p>
+      )}
 
       {/* 카드 나열 */}
       {detailedLearningPokemons_Filtered.length > 0 && (
         <div
-          className={`
+          className={`mt-[20px]
             ${
               type === "searchLearningPokemons"
-                ? "md:h-[70dvh] sm:h-[66dvh] h-[58dvh] overflow-y-scroll scrollbar-thin scrollbar-track-gray-700 scrollbar-thumb-gray-500"
+                ? `max-h-[calc(100vh-50px-64px-40px-36px-20px-20px)] min-h-[410px]
+                  overflow-y-auto scrollbar-thin scrollbar-track-gray-700 scrollbar-thumb-gray-500`
                 : "h-auto overflow-y-hidden"
             }
           grid lg:grid-cols-4 grid-cols-2 w-full gap-x-3 gap-y-2 

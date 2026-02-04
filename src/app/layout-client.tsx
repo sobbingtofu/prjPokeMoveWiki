@@ -10,7 +10,7 @@ export default function RootLayoutClient({children}: {children: ReactNode}) {
     <QueryClientProvider client={queryClient}>
       <div className="flex flex-col w-screen h-screen overflow-hidden">
         <TopNavigationBar />
-        <main className="">{children}</main>
+        <main className="flex-1 overflow-y-auto overflow-x-hidden">{children}</main>
       </div>
     </QueryClientProvider>
   );
