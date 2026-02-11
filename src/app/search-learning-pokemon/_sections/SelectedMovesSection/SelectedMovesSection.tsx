@@ -18,20 +18,10 @@ export const SelectedMovesSection = ({className = ""}: SelectedMovesSectionProps
     console.log("해당 기술 상세보기 넘어갈 예정:", moveId);
   };
 
-  const handleSearchButtonClick = useHandleMoveSearchBtnClick();
-
   return (
     <>
       <section className={`${className} flex flex-col items-center bg-background-light px-6`}>
         <div className="flex flex-col sm:mt-[16px] mt-[30px] w-full">
-          <div className="flex w-full justify-center">
-            <button
-              onClick={handleSearchButtonClick}
-              className="w-full py-4 rounded-2xl font-extrabold bg-primary hover:bg-blue-600 shadow-blue-300/25 transition-colors duration-200 text-white font-black cursor-pointer"
-            >
-              검색 실행
-            </button>
-          </div>
           <div className="flex items-baseline mt-8 justify-between select-none">
             <div className="flex items-baseline ">
               <h2 className="text-xs font-bold text-slate-400">선택된 기술</h2>
