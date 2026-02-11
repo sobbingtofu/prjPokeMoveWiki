@@ -228,6 +228,8 @@ export const SearchSection = ({
     }
   };
 
+  const handleSearchButtonClick = useHandleMoveSearchBtnClick();
+
   return (
     <section
       className={`${className} w-full flex pt-6 px-6 flex-col gap-2 items-center justify-start font-bold bg-background-light
@@ -256,7 +258,7 @@ export const SearchSection = ({
         <div ref={searchContainerRef} className={`relative mt-4 ${type === "movesDetail" ? "w-[60%]" : "w-full"}`}>
           {/* 검색창 */}
           <div
-            className={`w-full pl-5 pr-4 py-4 rounded-2xl border-0 ring-1 text-sm h-[56px]
+            className={`w-full pl-5 pr-4 py-4 rounded-[1rem] border-0 ring-1 text-sm h-[56px]
             ring-slate-600 bg-background-dark focus:ring-2 focus:ring-primary transition-all shadow-sm flex jutify-between
             ${type === "movesDetail" ? "px-3 py-1.5 text-sm text-gray-600" : "px-6 py-4"}
             `}
@@ -274,7 +276,6 @@ export const SearchSection = ({
               }}
             />
             {isMoveSearchDebouncing && <Loader sizeType={type == "movesDetail" ? "small" : "small"} />}
-            {!isMoveSearchDebouncing && searchValue.trim() !== "" && <CloseIcon onClick={handleClickCloseIcon} />}
           </div>
 
           {/* 드롭다운 결과 */}
