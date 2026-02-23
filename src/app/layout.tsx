@@ -1,15 +1,10 @@
-import {Geist, Geist_Mono} from "next/font/google";
+import {Geist, Geist_Mono, Inter} from "next/font/google";
 import "./globals.css";
 import {Metadata} from "next";
 import RootLayoutClient from "./layout-client";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
+const inter = Inter({
+  variable: "--font-inter",
   subsets: ["latin"],
 });
 
@@ -24,7 +19,7 @@ export const metadata: Metadata = {
 export default function RootLayout({children}: {children: React.ReactNode}) {
   return (
     <html lang="ko">
-      <body className={`${geistSans.variable} ${geistMono.variable}`}>
+      <body className={`${inter.variable} font-inter`}>
         <RootLayoutClient>{children}</RootLayoutClient>
       </body>
     </html>
