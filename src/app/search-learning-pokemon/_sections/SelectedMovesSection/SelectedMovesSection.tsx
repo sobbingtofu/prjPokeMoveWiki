@@ -4,6 +4,7 @@ import {MoveCard} from "@/components/MoveCard/MoveCard";
 import ScrollContainer from "@/components/ScrollContainer/ScrollContainer";
 import SelectedMovesDeleteButtons from "@/app/search-learning-pokemon/_components/SelectedMovesDeleteButtons/SelectedMovesDeleteButtons";
 import useHandleMoveSearchBtnClick from "@/hooks/useHandleMoveSearchBtnClick";
+import LightningIcon from "@/../public/ui/icon/lightningIcon";
 
 import {useZustandStore} from "@/store/zustandStore";
 
@@ -50,9 +51,10 @@ export const SelectedMovesSection = ({className = ""}: SelectedMovesSectionProps
 
         <button
           onClick={handleSearchButtonClick}
-          className="w-full py-4 rounded-2xl bg-primary
+          className="w-full py-4 rounded-2xl bg-primary flex items-center justify-center gap-2
         hover:bg-blue-600 shadow-blue-300/25 transition-colors duration-200 text-white font-black cursor-pointer"
         >
+          <LightningIcon />
           <p className="text-[15px] font-bold">기술을 배우는 포켓몬 검색</p>
         </button>
       </div>
