@@ -227,9 +227,6 @@ export const SearchSection = ({
       inputElement.value = "";
     }
   };
-
-  const handleSearchButtonClick = useHandleMoveSearchBtnClick();
-
   return (
     <section
       className={`${className} w-full flex pt-6 px-6 flex-col gap-2 items-center justify-start font-bold bg-background-light
@@ -238,12 +235,12 @@ export const SearchSection = ({
           ? ""
           : `transition-all duration-300 ${type === "movesDetail" ? "py-4" : "py-16"}`
       }
-    `}
+      `}
     >
       <div
         className={` ${
           type == "searchLearningPokemon"
-            ? "w-full sm:mb-0 mb-24"
+            ? "w-full sm:mb-0 mb-0"
             : "md:w-[60%] w-[80%] flex flex-col justify-center items-center"
         }  `}
       >

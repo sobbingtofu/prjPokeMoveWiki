@@ -17,8 +17,8 @@ function SelectedMovesDeleteButtons() {
     <>
       <div className="flex items-baseline gap-7">
         {selectedMovesArrayStates.filter((move) => move.isSelectedForDeletion).length > 0 && (
-          <button className="ml-auto text-sm italic  cursor-pointer " onClick={handleClickDeleteButton}>
-            <p className="text-red-500 font-bold hover:text-red-700 transition-colors duration-150">삭제</p>
+          <button className="ml-auto text-xs italic  cursor-pointer " onClick={handleClickDeleteButton}>
+            <p className="text-red-600 font-bold transition-colors duration-150">삭제</p>
           </button>
         )}
         <button
@@ -29,24 +29,24 @@ function SelectedMovesDeleteButtons() {
                 prev.map((move) => ({
                   ...move,
                   isSelectedForDeletion: true,
-                }))
+                })),
               );
             } else {
               setSelectedMovesArrayStates((prev) =>
                 prev.map((move) => ({
                   ...move,
                   isSelectedForDeletion: false,
-                }))
+                })),
               );
             }
           }}
         >
-          <p className="text-sm italic text-gray-700 hover:text-gray-500">
+          <p className="text-xs italic text-primary">
             {selectedMovesArrayStates.some((move) => !move.isSelectedForDeletion)
               ? "전체 선택"
               : selectedMovesArrayStates.length > 0
-              ? "전체 해제"
-              : ""}
+                ? "전체 해제"
+                : ""}
           </p>
         </button>
       </div>

@@ -39,10 +39,10 @@ function LearningPokemonsSection({
 
   return (
     <section
-      className={`${className} pt-[20px] pb-[20px] flex flex-col items-start flex-shrink-0 flex-1
+      className={`${className} pt-[20px] pb-[20px] flex flex-col items-start flex-shrink-0 flex-1 
       ${
         type === "searchLearningPokemons"
-          ? " bg-gray-700 w-[60%]  sm:flex hidden px-10 min-h-[calc(100vh-64px)]"
+          ? " bg-gray-700 w-[60%]  sm:flex hidden px-10 min-h-[512px] h-full"
           : "w-full mt-4 sm:rounded-lg rounded-none bg-gray-700 border border-gray-800 min-h-[400px] sm:pb-10 pb-20 h-full px-4 sm:px-10"
       }
     `}

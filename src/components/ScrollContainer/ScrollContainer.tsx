@@ -58,25 +58,13 @@ function ScrollContainer({
   }, [itemsLength]);
 
   return (
-    <div className="relative">
-      {/* 상단 그라데이션 */}
-      {!isScrolledToTop && (
-        <div className="absolute top-0 left-0 right-0 h-4 bg-linear-to-b from-white to-transparent pointer-events-none z-10" />
-      )}
-
-      {/* 스크롤 컨테이너 */}
-      <div
-        ref={scrollContainerRef}
-        onScroll={handleScroll}
-        className={`overflow-y-scroll overflow-x-hidden  ${className}`}
-      >
-        {children}
-      </div>
-
-      {/* 하단 그라데이션 */}
-      {!isScrolledToBottom && (
-        <div className="absolute bottom-0 left-0 right-0 h-4 bg-linear-to-t from-white to-transparent pointer-events-none" />
-      )}
+    <div
+      ref={scrollContainerRef}
+      onScroll={handleScroll}
+      className={`overflow-y-auto overflow-x-hidden
+        scrollbar-thin scrollbar-track-[#1E293B] scrollbar-thumb-[#374151] ${className}`}
+    >
+      {children}
     </div>
   );
 }

@@ -14,12 +14,12 @@ export default function SearchLearningPokemonPage() {
     <>
       <InitialLoadingScreen />
       <div
-        className="flex md:flex-row w-screen min-h-[calc(100vh-64px)] relative min-w-[200px]
-        overflow-y-auto scrollbar-thin scrollbar-track-gray-700 scrollbar-thumb-gray-500"
+        className="flex md:flex-row w-screen h-full relative min-w-[200px]
+        overflow-y-hidden sm:overflow-y-auto scrollbar-thin scrollbar-track-gray-700 scrollbar-thumb-gray-500"
       >
-        <div className="sm:w-[384px] w-full min-h-[calc(100vh-64px)]">
+        <div className="sm:w-[384px] w-full min-h-[512px]">
           <SearchSection dropDownHeight={160} smDropDownHeight={120} className="" />
-          <SelectedMovesSection className="min-h-[400px] h-[calc(100vh-176px)]" />
+          <SelectedMovesSection />
         </div>
 
         <LearningPokemonsSection />

@@ -61,7 +61,7 @@ function TopNavigationBar() {
 
   return (
     <header
-      className={`h-[64px] transition-all duration-300 w-screen bg-background-dark text-white px-10 flex flex-row justify-between items-center relative z-20`}
+      className={`h-[64px] transition-all duration-300 w-screen bg-background-dark text-white px-5 sm:px-10 flex flex-row justify-between items-center relative z-20`}
     >
       <Link
         href="/"
@@ -69,10 +69,10 @@ function TopNavigationBar() {
           e.preventDefault();
           navigateWithReset("/", true);
         }}
-        className="flex flex-row items-center gap-4 py-2 cursor-pointer"
+        className="flex flex-row items-center gap-2 sm:gap-4 py-2 cursor-pointer"
       >
         <Image src="/ui/icon/eevee01.png" alt="Eevee Wiki Logo" width={40} height={36} />
-        <h1 className="text-2xl font-bold min-w-[130px]">이브이 위키</h1>
+        <h1 className="text-lg sm:text-2xl font-bold min-w-[130px]">이브이 위키</h1>
       </Link>
       <div className="flex-row gap-10 text-sm py-5 hidden sm:flex ">
         {menuItems.map((item) => (
@@ -97,7 +97,7 @@ function TopNavigationBar() {
         </div>
 
         {isMenuOpen && (
-          <div className="w-60 bg-gray-700 text-white flex flex-col gap-4 px-10 py-2 absolute z-10 right-0 top-full mt-2">
+          <div className="w-50 sm:w-60 bg-gray-700 text-white flex flex-col gap-4 px-5 sm:px-10 py-2 absolute z-10 right-0 top-full mt-2">
             {menuItems.map((item) => (
               <Link
                 key={item.href}
