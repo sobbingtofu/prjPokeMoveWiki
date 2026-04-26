@@ -21,7 +21,7 @@ const getKoreanPokemonsFromSupabase = async (): Promise<detailedPokemInfoType[]>
     const to = from + BATCH_SIZE - 1;
     console.log(`Fetching pokemons ${from} to ${to}...`);
 
-    const {data, error} = await supabase.from("TB_POKEMONS").select("*").range(from, to);
+    const {data, error} = await supabase.from("OLD_TB_POKEMONS").select("*").range(from, to);
 
     if (error) {
       throw new Error(error.message);
