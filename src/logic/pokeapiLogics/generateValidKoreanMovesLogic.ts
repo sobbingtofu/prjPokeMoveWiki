@@ -5,7 +5,7 @@ import {DB_NAME_KOREAN_MOVES, DB_VERSION, EXPIRE_MS, META_STORE, STORE_NAME_KORE
 
 // 1. Supabase fetching logic
 const getKoreanMovesFromSupabase = async (): Promise<koreanMoveType[]> => {
-  const {data, error} = await supabase.from("TB_MOVES").select("*");
+  const {data, error} = await supabase.from("OLD_TB_MOVES").select("*");
   if (error) {
     throw new Error(error.message);
   }
